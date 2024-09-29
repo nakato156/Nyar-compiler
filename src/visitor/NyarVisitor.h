@@ -7,8 +7,7 @@
 #include <string>
 #include <system_error>
 
-#include "NyarParser.h"
-#include "NyarParserBaseVisitor.h"
+#include "../lib/NyarParserBaseVisitor.h"
 
 #include "antlr4-runtime.h"
 #include <llvm/Support/raw_ostream.h>
@@ -19,7 +18,7 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
 
-class NyarVisitor : NyarParserBaseVisitor
+class NyarVisitor : public NyarParserBaseVisitor
 {
 private:
     std::map<std::string, std::any> memory;
@@ -33,7 +32,8 @@ private:
         llvm::IRBuilder<> TmpB(&F->getEntryBlock(), F->getEntryBlock().begin());
         return TmpB.CreateAlloca(llvm::Type::getDoubleTy(*context), nullptr, varName);
     }
-    
+
+public:
     NyarVisitor() : 
         context(std::make_unique<llvm::LLVMContext>()),
         module(std::make_unique<llvm::Module>("NyarModule", *context)),
@@ -84,5 +84,5 @@ private:
     virtual antlrcpp::Any visitIterar(NyarParser::IterarContext *ctx) override;
 
     virtual antlrcpp::Any visitCondicion(NyarParser::CondicionContext *ctx) override;
-}
+};
 #endif

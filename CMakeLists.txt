@@ -10,8 +10,7 @@ message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
 # Añade el directorio lib a los directorios de inclusión
-include_directories(./src/lib)
-include_directories(./src/visitor/)
+include_directories(./src)
 
 # Incluye los encabezados del runtime de ANTLR
 if(APPLE)
