@@ -1,5 +1,5 @@
 
-// Generated from NyarParser.g4 by ANTLR 4.9.2
+// Generated from NyarParser.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -15,83 +15,83 @@
 class  NyarParserBaseVisitor : public NyarParserVisitor {
 public:
 
-  virtual antlrcpp::Any visitProgram(NyarParser::ProgramContext *ctx) override {
+  virtual std::any visitProgram(NyarParser::ProgramContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStat(NyarParser::StatContext *ctx) override {
+  virtual std::any visitStat(NyarParser::StatContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitNumber(NyarParser::NumberContext *ctx) override {
+  virtual std::any visitNumber(NyarParser::NumberContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitEqExp(NyarParser::EqExpContext *ctx) override {
+  virtual std::any visitEqExp(NyarParser::EqExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBoolean(NyarParser::BooleanContext *ctx) override {
+  virtual std::any visitBoolean(NyarParser::BooleanContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitAritExp(NyarParser::AritExpContext *ctx) override {
+  virtual std::any visitAritExp(NyarParser::AritExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitString(NyarParser::StringContext *ctx) override {
+  virtual std::any visitString(NyarParser::StringContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitParenExp(NyarParser::ParenExpContext *ctx) override {
+  virtual std::any visitParenExp(NyarParser::ParenExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFCall(NyarParser::FCallContext *ctx) override {
+  virtual std::any visitFCall(NyarParser::FCallContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitId(NyarParser::IdContext *ctx) override {
+  virtual std::any visitId(NyarParser::IdContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitArreglo(NyarParser::ArregloContext *ctx) override {
+  virtual std::any visitArreglo(NyarParser::ArregloContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitEqEqExp(NyarParser::EqEqExpContext *ctx) override {
+  virtual std::any visitEqEqExp(NyarParser::EqEqExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitArray(NyarParser::ArrayContext *ctx) override {
+  virtual std::any visitArray(NyarParser::ArrayContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitVariable(NyarParser::VariableContext *ctx) override {
+  virtual std::any visitVariable(NyarParser::VariableContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFuncParams(NyarParser::FuncParamsContext *ctx) override {
+  virtual std::any visitFuncParams(NyarParser::FuncParamsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFuncDef(NyarParser::FuncDefContext *ctx) override {
+  virtual std::any visitFuncDef(NyarParser::FuncDefContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFuncArgs(NyarParser::FuncArgsContext *ctx) override {
+  virtual std::any visitFuncArgs(NyarParser::FuncArgsContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFuncCall(NyarParser::FuncCallContext *ctx) override {
+  virtual std::any visitFuncCall(NyarParser::FuncCallContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitIterar(NyarParser::IterarContext *ctx) override {
+  virtual std::any visitIterar(NyarParser::IterarContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitCondicion(NyarParser::CondicionContext *ctx) override {
+  virtual std::any visitCondicion(NyarParser::CondicionContext *ctx) override {
     return visitChildren(ctx);
   }
 

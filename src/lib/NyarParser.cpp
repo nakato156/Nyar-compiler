@@ -1,5 +1,5 @@
 
-// Generated from NyarParser.g4 by ANTLR 4.9.2
+// Generated from NyarParser.g4 by ANTLR 4.13.2
 
 
 #include "NyarParserVisitor.h"
@@ -8,14 +8,143 @@
 
 
 using namespace antlrcpp;
+
 using namespace antlr4;
 
-NyarParser::NyarParser(TokenStream *input) : Parser(input) {
-  _interpreter = new atn::ParserATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
+namespace {
+
+struct NyarParserStaticData final {
+  NyarParserStaticData(std::vector<std::string> ruleNames,
+                        std::vector<std::string> literalNames,
+                        std::vector<std::string> symbolicNames)
+      : ruleNames(std::move(ruleNames)), literalNames(std::move(literalNames)),
+        symbolicNames(std::move(symbolicNames)),
+        vocabulary(this->literalNames, this->symbolicNames) {}
+
+  NyarParserStaticData(const NyarParserStaticData&) = delete;
+  NyarParserStaticData(NyarParserStaticData&&) = delete;
+  NyarParserStaticData& operator=(const NyarParserStaticData&) = delete;
+  NyarParserStaticData& operator=(NyarParserStaticData&&) = delete;
+
+  std::vector<antlr4::dfa::DFA> decisionToDFA;
+  antlr4::atn::PredictionContextCache sharedContextCache;
+  const std::vector<std::string> ruleNames;
+  const std::vector<std::string> literalNames;
+  const std::vector<std::string> symbolicNames;
+  const antlr4::dfa::Vocabulary vocabulary;
+  antlr4::atn::SerializedATNView serializedATN;
+  std::unique_ptr<antlr4::atn::ATN> atn;
+};
+
+::antlr4::internal::OnceFlag nyarparserParserOnceFlag;
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+static thread_local
+#endif
+std::unique_ptr<NyarParserStaticData> nyarparserParserStaticData = nullptr;
+
+void nyarparserParserInitialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  if (nyarparserParserStaticData != nullptr) {
+    return;
+  }
+#else
+  assert(nyarparserParserStaticData == nullptr);
+#endif
+  auto staticData = std::make_unique<NyarParserStaticData>(
+    std::vector<std::string>{
+      "program", "stat", "expr", "array", "variable", "funcParams", "funcDef", 
+      "funcArgs", "funcCall", "iterar", "condicion"
+    },
+    std::vector<std::string>{
+      "", "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'<'", "'>'", "'='", 
+      "','", "';'", "'['", "']'", "", "'{'", "'}'", "", "", "'importar'", 
+      "'funcion'", "'iterar'", "'mientras'", "'desde'", "'hasta'", "'en'", 
+      "", "", "", "", "'NADA'", "'retornar'"
+    },
+    std::vector<std::string>{
+      "", "LAPREN", "RPAREN", "ADD", "RESTA", "MUL", "DIV", "LESS", "GREATER", 
+      "EQUAL", "COMMA", "SEMI", "LBRACKET", "RBRACKET", "LINE_COMMENT", 
+      "START_BLOCK", "END_BLOCK", "STRING", "COMMENT", "IMPORT", "FUNC", 
+      "FOR", "WHILE", "DESDE", "HASTA", "EN", "COND", "ID", "NUM", "BOOL", 
+      "NADA", "RETURN", "WS"
+    }
+  );
+  static const int32_t serializedATNSegment[] = {
+  	4,1,32,149,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,1,0,5,0,24,8,0,10,0,12,0,27,9,0,1,0,1,
+  	0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,
+  	47,8,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,60,8,2,1,2,1,2,
+  	1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,5,2,73,8,2,10,2,12,2,76,9,2,1,3,1,
+  	3,1,3,1,3,5,3,82,8,3,10,3,12,3,85,9,3,1,3,1,3,1,4,1,4,1,4,1,4,1,5,1,5,
+  	1,5,5,5,96,8,5,10,5,12,5,99,9,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,5,6,108,8,
+  	6,10,6,12,6,111,9,6,1,6,1,6,1,7,1,7,1,7,5,7,118,8,7,10,7,12,7,121,9,7,
+  	1,8,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,3,9,136,8,9,3,9,138,
+  	8,9,1,10,1,10,1,10,1,10,5,10,144,8,10,10,10,12,10,147,9,10,1,10,0,1,4,
+  	11,0,2,4,6,8,10,12,14,16,18,20,0,3,1,0,3,6,1,0,7,8,1,0,27,28,160,0,25,
+  	1,0,0,0,2,46,1,0,0,0,4,59,1,0,0,0,6,77,1,0,0,0,8,88,1,0,0,0,10,92,1,0,
+  	0,0,12,100,1,0,0,0,14,114,1,0,0,0,16,122,1,0,0,0,18,137,1,0,0,0,20,139,
+  	1,0,0,0,22,24,3,2,1,0,23,22,1,0,0,0,24,27,1,0,0,0,25,23,1,0,0,0,25,26,
+  	1,0,0,0,26,28,1,0,0,0,27,25,1,0,0,0,28,29,5,0,0,1,29,1,1,0,0,0,30,31,
+  	3,8,4,0,31,32,5,11,0,0,32,47,1,0,0,0,33,34,3,4,2,0,34,35,5,11,0,0,35,
+  	47,1,0,0,0,36,47,3,12,6,0,37,38,3,18,9,0,38,39,5,16,0,0,39,47,1,0,0,0,
+  	40,41,3,20,10,0,41,42,5,16,0,0,42,47,1,0,0,0,43,44,3,6,3,0,44,45,5,11,
+  	0,0,45,47,1,0,0,0,46,30,1,0,0,0,46,33,1,0,0,0,46,36,1,0,0,0,46,37,1,0,
+  	0,0,46,40,1,0,0,0,46,43,1,0,0,0,47,3,1,0,0,0,48,49,6,2,-1,0,49,60,5,28,
+  	0,0,50,60,5,29,0,0,51,60,5,17,0,0,52,60,5,27,0,0,53,54,5,1,0,0,54,55,
+  	3,4,2,0,55,56,5,2,0,0,56,60,1,0,0,0,57,60,3,16,8,0,58,60,3,6,3,0,59,48,
+  	1,0,0,0,59,50,1,0,0,0,59,51,1,0,0,0,59,52,1,0,0,0,59,53,1,0,0,0,59,57,
+  	1,0,0,0,59,58,1,0,0,0,60,74,1,0,0,0,61,62,10,5,0,0,62,63,7,0,0,0,63,73,
+  	3,4,2,6,64,65,10,4,0,0,65,66,5,9,0,0,66,67,5,9,0,0,67,73,3,4,2,5,68,69,
+  	10,3,0,0,69,70,7,1,0,0,70,71,5,9,0,0,71,73,3,4,2,4,72,61,1,0,0,0,72,64,
+  	1,0,0,0,72,68,1,0,0,0,73,76,1,0,0,0,74,72,1,0,0,0,74,75,1,0,0,0,75,5,
+  	1,0,0,0,76,74,1,0,0,0,77,78,5,12,0,0,78,83,3,4,2,0,79,80,5,10,0,0,80,
+  	82,3,4,2,0,81,79,1,0,0,0,82,85,1,0,0,0,83,81,1,0,0,0,83,84,1,0,0,0,84,
+  	86,1,0,0,0,85,83,1,0,0,0,86,87,5,13,0,0,87,7,1,0,0,0,88,89,5,27,0,0,89,
+  	90,5,9,0,0,90,91,3,4,2,0,91,9,1,0,0,0,92,97,5,27,0,0,93,94,5,10,0,0,94,
+  	96,5,27,0,0,95,93,1,0,0,0,96,99,1,0,0,0,97,95,1,0,0,0,97,98,1,0,0,0,98,
+  	11,1,0,0,0,99,97,1,0,0,0,100,101,5,20,0,0,101,102,5,27,0,0,102,103,5,
+  	1,0,0,103,104,3,10,5,0,104,105,5,2,0,0,105,109,5,15,0,0,106,108,3,2,1,
+  	0,107,106,1,0,0,0,108,111,1,0,0,0,109,107,1,0,0,0,109,110,1,0,0,0,110,
+  	112,1,0,0,0,111,109,1,0,0,0,112,113,5,16,0,0,113,13,1,0,0,0,114,119,3,
+  	4,2,0,115,116,5,10,0,0,116,118,3,4,2,0,117,115,1,0,0,0,118,121,1,0,0,
+  	0,119,117,1,0,0,0,119,120,1,0,0,0,120,15,1,0,0,0,121,119,1,0,0,0,122,
+  	123,5,27,0,0,123,124,5,1,0,0,124,125,3,14,7,0,125,126,5,2,0,0,126,17,
+  	1,0,0,0,127,138,5,21,0,0,128,129,5,23,0,0,129,130,7,2,0,0,130,131,5,24,
+  	0,0,131,138,7,2,0,0,132,135,5,25,0,0,133,136,5,27,0,0,134,136,3,6,3,0,
+  	135,133,1,0,0,0,135,134,1,0,0,0,136,138,1,0,0,0,137,127,1,0,0,0,137,128,
+  	1,0,0,0,137,132,1,0,0,0,138,19,1,0,0,0,139,140,5,26,0,0,140,141,3,4,2,
+  	0,141,145,5,15,0,0,142,144,3,2,1,0,143,142,1,0,0,0,144,147,1,0,0,0,145,
+  	143,1,0,0,0,145,146,1,0,0,0,146,21,1,0,0,0,147,145,1,0,0,0,12,25,46,59,
+  	72,74,83,97,109,119,135,137,145
+  };
+  staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
+
+  antlr4::atn::ATNDeserializer deserializer;
+  staticData->atn = deserializer.deserialize(staticData->serializedATN);
+
+  const size_t count = staticData->atn->getNumberOfDecisions();
+  staticData->decisionToDFA.reserve(count);
+  for (size_t i = 0; i < count; i++) { 
+    staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
+  }
+  nyarparserParserStaticData = std::move(staticData);
+}
+
+}
+
+NyarParser::NyarParser(TokenStream *input) : NyarParser(input, antlr4::atn::ParserATNSimulatorOptions()) {}
+
+NyarParser::NyarParser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
+  NyarParser::initialize();
+  _interpreter = new atn::ParserATNSimulator(this, *nyarparserParserStaticData->atn, nyarparserParserStaticData->decisionToDFA, nyarparserParserStaticData->sharedContextCache, options);
 }
 
 NyarParser::~NyarParser() {
   delete _interpreter;
+}
+
+const atn::ATN& NyarParser::getATN() const {
+  return *nyarparserParserStaticData->atn;
 }
 
 std::string NyarParser::getGrammarFileName() const {
@@ -23,11 +152,15 @@ std::string NyarParser::getGrammarFileName() const {
 }
 
 const std::vector<std::string>& NyarParser::getRuleNames() const {
-  return _ruleNames;
+  return nyarparserParserStaticData->ruleNames;
 }
 
-dfa::Vocabulary& NyarParser::getVocabulary() const {
-  return _vocabulary;
+const dfa::Vocabulary& NyarParser::getVocabulary() const {
+  return nyarparserParserStaticData->vocabulary;
+}
+
+antlr4::atn::SerializedATNView NyarParser::getSerializedATN() const {
+  return nyarparserParserStaticData->serializedATN;
 }
 
 
@@ -54,7 +187,8 @@ size_t NyarParser::ProgramContext::getRuleIndex() const {
   return NyarParser::RuleProgram;
 }
 
-antlrcpp::Any NyarParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitProgram(this);
   else
@@ -79,17 +213,7 @@ NyarParser::ProgramContext* NyarParser::program() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << NyarParser::LAPREN)
-      | (1ULL << NyarParser::LBRACKET)
-      | (1ULL << NyarParser::STRING)
-      | (1ULL << NyarParser::FUNC)
-      | (1ULL << NyarParser::FOR)
-      | (1ULL << NyarParser::DESDE)
-      | (1ULL << NyarParser::EN)
-      | (1ULL << NyarParser::COND)
-      | (1ULL << NyarParser::ID)
-      | (1ULL << NyarParser::NUM)
-      | (1ULL << NyarParser::BOOL))) != 0)) {
+      ((1ULL << _la) & 1051856898) != 0)) {
       setState(22);
       stat();
       setState(27);
@@ -152,7 +276,8 @@ size_t NyarParser::StatContext::getRuleIndex() const {
   return NyarParser::RuleStat;
 }
 
-antlrcpp::Any NyarParser::StatContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::StatContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitStat(this);
   else
@@ -263,7 +388,8 @@ tree::TerminalNode* NyarParser::NumberContext::NUM() {
 
 NyarParser::NumberContext::NumberContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::NumberContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::NumberContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitNumber(this);
   else
@@ -293,7 +419,8 @@ tree::TerminalNode* NyarParser::EqExpContext::GREATER() {
 
 NyarParser::EqExpContext::EqExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::EqExpContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::EqExpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitEqExp(this);
   else
@@ -307,7 +434,8 @@ tree::TerminalNode* NyarParser::BooleanContext::BOOL() {
 
 NyarParser::BooleanContext::BooleanContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::BooleanContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::BooleanContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitBoolean(this);
   else
@@ -341,7 +469,8 @@ tree::TerminalNode* NyarParser::AritExpContext::RESTA() {
 
 NyarParser::AritExpContext::AritExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::AritExpContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::AritExpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitAritExp(this);
   else
@@ -355,7 +484,8 @@ tree::TerminalNode* NyarParser::StringContext::STRING() {
 
 NyarParser::StringContext::StringContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::StringContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::StringContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitString(this);
   else
@@ -377,7 +507,8 @@ tree::TerminalNode* NyarParser::ParenExpContext::RPAREN() {
 
 NyarParser::ParenExpContext::ParenExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::ParenExpContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::ParenExpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitParenExp(this);
   else
@@ -391,7 +522,8 @@ NyarParser::FuncCallContext* NyarParser::FCallContext::funcCall() {
 
 NyarParser::FCallContext::FCallContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::FCallContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::FCallContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitFCall(this);
   else
@@ -405,7 +537,8 @@ tree::TerminalNode* NyarParser::IdContext::ID() {
 
 NyarParser::IdContext::IdContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::IdContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::IdContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitId(this);
   else
@@ -419,7 +552,8 @@ NyarParser::ArrayContext* NyarParser::ArregloContext::array() {
 
 NyarParser::ArregloContext::ArregloContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::ArregloContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::ArregloContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitArreglo(this);
   else
@@ -445,7 +579,8 @@ tree::TerminalNode* NyarParser::EqEqExpContext::EQUAL(size_t i) {
 
 NyarParser::EqEqExpContext::EqEqExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
-antlrcpp::Any NyarParser::EqEqExpContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::EqEqExpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitEqEqExp(this);
   else
@@ -571,14 +706,11 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
 
           if (!(precpred(_ctx, 5))) throw FailedPredicateException(this, "precpred(_ctx, 5)");
           setState(62);
-          dynamic_cast<AritExpContext *>(_localctx)->op = _input->LT(1);
+          antlrcpp::downCast<AritExpContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
           if (!((((_la & ~ 0x3fULL) == 0) &&
-            ((1ULL << _la) & ((1ULL << NyarParser::ADD)
-            | (1ULL << NyarParser::RESTA)
-            | (1ULL << NyarParser::MUL)
-            | (1ULL << NyarParser::DIV))) != 0))) {
-            dynamic_cast<AritExpContext *>(_localctx)->op = _errHandler->recoverInline(this);
+            ((1ULL << _la) & 120) != 0))) {
+            antlrcpp::downCast<AritExpContext *>(_localctx)->op = _errHandler->recoverInline(this);
           }
           else {
             _errHandler->reportMatch(this);
@@ -597,7 +729,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
 
           if (!(precpred(_ctx, 4))) throw FailedPredicateException(this, "precpred(_ctx, 4)");
           setState(65);
-          dynamic_cast<EqEqExpContext *>(_localctx)->op = match(NyarParser::EQUAL);
+          antlrcpp::downCast<EqEqExpContext *>(_localctx)->op = match(NyarParser::EQUAL);
           setState(66);
           match(NyarParser::EQUAL);
           setState(67);
@@ -613,12 +745,12 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
 
           if (!(precpred(_ctx, 3))) throw FailedPredicateException(this, "precpred(_ctx, 3)");
           setState(69);
-          dynamic_cast<EqExpContext *>(_localctx)->op = _input->LT(1);
+          antlrcpp::downCast<EqExpContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
           if (!(_la == NyarParser::LESS
 
           || _la == NyarParser::GREATER)) {
-            dynamic_cast<EqExpContext *>(_localctx)->op = _errHandler->recoverInline(this);
+            antlrcpp::downCast<EqExpContext *>(_localctx)->op = _errHandler->recoverInline(this);
           }
           else {
             _errHandler->reportMatch(this);
@@ -683,7 +815,8 @@ size_t NyarParser::ArrayContext::getRuleIndex() const {
   return NyarParser::RuleArray;
 }
 
-antlrcpp::Any NyarParser::ArrayContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::ArrayContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitArray(this);
   else
@@ -756,7 +889,8 @@ size_t NyarParser::VariableContext::getRuleIndex() const {
   return NyarParser::RuleVariable;
 }
 
-antlrcpp::Any NyarParser::VariableContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::VariableContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitVariable(this);
   else
@@ -820,7 +954,8 @@ size_t NyarParser::FuncParamsContext::getRuleIndex() const {
   return NyarParser::RuleFuncParams;
 }
 
-antlrcpp::Any NyarParser::FuncParamsContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::FuncParamsContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitFuncParams(this);
   else
@@ -913,7 +1048,8 @@ size_t NyarParser::FuncDefContext::getRuleIndex() const {
   return NyarParser::RuleFuncDef;
 }
 
-antlrcpp::Any NyarParser::FuncDefContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::FuncDefContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitFuncDef(this);
   else
@@ -950,17 +1086,7 @@ NyarParser::FuncDefContext* NyarParser::funcDef() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << NyarParser::LAPREN)
-      | (1ULL << NyarParser::LBRACKET)
-      | (1ULL << NyarParser::STRING)
-      | (1ULL << NyarParser::FUNC)
-      | (1ULL << NyarParser::FOR)
-      | (1ULL << NyarParser::DESDE)
-      | (1ULL << NyarParser::EN)
-      | (1ULL << NyarParser::COND)
-      | (1ULL << NyarParser::ID)
-      | (1ULL << NyarParser::NUM)
-      | (1ULL << NyarParser::BOOL))) != 0)) {
+      ((1ULL << _la) & 1051856898) != 0)) {
       setState(106);
       stat();
       setState(111);
@@ -1007,7 +1133,8 @@ size_t NyarParser::FuncArgsContext::getRuleIndex() const {
   return NyarParser::RuleFuncArgs;
 }
 
-antlrcpp::Any NyarParser::FuncArgsContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::FuncArgsContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitFuncArgs(this);
   else
@@ -1080,7 +1207,8 @@ size_t NyarParser::FuncCallContext::getRuleIndex() const {
   return NyarParser::RuleFuncCall;
 }
 
-antlrcpp::Any NyarParser::FuncCallContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::FuncCallContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitFuncCall(this);
   else
@@ -1166,7 +1294,8 @@ size_t NyarParser::IterarContext::getRuleIndex() const {
   return NyarParser::RuleIterar;
 }
 
-antlrcpp::Any NyarParser::IterarContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::IterarContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitIterar(this);
   else
@@ -1201,12 +1330,12 @@ NyarParser::IterarContext* NyarParser::iterar() {
         setState(128);
         match(NyarParser::DESDE);
         setState(129);
-        dynamic_cast<IterarContext *>(_localctx)->i = _input->LT(1);
+        antlrcpp::downCast<IterarContext *>(_localctx)->i = _input->LT(1);
         _la = _input->LA(1);
         if (!(_la == NyarParser::ID
 
         || _la == NyarParser::NUM)) {
-          dynamic_cast<IterarContext *>(_localctx)->i = _errHandler->recoverInline(this);
+          antlrcpp::downCast<IterarContext *>(_localctx)->i = _errHandler->recoverInline(this);
         }
         else {
           _errHandler->reportMatch(this);
@@ -1215,12 +1344,12 @@ NyarParser::IterarContext* NyarParser::iterar() {
         setState(130);
         match(NyarParser::HASTA);
         setState(131);
-        dynamic_cast<IterarContext *>(_localctx)->f = _input->LT(1);
+        antlrcpp::downCast<IterarContext *>(_localctx)->f = _input->LT(1);
         _la = _input->LA(1);
         if (!(_la == NyarParser::ID
 
         || _la == NyarParser::NUM)) {
-          dynamic_cast<IterarContext *>(_localctx)->f = _errHandler->recoverInline(this);
+          antlrcpp::downCast<IterarContext *>(_localctx)->f = _errHandler->recoverInline(this);
         }
         else {
           _errHandler->reportMatch(this);
@@ -1299,7 +1428,8 @@ size_t NyarParser::CondicionContext::getRuleIndex() const {
   return NyarParser::RuleCondicion;
 }
 
-antlrcpp::Any NyarParser::CondicionContext::accept(tree::ParseTreeVisitor *visitor) {
+
+std::any NyarParser::CondicionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
     return parserVisitor->visitCondicion(this);
   else
@@ -1330,17 +1460,7 @@ NyarParser::CondicionContext* NyarParser::condicion() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << NyarParser::LAPREN)
-      | (1ULL << NyarParser::LBRACKET)
-      | (1ULL << NyarParser::STRING)
-      | (1ULL << NyarParser::FUNC)
-      | (1ULL << NyarParser::FOR)
-      | (1ULL << NyarParser::DESDE)
-      | (1ULL << NyarParser::EN)
-      | (1ULL << NyarParser::COND)
-      | (1ULL << NyarParser::ID)
-      | (1ULL << NyarParser::NUM)
-      | (1ULL << NyarParser::BOOL))) != 0)) {
+      ((1ULL << _la) & 1051856898) != 0)) {
       setState(142);
       stat();
       setState(147);
@@ -1360,7 +1480,7 @@ NyarParser::CondicionContext* NyarParser::condicion() {
 
 bool NyarParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
-    case 2: return exprSempred(dynamic_cast<ExprContext *>(context), predicateIndex);
+    case 2: return exprSempred(antlrcpp::downCast<ExprContext *>(context), predicateIndex);
 
   default:
     break;
@@ -1380,171 +1500,10 @@ bool NyarParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) {
   return true;
 }
 
-// Static vars and initialization.
-std::vector<dfa::DFA> NyarParser::_decisionToDFA;
-atn::PredictionContextCache NyarParser::_sharedContextCache;
-
-// We own the ATN which in turn owns the ATN states.
-atn::ATN NyarParser::_atn;
-std::vector<uint16_t> NyarParser::_serializedATN;
-
-std::vector<std::string> NyarParser::_ruleNames = {
-  "program", "stat", "expr", "array", "variable", "funcParams", "funcDef", 
-  "funcArgs", "funcCall", "iterar", "condicion"
-};
-
-std::vector<std::string> NyarParser::_literalNames = {
-  "", "'('", "')'", "'+'", "'-'", "'*'", "'/'", "'<'", "'>'", "'='", "','", 
-  "';'", "'['", "']'", "", "'{'", "'}'", "", "", "'importar'", "'funcion'", 
-  "'iterar'", "'mientras'", "'desde'", "'hasta'", "'en'", "", "", "", "", 
-  "'NADA'", "'retornar'"
-};
-
-std::vector<std::string> NyarParser::_symbolicNames = {
-  "", "LAPREN", "RPAREN", "ADD", "RESTA", "MUL", "DIV", "LESS", "GREATER", 
-  "EQUAL", "COMMA", "SEMI", "LBRACKET", "RBRACKET", "LINE_COMMENT", "START_BLOCK", 
-  "END_BLOCK", "STRING", "COMMENT", "IMPORT", "FUNC", "FOR", "WHILE", "DESDE", 
-  "HASTA", "EN", "COND", "ID", "NUM", "BOOL", "NADA", "RETURN", "WS"
-};
-
-dfa::Vocabulary NyarParser::_vocabulary(_literalNames, _symbolicNames);
-
-std::vector<std::string> NyarParser::_tokenNames;
-
-NyarParser::Initializer::Initializer() {
-	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
-		std::string name = _vocabulary.getLiteralName(i);
-		if (name.empty()) {
-			name = _vocabulary.getSymbolicName(i);
-		}
-
-		if (name.empty()) {
-			_tokenNames.push_back("<INVALID>");
-		} else {
-      _tokenNames.push_back(name);
-    }
-	}
-
-  static const uint16_t serializedATNSegment0[] = {
-    0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-       0x3, 0x22, 0x97, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 
-       0x9, 0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 
-       0x7, 0x4, 0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x4, 0xa, 0x9, 0xa, 
-       0x4, 0xb, 0x9, 0xb, 0x4, 0xc, 0x9, 0xc, 0x3, 0x2, 0x7, 0x2, 0x1a, 
-       0xa, 0x2, 0xc, 0x2, 0xe, 0x2, 0x1d, 0xb, 0x2, 0x3, 0x2, 0x3, 0x2, 
-       0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
-       0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
-       0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x5, 0x3, 0x31, 0xa, 0x3, 0x3, 0x4, 
-       0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 
-       0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x5, 0x4, 0x3e, 0xa, 0x4, 0x3, 
-       0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 
-       0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x7, 0x4, 0x4b, 0xa, 0x4, 
-       0xc, 0x4, 0xe, 0x4, 0x4e, 0xb, 0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 
-       0x3, 0x5, 0x7, 0x5, 0x54, 0xa, 0x5, 0xc, 0x5, 0xe, 0x5, 0x57, 0xb, 
-       0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 
-       0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x7, 0x7, 0x62, 0xa, 0x7, 0xc, 0x7, 
-       0xe, 0x7, 0x65, 0xb, 0x7, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 
-       0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x7, 0x8, 0x6e, 0xa, 0x8, 0xc, 0x8, 
-       0xe, 0x8, 0x71, 0xb, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x9, 0x3, 0x9, 
-       0x3, 0x9, 0x7, 0x9, 0x78, 0xa, 0x9, 0xc, 0x9, 0xe, 0x9, 0x7b, 0xb, 
-       0x9, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xb, 
-       0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 
-       0xb, 0x5, 0xb, 0x8a, 0xa, 0xb, 0x5, 0xb, 0x8c, 0xa, 0xb, 0x3, 0xc, 
-       0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x7, 0xc, 0x92, 0xa, 0xc, 0xc, 0xc, 
-       0xe, 0xc, 0x95, 0xb, 0xc, 0x3, 0xc, 0x2, 0x3, 0x6, 0xd, 0x2, 0x4, 
-       0x6, 0x8, 0xa, 0xc, 0xe, 0x10, 0x12, 0x14, 0x16, 0x2, 0x5, 0x3, 0x2, 
-       0x5, 0x8, 0x3, 0x2, 0x9, 0xa, 0x3, 0x2, 0x1d, 0x1e, 0x2, 0xa2, 0x2, 
-       0x1b, 0x3, 0x2, 0x2, 0x2, 0x4, 0x30, 0x3, 0x2, 0x2, 0x2, 0x6, 0x3d, 
-       0x3, 0x2, 0x2, 0x2, 0x8, 0x4f, 0x3, 0x2, 0x2, 0x2, 0xa, 0x5a, 0x3, 
-       0x2, 0x2, 0x2, 0xc, 0x5e, 0x3, 0x2, 0x2, 0x2, 0xe, 0x66, 0x3, 0x2, 
-       0x2, 0x2, 0x10, 0x74, 0x3, 0x2, 0x2, 0x2, 0x12, 0x7c, 0x3, 0x2, 0x2, 
-       0x2, 0x14, 0x8b, 0x3, 0x2, 0x2, 0x2, 0x16, 0x8d, 0x3, 0x2, 0x2, 0x2, 
-       0x18, 0x1a, 0x5, 0x4, 0x3, 0x2, 0x19, 0x18, 0x3, 0x2, 0x2, 0x2, 0x1a, 
-       0x1d, 0x3, 0x2, 0x2, 0x2, 0x1b, 0x19, 0x3, 0x2, 0x2, 0x2, 0x1b, 0x1c, 
-       0x3, 0x2, 0x2, 0x2, 0x1c, 0x1e, 0x3, 0x2, 0x2, 0x2, 0x1d, 0x1b, 0x3, 
-       0x2, 0x2, 0x2, 0x1e, 0x1f, 0x7, 0x2, 0x2, 0x3, 0x1f, 0x3, 0x3, 0x2, 
-       0x2, 0x2, 0x20, 0x21, 0x5, 0xa, 0x6, 0x2, 0x21, 0x22, 0x7, 0xd, 0x2, 
-       0x2, 0x22, 0x31, 0x3, 0x2, 0x2, 0x2, 0x23, 0x24, 0x5, 0x6, 0x4, 0x2, 
-       0x24, 0x25, 0x7, 0xd, 0x2, 0x2, 0x25, 0x31, 0x3, 0x2, 0x2, 0x2, 0x26, 
-       0x31, 0x5, 0xe, 0x8, 0x2, 0x27, 0x28, 0x5, 0x14, 0xb, 0x2, 0x28, 
-       0x29, 0x7, 0x12, 0x2, 0x2, 0x29, 0x31, 0x3, 0x2, 0x2, 0x2, 0x2a, 
-       0x2b, 0x5, 0x16, 0xc, 0x2, 0x2b, 0x2c, 0x7, 0x12, 0x2, 0x2, 0x2c, 
-       0x31, 0x3, 0x2, 0x2, 0x2, 0x2d, 0x2e, 0x5, 0x8, 0x5, 0x2, 0x2e, 0x2f, 
-       0x7, 0xd, 0x2, 0x2, 0x2f, 0x31, 0x3, 0x2, 0x2, 0x2, 0x30, 0x20, 0x3, 
-       0x2, 0x2, 0x2, 0x30, 0x23, 0x3, 0x2, 0x2, 0x2, 0x30, 0x26, 0x3, 0x2, 
-       0x2, 0x2, 0x30, 0x27, 0x3, 0x2, 0x2, 0x2, 0x30, 0x2a, 0x3, 0x2, 0x2, 
-       0x2, 0x30, 0x2d, 0x3, 0x2, 0x2, 0x2, 0x31, 0x5, 0x3, 0x2, 0x2, 0x2, 
-       0x32, 0x33, 0x8, 0x4, 0x1, 0x2, 0x33, 0x3e, 0x7, 0x1e, 0x2, 0x2, 
-       0x34, 0x3e, 0x7, 0x1f, 0x2, 0x2, 0x35, 0x3e, 0x7, 0x13, 0x2, 0x2, 
-       0x36, 0x3e, 0x7, 0x1d, 0x2, 0x2, 0x37, 0x38, 0x7, 0x3, 0x2, 0x2, 
-       0x38, 0x39, 0x5, 0x6, 0x4, 0x2, 0x39, 0x3a, 0x7, 0x4, 0x2, 0x2, 0x3a, 
-       0x3e, 0x3, 0x2, 0x2, 0x2, 0x3b, 0x3e, 0x5, 0x12, 0xa, 0x2, 0x3c, 
-       0x3e, 0x5, 0x8, 0x5, 0x2, 0x3d, 0x32, 0x3, 0x2, 0x2, 0x2, 0x3d, 0x34, 
-       0x3, 0x2, 0x2, 0x2, 0x3d, 0x35, 0x3, 0x2, 0x2, 0x2, 0x3d, 0x36, 0x3, 
-       0x2, 0x2, 0x2, 0x3d, 0x37, 0x3, 0x2, 0x2, 0x2, 0x3d, 0x3b, 0x3, 0x2, 
-       0x2, 0x2, 0x3d, 0x3c, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x4c, 0x3, 0x2, 0x2, 
-       0x2, 0x3f, 0x40, 0xc, 0x7, 0x2, 0x2, 0x40, 0x41, 0x9, 0x2, 0x2, 0x2, 
-       0x41, 0x4b, 0x5, 0x6, 0x4, 0x8, 0x42, 0x43, 0xc, 0x6, 0x2, 0x2, 0x43, 
-       0x44, 0x7, 0xb, 0x2, 0x2, 0x44, 0x45, 0x7, 0xb, 0x2, 0x2, 0x45, 0x4b, 
-       0x5, 0x6, 0x4, 0x7, 0x46, 0x47, 0xc, 0x5, 0x2, 0x2, 0x47, 0x48, 0x9, 
-       0x3, 0x2, 0x2, 0x48, 0x49, 0x7, 0xb, 0x2, 0x2, 0x49, 0x4b, 0x5, 0x6, 
-       0x4, 0x6, 0x4a, 0x3f, 0x3, 0x2, 0x2, 0x2, 0x4a, 0x42, 0x3, 0x2, 0x2, 
-       0x2, 0x4a, 0x46, 0x3, 0x2, 0x2, 0x2, 0x4b, 0x4e, 0x3, 0x2, 0x2, 0x2, 
-       0x4c, 0x4a, 0x3, 0x2, 0x2, 0x2, 0x4c, 0x4d, 0x3, 0x2, 0x2, 0x2, 0x4d, 
-       0x7, 0x3, 0x2, 0x2, 0x2, 0x4e, 0x4c, 0x3, 0x2, 0x2, 0x2, 0x4f, 0x50, 
-       0x7, 0xe, 0x2, 0x2, 0x50, 0x55, 0x5, 0x6, 0x4, 0x2, 0x51, 0x52, 0x7, 
-       0xc, 0x2, 0x2, 0x52, 0x54, 0x5, 0x6, 0x4, 0x2, 0x53, 0x51, 0x3, 0x2, 
-       0x2, 0x2, 0x54, 0x57, 0x3, 0x2, 0x2, 0x2, 0x55, 0x53, 0x3, 0x2, 0x2, 
-       0x2, 0x55, 0x56, 0x3, 0x2, 0x2, 0x2, 0x56, 0x58, 0x3, 0x2, 0x2, 0x2, 
-       0x57, 0x55, 0x3, 0x2, 0x2, 0x2, 0x58, 0x59, 0x7, 0xf, 0x2, 0x2, 0x59, 
-       0x9, 0x3, 0x2, 0x2, 0x2, 0x5a, 0x5b, 0x7, 0x1d, 0x2, 0x2, 0x5b, 0x5c, 
-       0x7, 0xb, 0x2, 0x2, 0x5c, 0x5d, 0x5, 0x6, 0x4, 0x2, 0x5d, 0xb, 0x3, 
-       0x2, 0x2, 0x2, 0x5e, 0x63, 0x7, 0x1d, 0x2, 0x2, 0x5f, 0x60, 0x7, 
-       0xc, 0x2, 0x2, 0x60, 0x62, 0x7, 0x1d, 0x2, 0x2, 0x61, 0x5f, 0x3, 
-       0x2, 0x2, 0x2, 0x62, 0x65, 0x3, 0x2, 0x2, 0x2, 0x63, 0x61, 0x3, 0x2, 
-       0x2, 0x2, 0x63, 0x64, 0x3, 0x2, 0x2, 0x2, 0x64, 0xd, 0x3, 0x2, 0x2, 
-       0x2, 0x65, 0x63, 0x3, 0x2, 0x2, 0x2, 0x66, 0x67, 0x7, 0x16, 0x2, 
-       0x2, 0x67, 0x68, 0x7, 0x1d, 0x2, 0x2, 0x68, 0x69, 0x7, 0x3, 0x2, 
-       0x2, 0x69, 0x6a, 0x5, 0xc, 0x7, 0x2, 0x6a, 0x6b, 0x7, 0x4, 0x2, 0x2, 
-       0x6b, 0x6f, 0x7, 0x11, 0x2, 0x2, 0x6c, 0x6e, 0x5, 0x4, 0x3, 0x2, 
-       0x6d, 0x6c, 0x3, 0x2, 0x2, 0x2, 0x6e, 0x71, 0x3, 0x2, 0x2, 0x2, 0x6f, 
-       0x6d, 0x3, 0x2, 0x2, 0x2, 0x6f, 0x70, 0x3, 0x2, 0x2, 0x2, 0x70, 0x72, 
-       0x3, 0x2, 0x2, 0x2, 0x71, 0x6f, 0x3, 0x2, 0x2, 0x2, 0x72, 0x73, 0x7, 
-       0x12, 0x2, 0x2, 0x73, 0xf, 0x3, 0x2, 0x2, 0x2, 0x74, 0x79, 0x5, 0x6, 
-       0x4, 0x2, 0x75, 0x76, 0x7, 0xc, 0x2, 0x2, 0x76, 0x78, 0x5, 0x6, 0x4, 
-       0x2, 0x77, 0x75, 0x3, 0x2, 0x2, 0x2, 0x78, 0x7b, 0x3, 0x2, 0x2, 0x2, 
-       0x79, 0x77, 0x3, 0x2, 0x2, 0x2, 0x79, 0x7a, 0x3, 0x2, 0x2, 0x2, 0x7a, 
-       0x11, 0x3, 0x2, 0x2, 0x2, 0x7b, 0x79, 0x3, 0x2, 0x2, 0x2, 0x7c, 0x7d, 
-       0x7, 0x1d, 0x2, 0x2, 0x7d, 0x7e, 0x7, 0x3, 0x2, 0x2, 0x7e, 0x7f, 
-       0x5, 0x10, 0x9, 0x2, 0x7f, 0x80, 0x7, 0x4, 0x2, 0x2, 0x80, 0x13, 
-       0x3, 0x2, 0x2, 0x2, 0x81, 0x8c, 0x7, 0x17, 0x2, 0x2, 0x82, 0x83, 
-       0x7, 0x19, 0x2, 0x2, 0x83, 0x84, 0x9, 0x4, 0x2, 0x2, 0x84, 0x85, 
-       0x7, 0x1a, 0x2, 0x2, 0x85, 0x8c, 0x9, 0x4, 0x2, 0x2, 0x86, 0x89, 
-       0x7, 0x1b, 0x2, 0x2, 0x87, 0x8a, 0x7, 0x1d, 0x2, 0x2, 0x88, 0x8a, 
-       0x5, 0x8, 0x5, 0x2, 0x89, 0x87, 0x3, 0x2, 0x2, 0x2, 0x89, 0x88, 0x3, 
-       0x2, 0x2, 0x2, 0x8a, 0x8c, 0x3, 0x2, 0x2, 0x2, 0x8b, 0x81, 0x3, 0x2, 
-       0x2, 0x2, 0x8b, 0x82, 0x3, 0x2, 0x2, 0x2, 0x8b, 0x86, 0x3, 0x2, 0x2, 
-       0x2, 0x8c, 0x15, 0x3, 0x2, 0x2, 0x2, 0x8d, 0x8e, 0x7, 0x1c, 0x2, 
-       0x2, 0x8e, 0x8f, 0x5, 0x6, 0x4, 0x2, 0x8f, 0x93, 0x7, 0x11, 0x2, 
-       0x2, 0x90, 0x92, 0x5, 0x4, 0x3, 0x2, 0x91, 0x90, 0x3, 0x2, 0x2, 0x2, 
-       0x92, 0x95, 0x3, 0x2, 0x2, 0x2, 0x93, 0x91, 0x3, 0x2, 0x2, 0x2, 0x93, 
-       0x94, 0x3, 0x2, 0x2, 0x2, 0x94, 0x17, 0x3, 0x2, 0x2, 0x2, 0x95, 0x93, 
-       0x3, 0x2, 0x2, 0x2, 0xe, 0x1b, 0x30, 0x3d, 0x4a, 0x4c, 0x55, 0x63, 
-       0x6f, 0x79, 0x89, 0x8b, 0x93, 
-  };
-
-  _serializedATN.insert(_serializedATN.end(), serializedATNSegment0,
-    serializedATNSegment0 + sizeof(serializedATNSegment0) / sizeof(serializedATNSegment0[0]));
-
-
-  atn::ATNDeserializer deserializer;
-  _atn = deserializer.deserialize(_serializedATN);
-
-  size_t count = _atn.getNumberOfDecisions();
-  _decisionToDFA.reserve(count);
-  for (size_t i = 0; i < count; i++) { 
-    _decisionToDFA.emplace_back(_atn.getDecisionState(i), i);
-  }
+void NyarParser::initialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  nyarparserParserInitialize();
+#else
+  ::antlr4::internal::call_once(nyarparserParserOnceFlag, nyarparserParserInitialize);
+#endif
 }
-
-NyarParser::Initializer NyarParser::_init;
