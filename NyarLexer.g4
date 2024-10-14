@@ -9,6 +9,8 @@ DIV     : '/';
 LESS    : '<';
 GREATER : '>';
 EQUAL   : '=';
+NEQ     : '!=';
+EQEQ    : '==';
 COMMA   : ',';
 SEMI    : ';';
 LBRACKET: '[';

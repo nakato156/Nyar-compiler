@@ -18,14 +18,15 @@ expr
     | ID        #Id
     | LAPREN expr RPAREN #parenExp
     | expr op=(MUL|DIV|ADD|RESTA) expr #aritExp
-    | expr op=EQUAL EQUAL expr #eqEqExp
+    | expr op=EQEQ expr #eqEqExp
     | expr op=(LESS | GREATER) EQUAL  expr #eqExp
+    | expr op=NEQ expr #neqExp
     | funcCall  #fCall
     | array     #arreglo
     ;
 
 array
-    : LBRACKET expr (COMMA expr)* RBRACKET
+    : LBRACKET (expr (COMMA expr)*)?  RBRACKET
     ;
 
 variable
@@ -56,5 +57,5 @@ iterar
     ;
 
 condicion 
-    : COND expr START_BLOCK stat* 
+    : COND expr START_BLOCK stat* END_BLOCK (COND START_BLOCK stat* END_BLOCK)?
     ;
