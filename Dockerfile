@@ -15,16 +15,16 @@ WORKDIR /TrabajoFinal/llvm-project/build
 RUN make install
 RUN make clean
 
-#Install AUR
-ENV AUR_USER=ab
-WORKDIR /AUR
-RUN git clone https://github.com/greyltc-org/docker-archlinux-aur/
-WORKDIR /AUR/docker-archlinux-aur
-RUN chmod +x add-aur.sh
-RUN ./add-aur.sh "${AUR_USER}"
+##Install AUR
+#ENV AUR_USER=ab
+#WORKDIR /AUR
+#RUN git clone https://github.com/greyltc-org/docker-archlinux-aur/
+#WORKDIR /AUR/docker-archlinux-aur
+#RUN chmod +x add-aur.sh
+#RUN ./add-aur.sh "${AUR_USER}"
 
-#Install swift
-RUN aur-install swift-bin
+##Install swift
+#RUN aur-install swift-bin
 
 #Make the source file
 ENV ANTLRRUNTIMEH=/usr/include/antlr4-runtime
@@ -45,9 +45,9 @@ COPY  CMakeLists.txt /TrabajoFinal/Github/
 COPY ./compile.sh /TrabajoFinal/Github/
 COPY ./run.sh /TrabajoFinal/Github/
 
-COPY ./swift /TrabajoFinal/Github/swift
+#COPY ./swift /TrabajoFinal/Github/swift
 
-WORKDIR /TrabajoFinal/Github/
+#WORKDIR /TrabajoFinal/Github/
 
 RUN chmod +x ./compile.sh
 RUN chmod +x ./run.sh
