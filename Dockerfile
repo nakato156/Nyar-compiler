@@ -22,16 +22,7 @@ RUN git clone https://github.com/greyltc-org/docker-archlinux-aur/
 WORKDIR /AUR/docker-archlinux-aur
 RUN chmod +x add-aur.sh
 RUN ./add-aur.sh "${AUR_USER}"
-#Install AUR
-ENV AUR_USER=ab
-WORKDIR /AUR
-RUN git clone https://github.com/greyltc-org/docker-archlinux-aur/
-WORKDIR /AUR/docker-archlinux-aur
-RUN chmod +x add-aur.sh
-RUN ./add-aur.sh "${AUR_USER}"
 
-#Install swift
-RUN aur-install swift-bin
 #Install swift
 RUN aur-install swift-bin
 
@@ -58,7 +49,7 @@ COPY BytecodeRun.sh /TrabajoFinal/Github/
 COPY VMRun.sh /TrabajoFinal/Github/
 COPY test.ae /TrabajoFinal/Github/
 
-#WORKDIR /TrabajoFinal/Github/
+WORKDIR /TrabajoFinal/Github/
 
 #Make chmod files
 RUN chmod +x ./GrammarCompile.sh
