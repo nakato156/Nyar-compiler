@@ -4,12 +4,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "Swift-Backend",
+    name: "Compiler-Backend",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "Swift-Backend",
-            targets: ["Swift-Backend"]),
+        .executable(
+            name: "Compiler",
+            targets: ["Compiler"]),
     ],
     dependencies: [
         .package(url: "https://github.com/antlr/antlr4.git", from: "4.13.2")
@@ -23,8 +23,8 @@ let package = Package(
             providers: [
                 .brew(["llvm"])
             ]),
-        .target(
-            name: "Swift-Backend",
+        .executableTarget(
+            name: "Compiler",
             dependencies: [
                 "llvm", 
                 .product(name:"Antlr4", package:"Antlr4")
