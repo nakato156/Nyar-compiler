@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Swift-Backend}",
+            "name": "Debug Compiler",
+            "program": "${workspaceFolder:Swift-Backend}/.build/debug/Compiler",
+            "preLaunchTask": "swift: Build Debug Compiler"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Swift-Backend}",
+            "name": "Release Compiler",
+            "program": "${workspaceFolder:Swift-Backend}/.build/release/Compiler",
+            "preLaunchTask": "swift: Build Release Compiler"
+        }
+    ]
+}
