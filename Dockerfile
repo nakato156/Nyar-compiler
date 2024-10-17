@@ -58,7 +58,7 @@ COPY BytecodeRun.sh /TrabajoFinal/Github/
 COPY VMRun.sh /TrabajoFinal/Github/
 COPY test.ae /TrabajoFinal/Github/
 
-WORKDIR /TrabajoFinal/Github/
+#WORKDIR /TrabajoFinal/Github/
 
 #Make chmod files
 RUN chmod +x ./GrammarCompile.sh
