@@ -25,6 +25,7 @@ RUN ./add-aur.sh "${AUR_USER}"
 
 #Install swift
 RUN aur-install swift-bin
+RUN pacman -S libc++ --noconfirm
 
 #Make the source file
 ENV ANTLRRUNTIMEH=/usr/include/antlr4-runtime
@@ -35,27 +36,4 @@ ENV CLASSPATH=.:/usr/share/java/antlr-4.13.2-complete.jar
 ENV antlr4='java org.antlr.v4.Tool'
 ENV grun='java org.antlr.v4.gui.TestRig'
 
-#Moving Folders
-COPY  ./ByteCode /TrabajoFinal/Github/ByteCode/
-COPY  ./Grammar /TrabajoFinal/Github/Grammar/
-COPY  ./VM /TrabajoFinal/Github/VM/
-
-#Moving CMakeFiles
-COPY CMakeLists.txt /TrabajoFinal/Github/
-
-#Moving Shell Scrips
-COPY GrammarCompile.sh /TrabajoFinal/Github/
-COPY BytecodeRun.sh /TrabajoFinal/Github/
-COPY VMRun.sh /TrabajoFinal/Github/
-COPY test.ae /TrabajoFinal/Github/
-
 WORKDIR /TrabajoFinal/Github/
-
-#Make chmod files
-RUN chmod +x ./GrammarCompile.sh
-RUN chmod +x ./BytecodeRun.sh
-RUN chmod +x ./VMRun.sh
-
-RUN GrammarCompile.sh
-RUN BytecodeRun.sh
-RUN VMRun.sh

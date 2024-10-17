@@ -1,4 +1,6 @@
 #!/bin/sh
 
-swift build
+cd VM
+
+swift utils/make-pkgconfig.swift
 swift run
