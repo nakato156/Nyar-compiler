@@ -29,12 +29,8 @@ let package = Package(
                 "llvm", 
                 .product(name:"Antlr4", package:"Antlr4")
                 ],
-            publicHeadersPath: "include",
-            cxxSettings: [
-                .define("USE_CLANG"),
-            ],
-            linkerSettings: [
-                .linkedLibrary("libc++")
+            swiftSettings: [
+                .interoperabilityMode(.Cxx)
             ]
         ),
     ],
