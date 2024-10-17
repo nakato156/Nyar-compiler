@@ -1,0 +1,15 @@
+{
+  "originHash" : "202ad78216d2afabdcda40f30826ad6ffabd32650fed70565c2dd20b973d969b",
+  "pins" : [
+    {
+      "identity" : "antlr4",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/antlr/antlr4.git",
+      "state" : {
+        "revision" : "cc82115a4e7f53d71d9d905caa2c2dfa4da58899",
+        "version" : "4.13.2"
+      }
+    }
+  ],
+  "version" : 3
+}

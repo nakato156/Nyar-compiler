@@ -25,6 +25,7 @@ RUN ./add-aur.sh "${AUR_USER}"
 
 #Install swift
 RUN aur-install swift-bin
+RUN pacman -S libc++ --noconfirm
 
 #Make the source file
 ENV ANTLRRUNTIMEH=/usr/include/antlr4-runtime
@@ -35,20 +36,4 @@ ENV CLASSPATH=.:/usr/share/java/antlr-4.13.2-complete.jar
 ENV antlr4='java org.antlr.v4.Tool'
 ENV grun='java org.antlr.v4.gui.TestRig'
 
-#Moving files into the container
-COPY NyarLexer.g4 /TrabajoFinal/Github/
-COPY NyarParser.g4 /TrabajoFinal/Github/
-
-COPY ./src /TrabajoFinal/Github/src/
-COPY  CMakeLists.txt /TrabajoFinal/Github/
-
-COPY ./compile.sh /TrabajoFinal/Github/
-COPY ./run.sh /TrabajoFinal/Github/
-
-COPY ./swift /TrabajoFinal/Github/swift
-
 WORKDIR /TrabajoFinal/Github/
-
-RUN chmod +x ./compile.sh
-RUN chmod +x ./run.sh
-
