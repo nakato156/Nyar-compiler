@@ -1,7 +1,6 @@
 #ifndef __KC_VISITOR_IMPL__
 #define __KC_VISITOR_IMPL__
 
-#include <map>
 #include <memory>
 #include <any>
 #include <string>
@@ -41,7 +40,7 @@ public:
 
     void compile() {
         std::error_code error;
-        llvm::raw_fd_stream outLL("main.ll", error);
+        llvm::raw_fd_ostream outLL("maid.ll", error);
         module->print(outLL, nullptr);
     }
 
