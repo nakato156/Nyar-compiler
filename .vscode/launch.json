@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Nyar-compiler}/VM",
+            "name": "Debug Compiler (VM)",
+            "program": "${workspaceFolder:Nyar-compiler}/VM/.build/debug/Compiler",
+            "preLaunchTask": "swift: Build Debug Compiler (VM)"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Nyar-compiler}/VM",
+            "name": "Release Compiler (VM)",
+            "program": "${workspaceFolder:Nyar-compiler}/VM/.build/release/Compiler",
+            "preLaunchTask": "swift: Build Release Compiler (VM)"
+        }
+    ]
+}

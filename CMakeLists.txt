@@ -10,7 +10,7 @@ message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
 # Añade el directorio lib a los directorios de inclusión
-include_directories(./src)
+include_directories(./Bytecode/src)
 
 # Incluye los encabezados del runtime de ANTLR
 if(APPLE)
@@ -42,12 +42,12 @@ separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})
 add_definitions(${LLVM_DEFINITIONS_LIST})
 
 # Busca todos los archivos .cpp en src/lib
-file(GLOB LIB_SOURCES "./src/lib/*.cpp")
+file(GLOB LIB_SOURCES "./Bytecode/src/lib/*.cpp")
 
 # Añade la ruta de los archivos fuente
 set(SOURCE_FILES
-    ./src/main.cpp
-    ./src/visitor/NyarVisitor.cpp
+    ./Bytecode/src/main.cpp
+    ./Bytecode/src/visitor/NyarVisitor.cpp
     ${LIB_SOURCES}
 )
 

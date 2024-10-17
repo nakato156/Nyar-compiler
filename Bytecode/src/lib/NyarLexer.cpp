@@ -1,5 +1,5 @@
 
-// Generated from NyarLexer.g4 by ANTLR 4.13.2
+// Generated from ./NyarLexer.g4 by ANTLR 4.13.2
 
 
 #include "NyarLexer.h"
