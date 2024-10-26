@@ -39,6 +39,8 @@ public:
 
     virtual std::any visitId(NyarParser::IdContext *context) = 0;
 
+    virtual std::any visitNeqExp(NyarParser::NeqExpContext *context) = 0;
+
     virtual std::any visitArreglo(NyarParser::ArregloContext *context) = 0;
 
     virtual std::any visitEqEqExp(NyarParser::EqEqExpContext *context) = 0;

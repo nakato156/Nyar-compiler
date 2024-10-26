@@ -1,5 +1,5 @@
 
-// Generated from ./NyarParser.g4 by ANTLR 4.13.2
+// Generated from ./VMParser.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -9,7 +9,7 @@
 
 
 
-class  NyarParser : public antlr4::Parser {
+class  SWIFT_SHARED_REFERENCE(, ) VMParser : public antlr4::Parser {
 public:
   enum {
     LAPREN = 1, RPAREN = 2, ADD = 3, RESTA = 4, MUL = 5, DIV = 6, LESS = 7, 
@@ -26,11 +26,11 @@ public:
     RuleIterar = 9, RuleCondicion = 10
   };
 
-  explicit NyarParser(antlr4::TokenStream *input);
+  explicit VMParser(antlr4::TokenStream *input);
 
-  NyarParser(antlr4::TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options);
+  VMParser(antlr4::TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options);
 
-  ~NyarParser() override;
+  ~VMParser() override;
 
   std::string getGrammarFileName() const override;
 

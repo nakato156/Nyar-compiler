@@ -53,7 +53,7 @@ func makeFile() throws {
   let brewPrefix = {
     guard let brew = which("brew") else { return nil }
     return run(brew, args: ["--prefix"])
-  }() ?? "/usr/local"
+  }() ?? "/usr"
     
   let pkgConfigPath = "\(brewPrefix)/lib/pkgconfig"
   let pkgConfigDir = URL(fileURLWithPath: pkgConfigPath)

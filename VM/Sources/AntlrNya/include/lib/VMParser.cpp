@@ -1,10 +1,10 @@
 
-// Generated from ./NyarParser.g4 by ANTLR 4.13.2
+// Generated from ./VMParser.g4 by ANTLR 4.13.2
 
 
-#include "NyarParserVisitor.h"
+#include "VMParserVisitor.h"
 
-#include "NyarParser.h"
+#include "VMParser.h"
 
 
 using namespace antlrcpp;
@@ -13,18 +13,18 @@ using namespace antlr4;
 
 namespace {
 
-struct NyarParserStaticData final {
-  NyarParserStaticData(std::vector<std::string> ruleNames,
+struct VMParserStaticData final {
+  VMParserStaticData(std::vector<std::string> ruleNames,
                         std::vector<std::string> literalNames,
                         std::vector<std::string> symbolicNames)
       : ruleNames(std::move(ruleNames)), literalNames(std::move(literalNames)),
         symbolicNames(std::move(symbolicNames)),
         vocabulary(this->literalNames, this->symbolicNames) {}
 
-  NyarParserStaticData(const NyarParserStaticData&) = delete;
-  NyarParserStaticData(NyarParserStaticData&&) = delete;
-  NyarParserStaticData& operator=(const NyarParserStaticData&) = delete;
-  NyarParserStaticData& operator=(NyarParserStaticData&&) = delete;
+  VMParserStaticData(const VMParserStaticData&) = delete;
+  VMParserStaticData(VMParserStaticData&&) = delete;
+  VMParserStaticData& operator=(const VMParserStaticData&) = delete;
+  VMParserStaticData& operator=(VMParserStaticData&&) = delete;
 
   std::vector<antlr4::dfa::DFA> decisionToDFA;
   antlr4::atn::PredictionContextCache sharedContextCache;
@@ -36,21 +36,21 @@ struct NyarParserStaticData final {
   std::unique_ptr<antlr4::atn::ATN> atn;
 };
 
-::antlr4::internal::OnceFlag nyarparserParserOnceFlag;
+::antlr4::internal::OnceFlag vmparserParserOnceFlag;
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-std::unique_ptr<NyarParserStaticData> nyarparserParserStaticData = nullptr;
+std::unique_ptr<VMParserStaticData> vmparserParserStaticData = nullptr;
 
-void nyarparserParserInitialize() {
+void vmparserParserInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
-  if (nyarparserParserStaticData != nullptr) {
+  if (vmparserParserStaticData != nullptr) {
     return;
   }
 #else
-  assert(nyarparserParserStaticData == nullptr);
+  assert(vmparserParserStaticData == nullptr);
 #endif
-  auto staticData = std::make_unique<NyarParserStaticData>(
+  auto staticData = std::make_unique<VMParserStaticData>(
     std::vector<std::string>{
       "program", "stat", "expr", "array", "variable", "funcParams", "funcDef", 
       "funcArgs", "funcCall", "iterar", "condicion"
@@ -133,77 +133,77 @@ void nyarparserParserInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  nyarparserParserStaticData = std::move(staticData);
+  vmparserParserStaticData = std::move(staticData);
 }
 
 }
 
-NyarParser::NyarParser(TokenStream *input) : NyarParser(input, antlr4::atn::ParserATNSimulatorOptions()) {}
+VMParser::VMParser(TokenStream *input) : VMParser(input, antlr4::atn::ParserATNSimulatorOptions()) {}
 
-NyarParser::NyarParser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
-  NyarParser::initialize();
-  _interpreter = new atn::ParserATNSimulator(this, *nyarparserParserStaticData->atn, nyarparserParserStaticData->decisionToDFA, nyarparserParserStaticData->sharedContextCache, options);
+VMParser::VMParser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
+  VMParser::initialize();
+  _interpreter = new atn::ParserATNSimulator(this, *vmparserParserStaticData->atn, vmparserParserStaticData->decisionToDFA, vmparserParserStaticData->sharedContextCache, options);
 }
 
-NyarParser::~NyarParser() {
+VMParser::~VMParser() {
   delete _interpreter;
 }
 
-const atn::ATN& NyarParser::getATN() const {
-  return *nyarparserParserStaticData->atn;
+const atn::ATN& VMParser::getATN() const {
+  return *vmparserParserStaticData->atn;
 }
 
-std::string NyarParser::getGrammarFileName() const {
-  return "NyarParser.g4";
+std::string VMParser::getGrammarFileName() const {
+  return "VMParser.g4";
 }
 
-const std::vector<std::string>& NyarParser::getRuleNames() const {
-  return nyarparserParserStaticData->ruleNames;
+const std::vector<std::string>& VMParser::getRuleNames() const {
+  return vmparserParserStaticData->ruleNames;
 }
 
-const dfa::Vocabulary& NyarParser::getVocabulary() const {
-  return nyarparserParserStaticData->vocabulary;
+const dfa::Vocabulary& VMParser::getVocabulary() const {
+  return vmparserParserStaticData->vocabulary;
 }
 
-antlr4::atn::SerializedATNView NyarParser::getSerializedATN() const {
-  return nyarparserParserStaticData->serializedATN;
+antlr4::atn::SerializedATNView VMParser::getSerializedATN() const {
+  return vmparserParserStaticData->serializedATN;
 }
 
 
 //----------------- ProgramContext ------------------------------------------------------------------
 
-NyarParser::ProgramContext::ProgramContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::ProgramContext::ProgramContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* NyarParser::ProgramContext::EOF() {
-  return getToken(NyarParser::EOF, 0);
+tree::TerminalNode* VMParser::ProgramContext::EOF() {
+  return getToken(VMParser::EOF, 0);
 }
 
-std::vector<NyarParser::StatContext *> NyarParser::ProgramContext::stat() {
-  return getRuleContexts<NyarParser::StatContext>();
+std::vector<VMParser::StatContext *> VMParser::ProgramContext::stat() {
+  return getRuleContexts<VMParser::StatContext>();
 }
 
-NyarParser::StatContext* NyarParser::ProgramContext::stat(size_t i) {
-  return getRuleContext<NyarParser::StatContext>(i);
-}
-
-
-size_t NyarParser::ProgramContext::getRuleIndex() const {
-  return NyarParser::RuleProgram;
+VMParser::StatContext* VMParser::ProgramContext::stat(size_t i) {
+  return getRuleContext<VMParser::StatContext>(i);
 }
 
 
-std::any NyarParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::ProgramContext::getRuleIndex() const {
+  return VMParser::RuleProgram;
+}
+
+
+std::any VMParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitProgram(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::ProgramContext* NyarParser::program() {
+VMParser::ProgramContext* VMParser::program() {
   ProgramContext *_localctx = _tracker.createInstance<ProgramContext>(_ctx, getState());
-  enterRule(_localctx, 0, NyarParser::RuleProgram);
+  enterRule(_localctx, 0, VMParser::RuleProgram);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -227,7 +227,7 @@ NyarParser::ProgramContext* NyarParser::program() {
       _la = _input->LA(1);
     }
     setState(28);
-    match(NyarParser::EOF);
+    match(VMParser::EOF);
    
   }
   catch (RecognitionException &e) {
@@ -241,58 +241,58 @@ NyarParser::ProgramContext* NyarParser::program() {
 
 //----------------- StatContext ------------------------------------------------------------------
 
-NyarParser::StatContext::StatContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::StatContext::StatContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-NyarParser::VariableContext* NyarParser::StatContext::variable() {
-  return getRuleContext<NyarParser::VariableContext>(0);
+VMParser::VariableContext* VMParser::StatContext::variable() {
+  return getRuleContext<VMParser::VariableContext>(0);
 }
 
-tree::TerminalNode* NyarParser::StatContext::SEMI() {
-  return getToken(NyarParser::SEMI, 0);
+tree::TerminalNode* VMParser::StatContext::SEMI() {
+  return getToken(VMParser::SEMI, 0);
 }
 
-NyarParser::ExprContext* NyarParser::StatContext::expr() {
-  return getRuleContext<NyarParser::ExprContext>(0);
+VMParser::ExprContext* VMParser::StatContext::expr() {
+  return getRuleContext<VMParser::ExprContext>(0);
 }
 
-NyarParser::FuncDefContext* NyarParser::StatContext::funcDef() {
-  return getRuleContext<NyarParser::FuncDefContext>(0);
+VMParser::FuncDefContext* VMParser::StatContext::funcDef() {
+  return getRuleContext<VMParser::FuncDefContext>(0);
 }
 
-NyarParser::IterarContext* NyarParser::StatContext::iterar() {
-  return getRuleContext<NyarParser::IterarContext>(0);
+VMParser::IterarContext* VMParser::StatContext::iterar() {
+  return getRuleContext<VMParser::IterarContext>(0);
 }
 
-tree::TerminalNode* NyarParser::StatContext::END_BLOCK() {
-  return getToken(NyarParser::END_BLOCK, 0);
+tree::TerminalNode* VMParser::StatContext::END_BLOCK() {
+  return getToken(VMParser::END_BLOCK, 0);
 }
 
-NyarParser::CondicionContext* NyarParser::StatContext::condicion() {
-  return getRuleContext<NyarParser::CondicionContext>(0);
+VMParser::CondicionContext* VMParser::StatContext::condicion() {
+  return getRuleContext<VMParser::CondicionContext>(0);
 }
 
-NyarParser::ArrayContext* NyarParser::StatContext::array() {
-  return getRuleContext<NyarParser::ArrayContext>(0);
-}
-
-
-size_t NyarParser::StatContext::getRuleIndex() const {
-  return NyarParser::RuleStat;
+VMParser::ArrayContext* VMParser::StatContext::array() {
+  return getRuleContext<VMParser::ArrayContext>(0);
 }
 
 
-std::any NyarParser::StatContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::StatContext::getRuleIndex() const {
+  return VMParser::RuleStat;
+}
+
+
+std::any VMParser::StatContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitStat(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::StatContext* NyarParser::stat() {
+VMParser::StatContext* VMParser::stat() {
   StatContext *_localctx = _tracker.createInstance<StatContext>(_ctx, getState());
-  enterRule(_localctx, 2, NyarParser::RuleStat);
+  enterRule(_localctx, 2, VMParser::RuleStat);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -310,7 +310,7 @@ NyarParser::StatContext* NyarParser::stat() {
       setState(30);
       variable();
       setState(31);
-      match(NyarParser::SEMI);
+      match(VMParser::SEMI);
       break;
     }
 
@@ -319,7 +319,7 @@ NyarParser::StatContext* NyarParser::stat() {
       setState(33);
       expr(0);
       setState(34);
-      match(NyarParser::SEMI);
+      match(VMParser::SEMI);
       break;
     }
 
@@ -335,7 +335,7 @@ NyarParser::StatContext* NyarParser::stat() {
       setState(37);
       iterar();
       setState(38);
-      match(NyarParser::END_BLOCK);
+      match(VMParser::END_BLOCK);
       break;
     }
 
@@ -344,7 +344,7 @@ NyarParser::StatContext* NyarParser::stat() {
       setState(40);
       condicion();
       setState(41);
-      match(NyarParser::END_BLOCK);
+      match(VMParser::END_BLOCK);
       break;
     }
 
@@ -353,7 +353,7 @@ NyarParser::StatContext* NyarParser::stat() {
       setState(43);
       array();
       setState(44);
-      match(NyarParser::SEMI);
+      match(VMParser::SEMI);
       break;
     }
 
@@ -373,257 +373,257 @@ NyarParser::StatContext* NyarParser::stat() {
 
 //----------------- ExprContext ------------------------------------------------------------------
 
-NyarParser::ExprContext::ExprContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::ExprContext::ExprContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
 
-size_t NyarParser::ExprContext::getRuleIndex() const {
-  return NyarParser::RuleExpr;
+size_t VMParser::ExprContext::getRuleIndex() const {
+  return VMParser::RuleExpr;
 }
 
-void NyarParser::ExprContext::copyFrom(ExprContext *ctx) {
+void VMParser::ExprContext::copyFrom(ExprContext *ctx) {
   ParserRuleContext::copyFrom(ctx);
 }
 
 //----------------- NumberContext ------------------------------------------------------------------
 
-tree::TerminalNode* NyarParser::NumberContext::NUM() {
-  return getToken(NyarParser::NUM, 0);
+tree::TerminalNode* VMParser::NumberContext::NUM() {
+  return getToken(VMParser::NUM, 0);
 }
 
-NyarParser::NumberContext::NumberContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::NumberContext::NumberContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::NumberContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::NumberContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitNumber(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- EqExpContext ------------------------------------------------------------------
 
-std::vector<NyarParser::ExprContext *> NyarParser::EqExpContext::expr() {
-  return getRuleContexts<NyarParser::ExprContext>();
+std::vector<VMParser::ExprContext *> VMParser::EqExpContext::expr() {
+  return getRuleContexts<VMParser::ExprContext>();
 }
 
-NyarParser::ExprContext* NyarParser::EqExpContext::expr(size_t i) {
-  return getRuleContext<NyarParser::ExprContext>(i);
+VMParser::ExprContext* VMParser::EqExpContext::expr(size_t i) {
+  return getRuleContext<VMParser::ExprContext>(i);
 }
 
-tree::TerminalNode* NyarParser::EqExpContext::EQUAL() {
-  return getToken(NyarParser::EQUAL, 0);
+tree::TerminalNode* VMParser::EqExpContext::EQUAL() {
+  return getToken(VMParser::EQUAL, 0);
 }
 
-tree::TerminalNode* NyarParser::EqExpContext::LESS() {
-  return getToken(NyarParser::LESS, 0);
+tree::TerminalNode* VMParser::EqExpContext::LESS() {
+  return getToken(VMParser::LESS, 0);
 }
 
-tree::TerminalNode* NyarParser::EqExpContext::GREATER() {
-  return getToken(NyarParser::GREATER, 0);
+tree::TerminalNode* VMParser::EqExpContext::GREATER() {
+  return getToken(VMParser::GREATER, 0);
 }
 
-NyarParser::EqExpContext::EqExpContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::EqExpContext::EqExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::EqExpContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::EqExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitEqExp(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- BooleanContext ------------------------------------------------------------------
 
-tree::TerminalNode* NyarParser::BooleanContext::BOOL() {
-  return getToken(NyarParser::BOOL, 0);
+tree::TerminalNode* VMParser::BooleanContext::BOOL() {
+  return getToken(VMParser::BOOL, 0);
 }
 
-NyarParser::BooleanContext::BooleanContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::BooleanContext::BooleanContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::BooleanContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::BooleanContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitBoolean(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- AritExpContext ------------------------------------------------------------------
 
-std::vector<NyarParser::ExprContext *> NyarParser::AritExpContext::expr() {
-  return getRuleContexts<NyarParser::ExprContext>();
+std::vector<VMParser::ExprContext *> VMParser::AritExpContext::expr() {
+  return getRuleContexts<VMParser::ExprContext>();
 }
 
-NyarParser::ExprContext* NyarParser::AritExpContext::expr(size_t i) {
-  return getRuleContext<NyarParser::ExprContext>(i);
+VMParser::ExprContext* VMParser::AritExpContext::expr(size_t i) {
+  return getRuleContext<VMParser::ExprContext>(i);
 }
 
-tree::TerminalNode* NyarParser::AritExpContext::MUL() {
-  return getToken(NyarParser::MUL, 0);
+tree::TerminalNode* VMParser::AritExpContext::MUL() {
+  return getToken(VMParser::MUL, 0);
 }
 
-tree::TerminalNode* NyarParser::AritExpContext::DIV() {
-  return getToken(NyarParser::DIV, 0);
+tree::TerminalNode* VMParser::AritExpContext::DIV() {
+  return getToken(VMParser::DIV, 0);
 }
 
-tree::TerminalNode* NyarParser::AritExpContext::ADD() {
-  return getToken(NyarParser::ADD, 0);
+tree::TerminalNode* VMParser::AritExpContext::ADD() {
+  return getToken(VMParser::ADD, 0);
 }
 
-tree::TerminalNode* NyarParser::AritExpContext::RESTA() {
-  return getToken(NyarParser::RESTA, 0);
+tree::TerminalNode* VMParser::AritExpContext::RESTA() {
+  return getToken(VMParser::RESTA, 0);
 }
 
-NyarParser::AritExpContext::AritExpContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::AritExpContext::AritExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::AritExpContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::AritExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitAritExp(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- StringContext ------------------------------------------------------------------
 
-tree::TerminalNode* NyarParser::StringContext::STRING() {
-  return getToken(NyarParser::STRING, 0);
+tree::TerminalNode* VMParser::StringContext::STRING() {
+  return getToken(VMParser::STRING, 0);
 }
 
-NyarParser::StringContext::StringContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::StringContext::StringContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::StringContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::StringContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitString(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- ParenExpContext ------------------------------------------------------------------
 
-tree::TerminalNode* NyarParser::ParenExpContext::LAPREN() {
-  return getToken(NyarParser::LAPREN, 0);
+tree::TerminalNode* VMParser::ParenExpContext::LAPREN() {
+  return getToken(VMParser::LAPREN, 0);
 }
 
-NyarParser::ExprContext* NyarParser::ParenExpContext::expr() {
-  return getRuleContext<NyarParser::ExprContext>(0);
+VMParser::ExprContext* VMParser::ParenExpContext::expr() {
+  return getRuleContext<VMParser::ExprContext>(0);
 }
 
-tree::TerminalNode* NyarParser::ParenExpContext::RPAREN() {
-  return getToken(NyarParser::RPAREN, 0);
+tree::TerminalNode* VMParser::ParenExpContext::RPAREN() {
+  return getToken(VMParser::RPAREN, 0);
 }
 
-NyarParser::ParenExpContext::ParenExpContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::ParenExpContext::ParenExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::ParenExpContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::ParenExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitParenExp(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- FCallContext ------------------------------------------------------------------
 
-NyarParser::FuncCallContext* NyarParser::FCallContext::funcCall() {
-  return getRuleContext<NyarParser::FuncCallContext>(0);
+VMParser::FuncCallContext* VMParser::FCallContext::funcCall() {
+  return getRuleContext<VMParser::FuncCallContext>(0);
 }
 
-NyarParser::FCallContext::FCallContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::FCallContext::FCallContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::FCallContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::FCallContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitFCall(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- IdContext ------------------------------------------------------------------
 
-tree::TerminalNode* NyarParser::IdContext::ID() {
-  return getToken(NyarParser::ID, 0);
+tree::TerminalNode* VMParser::IdContext::ID() {
+  return getToken(VMParser::ID, 0);
 }
 
-NyarParser::IdContext::IdContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::IdContext::IdContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::IdContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::IdContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitId(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- NeqExpContext ------------------------------------------------------------------
 
-std::vector<NyarParser::ExprContext *> NyarParser::NeqExpContext::expr() {
-  return getRuleContexts<NyarParser::ExprContext>();
+std::vector<VMParser::ExprContext *> VMParser::NeqExpContext::expr() {
+  return getRuleContexts<VMParser::ExprContext>();
 }
 
-NyarParser::ExprContext* NyarParser::NeqExpContext::expr(size_t i) {
-  return getRuleContext<NyarParser::ExprContext>(i);
+VMParser::ExprContext* VMParser::NeqExpContext::expr(size_t i) {
+  return getRuleContext<VMParser::ExprContext>(i);
 }
 
-tree::TerminalNode* NyarParser::NeqExpContext::NEQ() {
-  return getToken(NyarParser::NEQ, 0);
+tree::TerminalNode* VMParser::NeqExpContext::NEQ() {
+  return getToken(VMParser::NEQ, 0);
 }
 
-NyarParser::NeqExpContext::NeqExpContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::NeqExpContext::NeqExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::NeqExpContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::NeqExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitNeqExp(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- ArregloContext ------------------------------------------------------------------
 
-NyarParser::ArrayContext* NyarParser::ArregloContext::array() {
-  return getRuleContext<NyarParser::ArrayContext>(0);
+VMParser::ArrayContext* VMParser::ArregloContext::array() {
+  return getRuleContext<VMParser::ArrayContext>(0);
 }
 
-NyarParser::ArregloContext::ArregloContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::ArregloContext::ArregloContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::ArregloContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::ArregloContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitArreglo(this);
   else
     return visitor->visitChildren(this);
 }
 //----------------- EqEqExpContext ------------------------------------------------------------------
 
-std::vector<NyarParser::ExprContext *> NyarParser::EqEqExpContext::expr() {
-  return getRuleContexts<NyarParser::ExprContext>();
+std::vector<VMParser::ExprContext *> VMParser::EqEqExpContext::expr() {
+  return getRuleContexts<VMParser::ExprContext>();
 }
 
-NyarParser::ExprContext* NyarParser::EqEqExpContext::expr(size_t i) {
-  return getRuleContext<NyarParser::ExprContext>(i);
+VMParser::ExprContext* VMParser::EqEqExpContext::expr(size_t i) {
+  return getRuleContext<VMParser::ExprContext>(i);
 }
 
-tree::TerminalNode* NyarParser::EqEqExpContext::EQEQ() {
-  return getToken(NyarParser::EQEQ, 0);
+tree::TerminalNode* VMParser::EqEqExpContext::EQEQ() {
+  return getToken(VMParser::EQEQ, 0);
 }
 
-NyarParser::EqEqExpContext::EqEqExpContext(ExprContext *ctx) { copyFrom(ctx); }
+VMParser::EqEqExpContext::EqEqExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any NyarParser::EqEqExpContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+std::any VMParser::EqEqExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitEqEqExp(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::ExprContext* NyarParser::expr() {
+VMParser::ExprContext* VMParser::expr() {
    return expr(0);
 }
 
-NyarParser::ExprContext* NyarParser::expr(int precedence) {
+VMParser::ExprContext* VMParser::expr(int precedence) {
   ParserRuleContext *parentContext = _ctx;
   size_t parentState = getState();
-  NyarParser::ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, parentState);
-  NyarParser::ExprContext *previousContext = _localctx;
+  VMParser::ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, parentState);
+  VMParser::ExprContext *previousContext = _localctx;
   (void)previousContext; // Silence compiler, in case the context is not used by generated code.
   size_t startState = 4;
-  enterRecursionRule(_localctx, 4, NyarParser::RuleExpr, precedence);
+  enterRecursionRule(_localctx, 4, VMParser::RuleExpr, precedence);
 
     size_t _la = 0;
 
@@ -646,7 +646,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
       previousContext = _localctx;
 
       setState(49);
-      match(NyarParser::NUM);
+      match(VMParser::NUM);
       break;
     }
 
@@ -655,7 +655,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
       _ctx = _localctx;
       previousContext = _localctx;
       setState(50);
-      match(NyarParser::BOOL);
+      match(VMParser::BOOL);
       break;
     }
 
@@ -664,7 +664,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
       _ctx = _localctx;
       previousContext = _localctx;
       setState(51);
-      match(NyarParser::STRING);
+      match(VMParser::STRING);
       break;
     }
 
@@ -673,7 +673,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
       _ctx = _localctx;
       previousContext = _localctx;
       setState(52);
-      match(NyarParser::ID);
+      match(VMParser::ID);
       break;
     }
 
@@ -682,11 +682,11 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
       _ctx = _localctx;
       previousContext = _localctx;
       setState(53);
-      match(NyarParser::LAPREN);
+      match(VMParser::LAPREN);
       setState(54);
       expr(0);
       setState(55);
-      match(NyarParser::RPAREN);
+      match(VMParser::RPAREN);
       break;
     }
 
@@ -754,7 +754,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
 
           if (!(precpred(_ctx, 5))) throw FailedPredicateException(this, "precpred(_ctx, 5)");
           setState(65);
-          antlrcpp::downCast<EqEqExpContext *>(_localctx)->op = match(NyarParser::EQEQ);
+          antlrcpp::downCast<EqEqExpContext *>(_localctx)->op = match(VMParser::EQEQ);
           setState(66);
           expr(6);
           break;
@@ -770,9 +770,9 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
           setState(68);
           antlrcpp::downCast<EqExpContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
-          if (!(_la == NyarParser::LESS
+          if (!(_la == VMParser::LESS
 
-          || _la == NyarParser::GREATER)) {
+          || _la == VMParser::GREATER)) {
             antlrcpp::downCast<EqExpContext *>(_localctx)->op = _errHandler->recoverInline(this);
           }
           else {
@@ -780,7 +780,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
             consume();
           }
           setState(69);
-          match(NyarParser::EQUAL);
+          match(VMParser::EQUAL);
           setState(70);
           expr(5);
           break;
@@ -794,7 +794,7 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
 
           if (!(precpred(_ctx, 3))) throw FailedPredicateException(this, "precpred(_ctx, 3)");
           setState(72);
-          antlrcpp::downCast<NeqExpContext *>(_localctx)->op = match(NyarParser::NEQ);
+          antlrcpp::downCast<NeqExpContext *>(_localctx)->op = match(VMParser::NEQ);
           setState(73);
           expr(4);
           break;
@@ -819,50 +819,50 @@ NyarParser::ExprContext* NyarParser::expr(int precedence) {
 
 //----------------- ArrayContext ------------------------------------------------------------------
 
-NyarParser::ArrayContext::ArrayContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::ArrayContext::ArrayContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* NyarParser::ArrayContext::LBRACKET() {
-  return getToken(NyarParser::LBRACKET, 0);
+tree::TerminalNode* VMParser::ArrayContext::LBRACKET() {
+  return getToken(VMParser::LBRACKET, 0);
 }
 
-tree::TerminalNode* NyarParser::ArrayContext::RBRACKET() {
-  return getToken(NyarParser::RBRACKET, 0);
+tree::TerminalNode* VMParser::ArrayContext::RBRACKET() {
+  return getToken(VMParser::RBRACKET, 0);
 }
 
-std::vector<NyarParser::ExprContext *> NyarParser::ArrayContext::expr() {
-  return getRuleContexts<NyarParser::ExprContext>();
+std::vector<VMParser::ExprContext *> VMParser::ArrayContext::expr() {
+  return getRuleContexts<VMParser::ExprContext>();
 }
 
-NyarParser::ExprContext* NyarParser::ArrayContext::expr(size_t i) {
-  return getRuleContext<NyarParser::ExprContext>(i);
+VMParser::ExprContext* VMParser::ArrayContext::expr(size_t i) {
+  return getRuleContext<VMParser::ExprContext>(i);
 }
 
-std::vector<tree::TerminalNode *> NyarParser::ArrayContext::COMMA() {
-  return getTokens(NyarParser::COMMA);
+std::vector<tree::TerminalNode *> VMParser::ArrayContext::COMMA() {
+  return getTokens(VMParser::COMMA);
 }
 
-tree::TerminalNode* NyarParser::ArrayContext::COMMA(size_t i) {
-  return getToken(NyarParser::COMMA, i);
-}
-
-
-size_t NyarParser::ArrayContext::getRuleIndex() const {
-  return NyarParser::RuleArray;
+tree::TerminalNode* VMParser::ArrayContext::COMMA(size_t i) {
+  return getToken(VMParser::COMMA, i);
 }
 
 
-std::any NyarParser::ArrayContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::ArrayContext::getRuleIndex() const {
+  return VMParser::RuleArray;
+}
+
+
+std::any VMParser::ArrayContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitArray(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::ArrayContext* NyarParser::array() {
+VMParser::ArrayContext* VMParser::array() {
   ArrayContext *_localctx = _tracker.createInstance<ArrayContext>(_ctx, getState());
-  enterRule(_localctx, 6, NyarParser::RuleArray);
+  enterRule(_localctx, 6, VMParser::RuleArray);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -875,7 +875,7 @@ NyarParser::ArrayContext* NyarParser::array() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(79);
-    match(NyarParser::LBRACKET);
+    match(VMParser::LBRACKET);
     setState(88);
     _errHandler->sync(this);
 
@@ -887,9 +887,9 @@ NyarParser::ArrayContext* NyarParser::array() {
       setState(85);
       _errHandler->sync(this);
       _la = _input->LA(1);
-      while (_la == NyarParser::COMMA) {
+      while (_la == VMParser::COMMA) {
         setState(81);
-        match(NyarParser::COMMA);
+        match(VMParser::COMMA);
         setState(82);
         expr(0);
         setState(87);
@@ -898,7 +898,7 @@ NyarParser::ArrayContext* NyarParser::array() {
       }
     }
     setState(90);
-    match(NyarParser::RBRACKET);
+    match(VMParser::RBRACKET);
    
   }
   catch (RecognitionException &e) {
@@ -912,38 +912,38 @@ NyarParser::ArrayContext* NyarParser::array() {
 
 //----------------- VariableContext ------------------------------------------------------------------
 
-NyarParser::VariableContext::VariableContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::VariableContext::VariableContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* NyarParser::VariableContext::ID() {
-  return getToken(NyarParser::ID, 0);
+tree::TerminalNode* VMParser::VariableContext::ID() {
+  return getToken(VMParser::ID, 0);
 }
 
-tree::TerminalNode* NyarParser::VariableContext::EQUAL() {
-  return getToken(NyarParser::EQUAL, 0);
+tree::TerminalNode* VMParser::VariableContext::EQUAL() {
+  return getToken(VMParser::EQUAL, 0);
 }
 
-NyarParser::ExprContext* NyarParser::VariableContext::expr() {
-  return getRuleContext<NyarParser::ExprContext>(0);
-}
-
-
-size_t NyarParser::VariableContext::getRuleIndex() const {
-  return NyarParser::RuleVariable;
+VMParser::ExprContext* VMParser::VariableContext::expr() {
+  return getRuleContext<VMParser::ExprContext>(0);
 }
 
 
-std::any NyarParser::VariableContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::VariableContext::getRuleIndex() const {
+  return VMParser::RuleVariable;
+}
+
+
+std::any VMParser::VariableContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitVariable(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::VariableContext* NyarParser::variable() {
+VMParser::VariableContext* VMParser::variable() {
   VariableContext *_localctx = _tracker.createInstance<VariableContext>(_ctx, getState());
-  enterRule(_localctx, 8, NyarParser::RuleVariable);
+  enterRule(_localctx, 8, VMParser::RuleVariable);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -955,9 +955,9 @@ NyarParser::VariableContext* NyarParser::variable() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(92);
-    match(NyarParser::ID);
+    match(VMParser::ID);
     setState(93);
-    match(NyarParser::EQUAL);
+    match(VMParser::EQUAL);
     setState(94);
     expr(0);
    
@@ -973,42 +973,42 @@ NyarParser::VariableContext* NyarParser::variable() {
 
 //----------------- FuncParamsContext ------------------------------------------------------------------
 
-NyarParser::FuncParamsContext::FuncParamsContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::FuncParamsContext::FuncParamsContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<tree::TerminalNode *> NyarParser::FuncParamsContext::ID() {
-  return getTokens(NyarParser::ID);
+std::vector<tree::TerminalNode *> VMParser::FuncParamsContext::ID() {
+  return getTokens(VMParser::ID);
 }
 
-tree::TerminalNode* NyarParser::FuncParamsContext::ID(size_t i) {
-  return getToken(NyarParser::ID, i);
+tree::TerminalNode* VMParser::FuncParamsContext::ID(size_t i) {
+  return getToken(VMParser::ID, i);
 }
 
-std::vector<tree::TerminalNode *> NyarParser::FuncParamsContext::COMMA() {
-  return getTokens(NyarParser::COMMA);
+std::vector<tree::TerminalNode *> VMParser::FuncParamsContext::COMMA() {
+  return getTokens(VMParser::COMMA);
 }
 
-tree::TerminalNode* NyarParser::FuncParamsContext::COMMA(size_t i) {
-  return getToken(NyarParser::COMMA, i);
-}
-
-
-size_t NyarParser::FuncParamsContext::getRuleIndex() const {
-  return NyarParser::RuleFuncParams;
+tree::TerminalNode* VMParser::FuncParamsContext::COMMA(size_t i) {
+  return getToken(VMParser::COMMA, i);
 }
 
 
-std::any NyarParser::FuncParamsContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::FuncParamsContext::getRuleIndex() const {
+  return VMParser::RuleFuncParams;
+}
+
+
+std::any VMParser::FuncParamsContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitFuncParams(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::FuncParamsContext* NyarParser::funcParams() {
+VMParser::FuncParamsContext* VMParser::funcParams() {
   FuncParamsContext *_localctx = _tracker.createInstance<FuncParamsContext>(_ctx, getState());
-  enterRule(_localctx, 10, NyarParser::RuleFuncParams);
+  enterRule(_localctx, 10, VMParser::RuleFuncParams);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1021,15 +1021,15 @@ NyarParser::FuncParamsContext* NyarParser::funcParams() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(96);
-    match(NyarParser::ID);
+    match(VMParser::ID);
     setState(101);
     _errHandler->sync(this);
     _la = _input->LA(1);
-    while (_la == NyarParser::COMMA) {
+    while (_la == VMParser::COMMA) {
       setState(97);
-      match(NyarParser::COMMA);
+      match(VMParser::COMMA);
       setState(98);
-      match(NyarParser::ID);
+      match(VMParser::ID);
       setState(103);
       _errHandler->sync(this);
       _la = _input->LA(1);
@@ -1047,62 +1047,62 @@ NyarParser::FuncParamsContext* NyarParser::funcParams() {
 
 //----------------- FuncDefContext ------------------------------------------------------------------
 
-NyarParser::FuncDefContext::FuncDefContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::FuncDefContext::FuncDefContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* NyarParser::FuncDefContext::FUNC() {
-  return getToken(NyarParser::FUNC, 0);
+tree::TerminalNode* VMParser::FuncDefContext::FUNC() {
+  return getToken(VMParser::FUNC, 0);
 }
 
-tree::TerminalNode* NyarParser::FuncDefContext::ID() {
-  return getToken(NyarParser::ID, 0);
+tree::TerminalNode* VMParser::FuncDefContext::ID() {
+  return getToken(VMParser::ID, 0);
 }
 
-tree::TerminalNode* NyarParser::FuncDefContext::LAPREN() {
-  return getToken(NyarParser::LAPREN, 0);
+tree::TerminalNode* VMParser::FuncDefContext::LAPREN() {
+  return getToken(VMParser::LAPREN, 0);
 }
 
-NyarParser::FuncParamsContext* NyarParser::FuncDefContext::funcParams() {
-  return getRuleContext<NyarParser::FuncParamsContext>(0);
+VMParser::FuncParamsContext* VMParser::FuncDefContext::funcParams() {
+  return getRuleContext<VMParser::FuncParamsContext>(0);
 }
 
-tree::TerminalNode* NyarParser::FuncDefContext::RPAREN() {
-  return getToken(NyarParser::RPAREN, 0);
+tree::TerminalNode* VMParser::FuncDefContext::RPAREN() {
+  return getToken(VMParser::RPAREN, 0);
 }
 
-tree::TerminalNode* NyarParser::FuncDefContext::START_BLOCK() {
-  return getToken(NyarParser::START_BLOCK, 0);
+tree::TerminalNode* VMParser::FuncDefContext::START_BLOCK() {
+  return getToken(VMParser::START_BLOCK, 0);
 }
 
-tree::TerminalNode* NyarParser::FuncDefContext::END_BLOCK() {
-  return getToken(NyarParser::END_BLOCK, 0);
+tree::TerminalNode* VMParser::FuncDefContext::END_BLOCK() {
+  return getToken(VMParser::END_BLOCK, 0);
 }
 
-std::vector<NyarParser::StatContext *> NyarParser::FuncDefContext::stat() {
-  return getRuleContexts<NyarParser::StatContext>();
+std::vector<VMParser::StatContext *> VMParser::FuncDefContext::stat() {
+  return getRuleContexts<VMParser::StatContext>();
 }
 
-NyarParser::StatContext* NyarParser::FuncDefContext::stat(size_t i) {
-  return getRuleContext<NyarParser::StatContext>(i);
-}
-
-
-size_t NyarParser::FuncDefContext::getRuleIndex() const {
-  return NyarParser::RuleFuncDef;
+VMParser::StatContext* VMParser::FuncDefContext::stat(size_t i) {
+  return getRuleContext<VMParser::StatContext>(i);
 }
 
 
-std::any NyarParser::FuncDefContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::FuncDefContext::getRuleIndex() const {
+  return VMParser::RuleFuncDef;
+}
+
+
+std::any VMParser::FuncDefContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitFuncDef(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::FuncDefContext* NyarParser::funcDef() {
+VMParser::FuncDefContext* VMParser::funcDef() {
   FuncDefContext *_localctx = _tracker.createInstance<FuncDefContext>(_ctx, getState());
-  enterRule(_localctx, 12, NyarParser::RuleFuncDef);
+  enterRule(_localctx, 12, VMParser::RuleFuncDef);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1115,17 +1115,17 @@ NyarParser::FuncDefContext* NyarParser::funcDef() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(104);
-    match(NyarParser::FUNC);
+    match(VMParser::FUNC);
     setState(105);
-    match(NyarParser::ID);
+    match(VMParser::ID);
     setState(106);
-    match(NyarParser::LAPREN);
+    match(VMParser::LAPREN);
     setState(107);
     funcParams();
     setState(108);
-    match(NyarParser::RPAREN);
+    match(VMParser::RPAREN);
     setState(109);
-    match(NyarParser::START_BLOCK);
+    match(VMParser::START_BLOCK);
     setState(113);
     _errHandler->sync(this);
     _la = _input->LA(1);
@@ -1138,7 +1138,7 @@ NyarParser::FuncDefContext* NyarParser::funcDef() {
       _la = _input->LA(1);
     }
     setState(116);
-    match(NyarParser::END_BLOCK);
+    match(VMParser::END_BLOCK);
    
   }
   catch (RecognitionException &e) {
@@ -1152,42 +1152,42 @@ NyarParser::FuncDefContext* NyarParser::funcDef() {
 
 //----------------- FuncArgsContext ------------------------------------------------------------------
 
-NyarParser::FuncArgsContext::FuncArgsContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::FuncArgsContext::FuncArgsContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<NyarParser::ExprContext *> NyarParser::FuncArgsContext::expr() {
-  return getRuleContexts<NyarParser::ExprContext>();
+std::vector<VMParser::ExprContext *> VMParser::FuncArgsContext::expr() {
+  return getRuleContexts<VMParser::ExprContext>();
 }
 
-NyarParser::ExprContext* NyarParser::FuncArgsContext::expr(size_t i) {
-  return getRuleContext<NyarParser::ExprContext>(i);
+VMParser::ExprContext* VMParser::FuncArgsContext::expr(size_t i) {
+  return getRuleContext<VMParser::ExprContext>(i);
 }
 
-std::vector<tree::TerminalNode *> NyarParser::FuncArgsContext::COMMA() {
-  return getTokens(NyarParser::COMMA);
+std::vector<tree::TerminalNode *> VMParser::FuncArgsContext::COMMA() {
+  return getTokens(VMParser::COMMA);
 }
 
-tree::TerminalNode* NyarParser::FuncArgsContext::COMMA(size_t i) {
-  return getToken(NyarParser::COMMA, i);
-}
-
-
-size_t NyarParser::FuncArgsContext::getRuleIndex() const {
-  return NyarParser::RuleFuncArgs;
+tree::TerminalNode* VMParser::FuncArgsContext::COMMA(size_t i) {
+  return getToken(VMParser::COMMA, i);
 }
 
 
-std::any NyarParser::FuncArgsContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::FuncArgsContext::getRuleIndex() const {
+  return VMParser::RuleFuncArgs;
+}
+
+
+std::any VMParser::FuncArgsContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitFuncArgs(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::FuncArgsContext* NyarParser::funcArgs() {
+VMParser::FuncArgsContext* VMParser::funcArgs() {
   FuncArgsContext *_localctx = _tracker.createInstance<FuncArgsContext>(_ctx, getState());
-  enterRule(_localctx, 14, NyarParser::RuleFuncArgs);
+  enterRule(_localctx, 14, VMParser::RuleFuncArgs);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1204,9 +1204,9 @@ NyarParser::FuncArgsContext* NyarParser::funcArgs() {
     setState(123);
     _errHandler->sync(this);
     _la = _input->LA(1);
-    while (_la == NyarParser::COMMA) {
+    while (_la == VMParser::COMMA) {
       setState(119);
-      match(NyarParser::COMMA);
+      match(VMParser::COMMA);
       setState(120);
       expr(0);
       setState(125);
@@ -1226,42 +1226,42 @@ NyarParser::FuncArgsContext* NyarParser::funcArgs() {
 
 //----------------- FuncCallContext ------------------------------------------------------------------
 
-NyarParser::FuncCallContext::FuncCallContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::FuncCallContext::FuncCallContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* NyarParser::FuncCallContext::ID() {
-  return getToken(NyarParser::ID, 0);
+tree::TerminalNode* VMParser::FuncCallContext::ID() {
+  return getToken(VMParser::ID, 0);
 }
 
-tree::TerminalNode* NyarParser::FuncCallContext::LAPREN() {
-  return getToken(NyarParser::LAPREN, 0);
+tree::TerminalNode* VMParser::FuncCallContext::LAPREN() {
+  return getToken(VMParser::LAPREN, 0);
 }
 
-NyarParser::FuncArgsContext* NyarParser::FuncCallContext::funcArgs() {
-  return getRuleContext<NyarParser::FuncArgsContext>(0);
+VMParser::FuncArgsContext* VMParser::FuncCallContext::funcArgs() {
+  return getRuleContext<VMParser::FuncArgsContext>(0);
 }
 
-tree::TerminalNode* NyarParser::FuncCallContext::RPAREN() {
-  return getToken(NyarParser::RPAREN, 0);
-}
-
-
-size_t NyarParser::FuncCallContext::getRuleIndex() const {
-  return NyarParser::RuleFuncCall;
+tree::TerminalNode* VMParser::FuncCallContext::RPAREN() {
+  return getToken(VMParser::RPAREN, 0);
 }
 
 
-std::any NyarParser::FuncCallContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::FuncCallContext::getRuleIndex() const {
+  return VMParser::RuleFuncCall;
+}
+
+
+std::any VMParser::FuncCallContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitFuncCall(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::FuncCallContext* NyarParser::funcCall() {
+VMParser::FuncCallContext* VMParser::funcCall() {
   FuncCallContext *_localctx = _tracker.createInstance<FuncCallContext>(_ctx, getState());
-  enterRule(_localctx, 16, NyarParser::RuleFuncCall);
+  enterRule(_localctx, 16, VMParser::RuleFuncCall);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1273,13 +1273,13 @@ NyarParser::FuncCallContext* NyarParser::funcCall() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(126);
-    match(NyarParser::ID);
+    match(VMParser::ID);
     setState(127);
-    match(NyarParser::LAPREN);
+    match(VMParser::LAPREN);
     setState(128);
     funcArgs();
     setState(129);
-    match(NyarParser::RPAREN);
+    match(VMParser::RPAREN);
    
   }
   catch (RecognitionException &e) {
@@ -1293,62 +1293,62 @@ NyarParser::FuncCallContext* NyarParser::funcCall() {
 
 //----------------- IterarContext ------------------------------------------------------------------
 
-NyarParser::IterarContext::IterarContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::IterarContext::IterarContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* NyarParser::IterarContext::FOR() {
-  return getToken(NyarParser::FOR, 0);
+tree::TerminalNode* VMParser::IterarContext::FOR() {
+  return getToken(VMParser::FOR, 0);
 }
 
-tree::TerminalNode* NyarParser::IterarContext::DESDE() {
-  return getToken(NyarParser::DESDE, 0);
+tree::TerminalNode* VMParser::IterarContext::DESDE() {
+  return getToken(VMParser::DESDE, 0);
 }
 
-tree::TerminalNode* NyarParser::IterarContext::HASTA() {
-  return getToken(NyarParser::HASTA, 0);
+tree::TerminalNode* VMParser::IterarContext::HASTA() {
+  return getToken(VMParser::HASTA, 0);
 }
 
-std::vector<tree::TerminalNode *> NyarParser::IterarContext::NUM() {
-  return getTokens(NyarParser::NUM);
+std::vector<tree::TerminalNode *> VMParser::IterarContext::NUM() {
+  return getTokens(VMParser::NUM);
 }
 
-tree::TerminalNode* NyarParser::IterarContext::NUM(size_t i) {
-  return getToken(NyarParser::NUM, i);
+tree::TerminalNode* VMParser::IterarContext::NUM(size_t i) {
+  return getToken(VMParser::NUM, i);
 }
 
-std::vector<tree::TerminalNode *> NyarParser::IterarContext::ID() {
-  return getTokens(NyarParser::ID);
+std::vector<tree::TerminalNode *> VMParser::IterarContext::ID() {
+  return getTokens(VMParser::ID);
 }
 
-tree::TerminalNode* NyarParser::IterarContext::ID(size_t i) {
-  return getToken(NyarParser::ID, i);
+tree::TerminalNode* VMParser::IterarContext::ID(size_t i) {
+  return getToken(VMParser::ID, i);
 }
 
-tree::TerminalNode* NyarParser::IterarContext::EN() {
-  return getToken(NyarParser::EN, 0);
+tree::TerminalNode* VMParser::IterarContext::EN() {
+  return getToken(VMParser::EN, 0);
 }
 
-NyarParser::ArrayContext* NyarParser::IterarContext::array() {
-  return getRuleContext<NyarParser::ArrayContext>(0);
-}
-
-
-size_t NyarParser::IterarContext::getRuleIndex() const {
-  return NyarParser::RuleIterar;
+VMParser::ArrayContext* VMParser::IterarContext::array() {
+  return getRuleContext<VMParser::ArrayContext>(0);
 }
 
 
-std::any NyarParser::IterarContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::IterarContext::getRuleIndex() const {
+  return VMParser::RuleIterar;
+}
+
+
+std::any VMParser::IterarContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitIterar(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::IterarContext* NyarParser::iterar() {
+VMParser::IterarContext* VMParser::iterar() {
   IterarContext *_localctx = _tracker.createInstance<IterarContext>(_ctx, getState());
-  enterRule(_localctx, 18, NyarParser::RuleIterar);
+  enterRule(_localctx, 18, VMParser::RuleIterar);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1362,23 +1362,23 @@ NyarParser::IterarContext* NyarParser::iterar() {
     setState(141);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case NyarParser::FOR: {
+      case VMParser::FOR: {
         enterOuterAlt(_localctx, 1);
         setState(131);
-        match(NyarParser::FOR);
+        match(VMParser::FOR);
         break;
       }
 
-      case NyarParser::DESDE: {
+      case VMParser::DESDE: {
         enterOuterAlt(_localctx, 2);
         setState(132);
-        match(NyarParser::DESDE);
+        match(VMParser::DESDE);
         setState(133);
         antlrcpp::downCast<IterarContext *>(_localctx)->i = _input->LT(1);
         _la = _input->LA(1);
-        if (!(_la == NyarParser::ID
+        if (!(_la == VMParser::ID
 
-        || _la == NyarParser::NUM)) {
+        || _la == VMParser::NUM)) {
           antlrcpp::downCast<IterarContext *>(_localctx)->i = _errHandler->recoverInline(this);
         }
         else {
@@ -1386,13 +1386,13 @@ NyarParser::IterarContext* NyarParser::iterar() {
           consume();
         }
         setState(134);
-        match(NyarParser::HASTA);
+        match(VMParser::HASTA);
         setState(135);
         antlrcpp::downCast<IterarContext *>(_localctx)->f = _input->LT(1);
         _la = _input->LA(1);
-        if (!(_la == NyarParser::ID
+        if (!(_la == VMParser::ID
 
-        || _la == NyarParser::NUM)) {
+        || _la == VMParser::NUM)) {
           antlrcpp::downCast<IterarContext *>(_localctx)->f = _errHandler->recoverInline(this);
         }
         else {
@@ -1402,20 +1402,20 @@ NyarParser::IterarContext* NyarParser::iterar() {
         break;
       }
 
-      case NyarParser::EN: {
+      case VMParser::EN: {
         enterOuterAlt(_localctx, 3);
         setState(136);
-        match(NyarParser::EN);
+        match(VMParser::EN);
         setState(139);
         _errHandler->sync(this);
         switch (_input->LA(1)) {
-          case NyarParser::ID: {
+          case VMParser::ID: {
             setState(137);
-            match(NyarParser::ID);
+            match(VMParser::ID);
             break;
           }
 
-          case NyarParser::LBRACKET: {
+          case VMParser::LBRACKET: {
             setState(138);
             array();
             break;
@@ -1443,62 +1443,62 @@ NyarParser::IterarContext* NyarParser::iterar() {
 
 //----------------- CondicionContext ------------------------------------------------------------------
 
-NyarParser::CondicionContext::CondicionContext(ParserRuleContext *parent, size_t invokingState)
+VMParser::CondicionContext::CondicionContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<tree::TerminalNode *> NyarParser::CondicionContext::COND() {
-  return getTokens(NyarParser::COND);
+std::vector<tree::TerminalNode *> VMParser::CondicionContext::COND() {
+  return getTokens(VMParser::COND);
 }
 
-tree::TerminalNode* NyarParser::CondicionContext::COND(size_t i) {
-  return getToken(NyarParser::COND, i);
+tree::TerminalNode* VMParser::CondicionContext::COND(size_t i) {
+  return getToken(VMParser::COND, i);
 }
 
-NyarParser::ExprContext* NyarParser::CondicionContext::expr() {
-  return getRuleContext<NyarParser::ExprContext>(0);
+VMParser::ExprContext* VMParser::CondicionContext::expr() {
+  return getRuleContext<VMParser::ExprContext>(0);
 }
 
-std::vector<tree::TerminalNode *> NyarParser::CondicionContext::START_BLOCK() {
-  return getTokens(NyarParser::START_BLOCK);
+std::vector<tree::TerminalNode *> VMParser::CondicionContext::START_BLOCK() {
+  return getTokens(VMParser::START_BLOCK);
 }
 
-tree::TerminalNode* NyarParser::CondicionContext::START_BLOCK(size_t i) {
-  return getToken(NyarParser::START_BLOCK, i);
+tree::TerminalNode* VMParser::CondicionContext::START_BLOCK(size_t i) {
+  return getToken(VMParser::START_BLOCK, i);
 }
 
-std::vector<tree::TerminalNode *> NyarParser::CondicionContext::END_BLOCK() {
-  return getTokens(NyarParser::END_BLOCK);
+std::vector<tree::TerminalNode *> VMParser::CondicionContext::END_BLOCK() {
+  return getTokens(VMParser::END_BLOCK);
 }
 
-tree::TerminalNode* NyarParser::CondicionContext::END_BLOCK(size_t i) {
-  return getToken(NyarParser::END_BLOCK, i);
+tree::TerminalNode* VMParser::CondicionContext::END_BLOCK(size_t i) {
+  return getToken(VMParser::END_BLOCK, i);
 }
 
-std::vector<NyarParser::StatContext *> NyarParser::CondicionContext::stat() {
-  return getRuleContexts<NyarParser::StatContext>();
+std::vector<VMParser::StatContext *> VMParser::CondicionContext::stat() {
+  return getRuleContexts<VMParser::StatContext>();
 }
 
-NyarParser::StatContext* NyarParser::CondicionContext::stat(size_t i) {
-  return getRuleContext<NyarParser::StatContext>(i);
-}
-
-
-size_t NyarParser::CondicionContext::getRuleIndex() const {
-  return NyarParser::RuleCondicion;
+VMParser::StatContext* VMParser::CondicionContext::stat(size_t i) {
+  return getRuleContext<VMParser::StatContext>(i);
 }
 
 
-std::any NyarParser::CondicionContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<NyarParserVisitor*>(visitor))
+size_t VMParser::CondicionContext::getRuleIndex() const {
+  return VMParser::RuleCondicion;
+}
+
+
+std::any VMParser::CondicionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitCondicion(this);
   else
     return visitor->visitChildren(this);
 }
 
-NyarParser::CondicionContext* NyarParser::condicion() {
+VMParser::CondicionContext* VMParser::condicion() {
   CondicionContext *_localctx = _tracker.createInstance<CondicionContext>(_ctx, getState());
-  enterRule(_localctx, 20, NyarParser::RuleCondicion);
+  enterRule(_localctx, 20, VMParser::RuleCondicion);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -1511,11 +1511,11 @@ NyarParser::CondicionContext* NyarParser::condicion() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(143);
-    match(NyarParser::COND);
+    match(VMParser::COND);
     setState(144);
     expr(0);
     setState(145);
-    match(NyarParser::START_BLOCK);
+    match(VMParser::START_BLOCK);
     setState(149);
     _errHandler->sync(this);
     _la = _input->LA(1);
@@ -1528,16 +1528,16 @@ NyarParser::CondicionContext* NyarParser::condicion() {
       _la = _input->LA(1);
     }
     setState(152);
-    match(NyarParser::END_BLOCK);
+    match(VMParser::END_BLOCK);
     setState(162);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
-    if (_la == NyarParser::COND) {
+    if (_la == VMParser::COND) {
       setState(153);
-      match(NyarParser::COND);
+      match(VMParser::COND);
       setState(154);
-      match(NyarParser::START_BLOCK);
+      match(VMParser::START_BLOCK);
       setState(158);
       _errHandler->sync(this);
       _la = _input->LA(1);
@@ -1550,7 +1550,7 @@ NyarParser::CondicionContext* NyarParser::condicion() {
         _la = _input->LA(1);
       }
       setState(161);
-      match(NyarParser::END_BLOCK);
+      match(VMParser::END_BLOCK);
     }
    
   }
@@ -1563,7 +1563,7 @@ NyarParser::CondicionContext* NyarParser::condicion() {
   return _localctx;
 }
 
-bool NyarParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
+bool VMParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
     case 2: return exprSempred(antlrcpp::downCast<ExprContext *>(context), predicateIndex);
 
@@ -1573,7 +1573,7 @@ bool NyarParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicat
   return true;
 }
 
-bool NyarParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) {
+bool VMParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) {
   switch (predicateIndex) {
     case 0: return precpred(_ctx, 6);
     case 1: return precpred(_ctx, 5);
@@ -1586,10 +1586,10 @@ bool NyarParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) {
   return true;
 }
 
-void NyarParser::initialize() {
+void VMParser::initialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
-  nyarparserParserInitialize();
+  vmparserParserInitialize();
 #else
-  ::antlr4::internal::call_once(nyarparserParserOnceFlag, nyarparserParserInitialize);
+  ::antlr4::internal::call_once(vmparserParserOnceFlag, vmparserParserInitialize);
 #endif
 }

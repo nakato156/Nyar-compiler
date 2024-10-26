@@ -1,5 +1,5 @@
 
-// Generated from ./NyarLexer.g4 by ANTLR 4.13.2
+// Generated from ./VMLexer.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -9,7 +9,7 @@
 
 
 
-class  NyarLexer : public antlr4::Lexer {
+class  VMLexer : public antlr4::Lexer {
 public:
   enum {
     LAPREN = 1, RPAREN = 2, ADD = 3, RESTA = 4, MUL = 5, DIV = 6, LESS = 7, 
@@ -20,9 +20,9 @@ public:
     NADA = 32, RETURN = 33, WS = 34
   };
 
-  explicit NyarLexer(antlr4::CharStream *input);
+  explicit VMLexer(antlr4::CharStream *input);
 
-  ~NyarLexer() override;
+  ~VMLexer() override;
 
 
   std::string getGrammarFileName() const override;

@@ -55,6 +55,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitNeqExp(NyarParser::NeqExpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitArreglo(NyarParser::ArregloContext *ctx) override {
     return visitChildren(ctx);
   }

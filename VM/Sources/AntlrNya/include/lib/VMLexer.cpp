@@ -1,8 +1,8 @@
 
-// Generated from ./NyarLexer.g4 by ANTLR 4.13.2
+// Generated from ./VMLexer.g4 by ANTLR 4.13.2
 
 
-#include "NyarLexer.h"
+#include "VMLexer.h"
 
 
 using namespace antlr4;
@@ -13,8 +13,8 @@ using namespace antlr4;
 
 namespace {
 
-struct NyarLexerStaticData final {
-  NyarLexerStaticData(std::vector<std::string> ruleNames,
+struct VMLexerStaticData final {
+  VMLexerStaticData(std::vector<std::string> ruleNames,
                           std::vector<std::string> channelNames,
                           std::vector<std::string> modeNames,
                           std::vector<std::string> literalNames,
@@ -24,10 +24,10 @@ struct NyarLexerStaticData final {
         symbolicNames(std::move(symbolicNames)),
         vocabulary(this->literalNames, this->symbolicNames) {}
 
-  NyarLexerStaticData(const NyarLexerStaticData&) = delete;
-  NyarLexerStaticData(NyarLexerStaticData&&) = delete;
-  NyarLexerStaticData& operator=(const NyarLexerStaticData&) = delete;
-  NyarLexerStaticData& operator=(NyarLexerStaticData&&) = delete;
+  VMLexerStaticData(const VMLexerStaticData&) = delete;
+  VMLexerStaticData(VMLexerStaticData&&) = delete;
+  VMLexerStaticData& operator=(const VMLexerStaticData&) = delete;
+  VMLexerStaticData& operator=(VMLexerStaticData&&) = delete;
 
   std::vector<antlr4::dfa::DFA> decisionToDFA;
   antlr4::atn::PredictionContextCache sharedContextCache;
@@ -41,21 +41,21 @@ struct NyarLexerStaticData final {
   std::unique_ptr<antlr4::atn::ATN> atn;
 };
 
-::antlr4::internal::OnceFlag nyarlexerLexerOnceFlag;
+::antlr4::internal::OnceFlag vmlexerLexerOnceFlag;
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-std::unique_ptr<NyarLexerStaticData> nyarlexerLexerStaticData = nullptr;
+std::unique_ptr<VMLexerStaticData> vmlexerLexerStaticData = nullptr;
 
-void nyarlexerLexerInitialize() {
+void vmlexerLexerInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
-  if (nyarlexerLexerStaticData != nullptr) {
+  if (vmlexerLexerStaticData != nullptr) {
     return;
   }
 #else
-  assert(nyarlexerLexerStaticData == nullptr);
+  assert(vmlexerLexerStaticData == nullptr);
 #endif
-  auto staticData = std::make_unique<NyarLexerStaticData>(
+  auto staticData = std::make_unique<VMLexerStaticData>(
     std::vector<std::string>{
       "LAPREN", "RPAREN", "ADD", "RESTA", "MUL", "DIV", "LESS", "GREATER", 
       "EQUAL", "NEQ", "EQEQ", "COMMA", "SEMI", "LBRACKET", "RBRACKET", "LINE_COMMENT", 
@@ -183,55 +183,55 @@ void nyarlexerLexerInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  nyarlexerLexerStaticData = std::move(staticData);
+  vmlexerLexerStaticData = std::move(staticData);
 }
 
 }
 
-NyarLexer::NyarLexer(CharStream *input) : Lexer(input) {
-  NyarLexer::initialize();
-  _interpreter = new atn::LexerATNSimulator(this, *nyarlexerLexerStaticData->atn, nyarlexerLexerStaticData->decisionToDFA, nyarlexerLexerStaticData->sharedContextCache);
+VMLexer::VMLexer(CharStream *input) : Lexer(input) {
+  VMLexer::initialize();
+  _interpreter = new atn::LexerATNSimulator(this, *vmlexerLexerStaticData->atn, vmlexerLexerStaticData->decisionToDFA, vmlexerLexerStaticData->sharedContextCache);
 }
 
-NyarLexer::~NyarLexer() {
+VMLexer::~VMLexer() {
   delete _interpreter;
 }
 
-std::string NyarLexer::getGrammarFileName() const {
-  return "NyarLexer.g4";
+std::string VMLexer::getGrammarFileName() const {
+  return "VMLexer.g4";
 }
 
-const std::vector<std::string>& NyarLexer::getRuleNames() const {
-  return nyarlexerLexerStaticData->ruleNames;
+const std::vector<std::string>& VMLexer::getRuleNames() const {
+  return vmlexerLexerStaticData->ruleNames;
 }
 
-const std::vector<std::string>& NyarLexer::getChannelNames() const {
-  return nyarlexerLexerStaticData->channelNames;
+const std::vector<std::string>& VMLexer::getChannelNames() const {
+  return vmlexerLexerStaticData->channelNames;
 }
 
-const std::vector<std::string>& NyarLexer::getModeNames() const {
-  return nyarlexerLexerStaticData->modeNames;
+const std::vector<std::string>& VMLexer::getModeNames() const {
+  return vmlexerLexerStaticData->modeNames;
 }
 
-const dfa::Vocabulary& NyarLexer::getVocabulary() const {
-  return nyarlexerLexerStaticData->vocabulary;
+const dfa::Vocabulary& VMLexer::getVocabulary() const {
+  return vmlexerLexerStaticData->vocabulary;
 }
 
-antlr4::atn::SerializedATNView NyarLexer::getSerializedATN() const {
-  return nyarlexerLexerStaticData->serializedATN;
+antlr4::atn::SerializedATNView VMLexer::getSerializedATN() const {
+  return vmlexerLexerStaticData->serializedATN;
 }
 
-const atn::ATN& NyarLexer::getATN() const {
-  return *nyarlexerLexerStaticData->atn;
+const atn::ATN& VMLexer::getATN() const {
+  return *vmlexerLexerStaticData->atn;
 }
 
 
 
 
-void NyarLexer::initialize() {
+void VMLexer::initialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
-  nyarlexerLexerInitialize();
+  vmlexerLexerInitialize();
 #else
-  ::antlr4::internal::call_once(nyarlexerLexerOnceFlag, nyarlexerLexerInitialize);
+  ::antlr4::internal::call_once(vmlexerLexerOnceFlag, vmlexerLexerInitialize);
 #endif
 }

@@ -1,4 +1,4 @@
-FROM archlinux:base-devel
+FROM archlinux:base-devel-20241020.0.271562
 WORKDIR /TrabajoFinal
 
 #Install packages
@@ -14,6 +14,8 @@ RUN cmake --build build -j 20
 WORKDIR /TrabajoFinal/llvm-project/build
 RUN make install
 RUN make clean
+
+RUN rm -rf /TrabajoFinal/llvm-project
 
 #Install AUR
 ENV AUR_USER=ab
