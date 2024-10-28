@@ -101,14 +101,29 @@ antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx) {return vis
 antlrcpp::Any NyarVisitor::visitId(NyarParser::IdContext *ctx) {return visitChildren(ctx);}
 
 // Joaquin
+//no es lo mismo que visit array? xd
+antlrcpp::Any NyarVisitor::visitArreglo(NyarParser::ArregloContext *ctx) {
 
-antlrcpp::Any NyarVisitor::visitArreglo(NyarParser::ArregloContext *ctx) {return visitChildren(ctx);}
+}
 
-antlrcpp::Any NyarVisitor::visitEqEqExp(NyarParser::EqEqExpContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitEqEqExp(NyarParser::EqEqExpContext *ctx) {
+}
 
-antlrcpp::Any NyarVisitor::visitArray(NyarParser::ArrayContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitArray(NyarParser::ArrayContext *ctx) {
+    std::vector<antlrcpp::Any> elements;
+    for (auto expr: ctx->expr()){
+        elements.push_back(visit(expr));
+    }
+    return elements
+}
 
-antlrcpp::Any NyarVisitor::visitFuncParams(NyarParser::FuncParamsContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitFuncParams(NyarParser::FuncParamsContext *ctx) {
+std::vector<std::string>params;
+for(auto id: ctx->ID()){
+    params.push_back(id->getText());
+ }   
+ return params;
+}
 
 antlrcpp::Any NyarVisitor::visitFuncDef(NyarParser::FuncDefContext *ctx) {return visitChildren(ctx);}
 
@@ -118,4 +133,11 @@ antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx) {retu
 
 antlrcpp::Any NyarVisitor::visitIterar(NyarParser::IterarContext *ctx) {return visitChildren(ctx);}
 
-antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx) {
+    bool condition =visit(ctx->expr()).as<bool>();
+    if (condition)
+        return visitChildren(ctx->stat(0));
+    else if (ctx->stat().size()>1)
+        return visitChildren(ctx->stat(1));
+    return nullptr;
+}
