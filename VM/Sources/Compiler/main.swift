@@ -1,9 +1,11 @@
 import cppllvm
-//import Antlr4
+import Antlr4
 import AntlrNya
 import Foundation
 
 func abrirArchivo(_ arguments: [String],_ count: Int) -> Int {
+
+    var fileManager = FileManager.default
 
     if(count <= 1) {
         return -1;
@@ -14,32 +16,30 @@ func abrirArchivo(_ arguments: [String],_ count: Int) -> Int {
     var path_files: [String] = [];
     
     for arg in arguments {
-        if(arg.count > 0 && arguments[0] != "-") {
-            path_files.append(arg)
+
+        if(arg.count > 0 && arg[arg.startIndex] == "-") {
+            var argTemp = arg
+            argTemp.removeFirst()
+            print(argTemp)
+            path_files.append(argTemp)
             continue
         }
-        let index = arg.index(arg.startIndex, offsetBy:1)
-        parameters.append(String(arg[index]))
     }
 
-    if(!path_files.isEmpty) {
-        if !FileManager.default.fileExists(atPath: path_files[0]) {
-           print("Archivo no existe;")
-           exit(EXIT_FAILURE) 
+    if fileManager.fileExists(atPath: path_files[0]) {
+        
+        if let fileContent = fileManager.contents(atPath: path_files[0]) {
+            print(String(data:fileContent, encoding: .utf8)!)
         }
 
-        if let fileData = FileManager.default.contents(atPath: path_files[0]),
-            let fileContent = String(data: fileData, encoding: .utf8) {
-                
-                let lexer = VMLexer()
-                let parser = VMParser()
-
-                antlr4.ANTLRInputStream(std.string_view(path_files[0]))
-                
-
-
-            }
+    } else {
+           print("Archivo no existe;")
+           exit(EXIT_FAILURE)         
     }
+
+
+    //var input = Antlr4.ANTLRInputStream()
+    //var lexer = AntlrNya.VMParser(input)
 
 
     return 1

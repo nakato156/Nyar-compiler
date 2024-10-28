@@ -3,3 +3,5 @@ make clean
 mkdir build && cd build
 cmake ..
 make
+
+./Nyar -../test.ae

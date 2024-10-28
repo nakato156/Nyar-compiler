@@ -1,10 +1,13 @@
 module AntlrNya [system] {
-    umbrella "/usr/include/antlr4-runtime"
+    module Runtime {
+        umbrella "/usr/include/antlr4-runtime"
+        module * { export * }
+    }
     
-    header "antlrnya.h"
-    header "inlcude/lib/VMParser.h"
-    header "inlcude/lib/VMLexer.h"
-
-    module * { export * }
+    module VM {
+        header "antlrnya.h"
+        export *
+    }
+    
     link "antlr4-runtime"
 }
