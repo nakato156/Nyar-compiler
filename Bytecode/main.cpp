@@ -1,7 +1,7 @@
 #include "antlr4-runtime.h"
 
-#include "./lib/NyarLexer.h"
-#include "./lib/NyarParser.h"
+#include "./parser/NyarLexer.h"
+#include "./parser/NyarParser.h"
 #include "./visitor/NyarVisitor.h"
 
 using namespace std;
