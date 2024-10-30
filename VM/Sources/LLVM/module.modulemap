@@ -1,0 +1,9 @@
+module LLVM [system] {
+
+    umbrella "/usr/local/include"
+
+    header "llvm.h"
+
+    export *
+    requires cplusplus
+}

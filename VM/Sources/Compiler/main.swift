@@ -1,6 +1,6 @@
-import cppllvm
 import Antlr4
 import AntlrNya
+import LLVM
 import Foundation
 
 func abrirArchivo(_ arguments: [String],_ count: Int) -> Int {
@@ -30,17 +30,24 @@ func abrirArchivo(_ arguments: [String],_ count: Int) -> Int {
         
         if let fileContent = fileManager.contents(atPath: path_files[0]) {
             print(String(data:fileContent, encoding: .utf8)!)
+
+            let input = Antlr4.ANTLRInputStream()
+            let lexer = VMLexer(input)
+
+            let tokens = Antlr4.CommonTokenStream(lexer);
+            let parser  = try? VMParser(tokens);
+
+            parser?.setBuildParseTree(true)
+            let tree = try? parser?.program()
+
+            
+
         }
 
     } else {
            print("Archivo no existe;")
            exit(EXIT_FAILURE)         
     }
-
-
-    //var input = Antlr4.ANTLRInputStream()
-    //var lexer = AntlrNya.VMParser(input)
-
 
     return 1
 }

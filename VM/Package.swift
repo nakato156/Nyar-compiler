@@ -18,12 +18,29 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .systemLibrary(
-            name: "llvm",
-            pkgConfig: "cppllvm",
-            providers: [
-                .brew(["llvm"]),
-                .apt(["llvm"])
-            ]),
+            name: "LLVM",
+            pkgConfig: "cppllvm"
+        ),
+//        .target(
+//            name: "LLVMWrapper",
+//            cxxSettings: [
+//                .define("_GNU_SOURCE"),
+//                .unsafeFlags([
+//                    "-std=c++17",
+//                    "-fno-exceptions",
+//                    "-fno-rtti",
+//                    "-D__STDC_CONSTANT_MACROS",
+//                    "-D__STDC_FORMAT_MACROS",
+//                    "-D__STDC_LIMIT_MACROS"
+//                ])
+//            ],
+//            linkerSettings: [
+//                .linkedLibrary("LLVM"),
+//                .linkedLibrary("stdc++"),
+//                .linkedFramework("Foundation"),
+//                .unsafeFlags(["-L/usr/local/lib"])
+//            ]
+//        ),
         .target(
             name: "AntlrNya",
             dependencies: [
@@ -34,7 +51,7 @@ let package = Package(
             name: "Compiler",
             dependencies: [
                 "AntlrNya",
-                "llvm", 
+                "LLVM", 
                 .product(name:"Antlr4", package:"Antlr4")
             ],
             swiftSettings: [

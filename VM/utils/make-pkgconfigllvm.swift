@@ -109,11 +109,13 @@ func makeFile() throws {
   // SwiftPM has a whitelisted set of cflags that it understands, and
   // unfortunately that includes almost everything but the include dir.
 
-  let cFlags = run(llvmConfig, args: ["--cflags"])!
+  let cxxFlags = run(llvmConfig, args: ["--cxxflags", "--cppflags"])!
                 .replacing(charactersIn: .newlines, with: "")
                 .components(separatedBy: " ")
-                .filter { $0.hasPrefix("-I") }
                 .joined(separator: " ")
+
+  print(cxxFlags)
+  print(ldFlags)
 
   /// Emit the pkg-config file to the path
 
@@ -123,7 +125,7 @@ func makeFile() throws {
     "Version: \(versionStr)",
     "Libs: \(ldFlags) \(libCPP)",
     "Requires.private:",
-    "Cflags: \(cFlags)",
+    "Cflags: \(cxxFlags)",
   ].joined(separator: "\n")
 
   print("Writing pkg-config file to \(cllvmPath.path)...")
