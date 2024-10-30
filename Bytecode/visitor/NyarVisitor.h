@@ -6,7 +6,7 @@
 #include <string>
 #include <system_error>
 
-#include "../lib/NyarParserBaseVisitor.h"
+#include "../parser/NyarParserBaseVisitor.h"
 
 #include "antlr4-runtime.h"
 #include <llvm/Support/raw_ostream.h>
@@ -16,7 +16,7 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
-
+#include "../MLVM/MLVM.h"
 class NyarVisitor : public NyarParserBaseVisitor
 {
 private:
@@ -24,6 +24,7 @@ private:
     std::unique_ptr<llvm::LLVMContext> context;
     std::unique_ptr<llvm::Module> module;
     std::unique_ptr<llvm::IRBuilder<>> builder;
+    std::unique_ptr<MVLM::IRBuilder> MVLMBuilder;
 
     llvm::Function *F;
     llvm::AllocaInst *CreateEntryBlockAlloca(llvm::StringRef varName)
@@ -36,12 +37,14 @@ public:
     NyarVisitor() : 
         context(std::make_unique<llvm::LLVMContext>()),
         module(std::make_unique<llvm::Module>("NyarModule", *context)),
-        builder(std::make_unique<llvm::IRBuilder<>>(*context)) {}
+        builder(std::make_unique<llvm::IRBuilder<>>(*context)),
+        MVLMBuilder(std::make_unique<MVLM::IRBuilder>()) {}
 
     void compile() {
         std::error_code error;
         llvm::raw_fd_ostream outLL("maid.ll", error);
         module->print(outLL, nullptr);
+        MVLMBuilder->generateBytecode("maid.ny");
     }
 
     virtual antlrcpp::Any visitProgram(NyarParser::ProgramContext *ctx) override;

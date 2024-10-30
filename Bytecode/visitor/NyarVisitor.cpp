@@ -1,6 +1,9 @@
 #include "NyarVisitor.h"
 
 #include "antlr4-runtime.h"
+#include "../src/utils/strfunctions.h"
+#include <optional>
+#include "../MLVM/MLVM.h"
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
@@ -8,6 +11,8 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
+#include <iostream>
+#include <typeinfo> 
 
 antlrcpp::Any NyarVisitor::visitProgram(NyarParser::ProgramContext *ctx) {return visitChildren(ctx);}
 
@@ -16,9 +21,9 @@ antlrcpp::Any NyarVisitor::visitStat(NyarParser::StatContext *ctx) {return visit
 antlrcpp::Any NyarVisitor::visitNumber(NyarParser::NumberContext *ctx) {
     auto value = ctx->NUM()->getText();
     if(value.find('.') != std::string::npos){
-        return llvm::ConstantFP::get(*context, llvm::APFloat(std::stod(value)));
+        return std::stod(value);
     }
-    return llvm::ConstantInt::get(*context, llvm::APInt(32, std::stoi(value), true));
+    return std::stoi(value);
 }
 
 antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx) {
@@ -27,78 +32,147 @@ antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx) {
 
     // Visita la expresión y obtiene su valor (esto puede ser un valor o un puntero a un valor en la memoria)
     auto exprValue = visit(ctx->expr());
-
-    // Verifica que el valor de la expresión sea del tipo esperado, aquí asumimos que es un double
-    llvm::Value *value;
-    if (exprValue.type() == typeid(llvm::Value*)) {
-        value = std::any_cast<llvm::Value*>(exprValue);
+    std::string computedValue;
+    
+    if (exprValue.type() == typeid(double)) {
+        computedValue = std::to_string(std::any_cast<double>(exprValue));
+    } else if (exprValue.type() == typeid(int)) {
+        computedValue = std::to_string(std::any_cast<int>(exprValue));
+    } else if (exprValue.type() == typeid(std::string)) {
+        computedValue = std::any_cast<std::string>(exprValue);
     } else {
-        std::cerr << exprValue.type().name() << std::endl;
-        // Maneja el error si el tipo no es válido
-        throw std::runtime_error("Invalid expression type");
+        throw std::runtime_error("Unexpected type in exprValue");
     }
 
+    std::cout << "varName: " << varName << " computedValue: " << computedValue << std::endl;
     // Crea la entrada en la memoria para la variable
-    llvm::AllocaInst *alloca = CreateEntryBlockAlloca(varName);
+    auto var = std::make_shared<MVLM::Variable>(varName, computedValue);
     
     // Almacena el valor de la expresión en la memoria
-    builder->CreateStore(value, alloca);
+    MVLMBuilder->createVariable(var);
+    memory[varName] = exprValue;
 
-    // Guarda la variable en el mapa de memoria
-    memory[varName] = std::any(alloca);
-
-    return nullptr;
+    return var;
 }
 
 antlrcpp::Any NyarVisitor::visitBoolean(NyarParser::BooleanContext *ctx) {
     std::string varName = ctx->getText();
+    std::cout << "boolName: " << varName << std::endl;
     // bool vars
-    if(varName == "verdadero") {
-        llvm::Value *val = llvm::ConstantInt::get(*context, llvm::APInt(1, 1));
-        return val;
-    }
-    if(varName == "falso") {
-        llvm::Value *val = llvm::ConstantInt::get(*context, llvm::APInt(1, 0));
-        return val;
-    }
-
-    // Busca la variable en la memoria
-    if (memory.find(varName) != memory.end()) {
-        return memory[varName];  // Ahora memory almacena llvm::Value*
-    } else {
-        std::cerr << "Variable no encontrada: " << varName << std::endl;
-        return nullptr;
-    }
+    return int(varName == "verdadero");
 }
 
 antlrcpp::Any NyarVisitor::visitString(NyarParser::StringContext *ctx) {
     std::string str = ctx->STRING()->getText();
     str = str.substr(1, str.size() - 2);  // Quitar comillas
-
-    llvm::Constant *stringConstant = llvm::ConstantDataArray::getString(*context, str);
-    llvm::GlobalVariable *stringGlobal = new llvm::GlobalVariable(
-        *module,
-        stringConstant->getType(),
-        true, // Es constante
-        llvm::GlobalValue::PrivateLinkage, // Tipo de enlace
-        stringConstant, // Valor de la variable global
-        "" // Nombre de la variable global
-    );
-    
-    // Crear un puntero a la cadena global
-    llvm::Value *stringPtr = builder->CreatePointerCast(stringGlobal, llvm::Type::getInt8Ty(*context));
-    return stringPtr;
+   return str;
 }
 
 antlrcpp::Any NyarVisitor::visitEqExp(NyarParser::EqExpContext *ctx) {return visitChildren(ctx);}
 
-antlrcpp::Any NyarVisitor::visitAritExp(NyarParser::AritExpContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitAritExp(NyarParser::AritExpContext *ctx) {
+    // Visita las expresiones izquierda y derecha
+    auto leftAny = visit(ctx->expr(0));
+    auto rightAny = visit(ctx->expr(1));
+
+    // Determina los valores numéricos (convertir a double para manejo uniforme)
+    std::optional<double> leftNumVal;
+    std::optional<double> rightNumVal;
+    
+    std::optional<std::string> leftStrVal;
+    std::optional<std::string> rightStrVal;
+    
+    // Manejar tipo de left
+    if (leftAny.type() == typeid(int)) {
+        leftNumVal = static_cast<double>(std::any_cast<int>(leftAny));
+    } else if (leftAny.type() == typeid(double)) {
+        leftNumVal = std::any_cast<double>(leftAny);
+    } else if (leftAny.type() == typeid(std::string)) {
+        leftStrVal = std::any_cast<std::string>(leftAny);
+    } else {
+        throw std::runtime_error("Unsupported type for left operand in arithmetic expression");
+    }
+
+    // Manejar tipo de right
+    if (rightAny.type() == typeid(int)) {
+        rightNumVal = static_cast<double>(std::any_cast<int>(rightAny));
+    } else if (rightAny.type() == typeid(double)) {
+        rightNumVal = std::any_cast<double>(rightAny);
+    } else if (rightAny.type() == typeid(std::string)){
+        rightStrVal = std::any_cast<std::string>(rightAny);
+    } else {
+        throw std::runtime_error("Unsupported type for right operand in arithmetic expression");
+    }
+
+
+    // Obtener el operador
+    std::string op = ctx->op->getText();
+
+    // Calcular el resultado
+    std::optional<double> resultNum;
+    std::optional<std::string> resultStr;
+
+    if (op == "+") {
+        if (leftNumVal && rightNumVal) {
+            resultNum = *leftNumVal + *rightNumVal;
+        } else if (leftStrVal && rightStrVal) {
+            resultStr = *leftStrVal + *rightStrVal;
+        } else {
+            throw std::runtime_error("Operación de suma no soportada para los tipos de operandos");
+        }
+    } else if (op == "-") {
+       if (leftNumVal && rightNumVal) {
+            resultNum = *leftNumVal - *rightNumVal;
+        } else {
+            throw std::runtime_error("Operación de suma no soportada para los tipos de operandos");
+        }
+    } else if (op == "*") {
+       if (leftNumVal && rightNumVal) {
+            resultNum = *leftNumVal + *rightNumVal;
+        } else if (leftStrVal && rightNumVal) {
+            resultStr = Strfunctions::repetir(*leftStrVal, *rightNumVal);
+        } else if (leftNumVal && rightStrVal) {
+            resultStr = Strfunctions::repetir(*rightStrVal, *leftNumVal);
+        } else {
+            throw std::runtime_error("Operación de suma no soportada para los tipos de operandos");
+        }
+    } else if (op == "/") {
+        if (leftStrVal || rightStrVal) {
+            throw std::runtime_error("Operación de división no soportada para cadenas");
+        }
+        if (rightNumVal == 0.0) {
+            throw std::runtime_error("Division por cero");
+        }
+        resultNum = *leftNumVal / *rightNumVal;
+    } else {
+        throw std::runtime_error("Operador aritmético no soportado: " + op);
+    }
+
+    std::cout << "aritExp result Num: " << *resultNum << std::endl;
+    std::cout << "aritExp result Str: " << *resultStr << std::endl;
+    if(resultNum) return *resultNum;
+    else return *resultStr;
+}
 
 antlrcpp::Any NyarVisitor::visitParenExp(NyarParser::ParenExpContext *ctx) {return visitChildren(ctx);}
 
-antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx) {
+    // std::string funcName = ctx->expr(0);
+    // std::cout << "funcName: " << funcName << std::endl;
+    return visitChildren(ctx);
+}
 
-antlrcpp::Any NyarVisitor::visitId(NyarParser::IdContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitId(NyarParser::IdContext *ctx) {
+    std::string varName = ctx->ID()->getText();
+    std::cout << "id: " << varName << std::endl;
+
+    // Busca la variable en la tabla de símbolos
+    if (memory.find(varName) != memory.end()) {
+        return memory[varName];
+    } else {
+        throw std::runtime_error("Variable no encontrada: " + varName);
+    }
+}
 
 // Joaquin
 //no es lo mismo que visit array? xd
@@ -114,7 +188,7 @@ antlrcpp::Any NyarVisitor::visitArray(NyarParser::ArrayContext *ctx) {
     for (auto expr: ctx->expr()){
         elements.push_back(visit(expr));
     }
-    return elements
+    return elements;
 }
 
 antlrcpp::Any NyarVisitor::visitFuncParams(NyarParser::FuncParamsContext *ctx) {
@@ -133,11 +207,4 @@ antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx) {retu
 
 antlrcpp::Any NyarVisitor::visitIterar(NyarParser::IterarContext *ctx) {return visitChildren(ctx);}
 
-antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx) {
-    bool condition =visit(ctx->expr()).as<bool>();
-    if (condition)
-        return visitChildren(ctx->stat(0));
-    else if (ctx->stat().size()>1)
-        return visitChildren(ctx->stat(1));
-    return nullptr;
-}
+antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx) {return visitChildren(ctx);}

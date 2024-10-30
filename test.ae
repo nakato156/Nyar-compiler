@@ -1,5 +1,4 @@
 uno = 1;
 variable = 10+2+uno+2;
-otro = "1hola " + "nop";
-
-Mybool = verdadero;
+hola = "hello" + " " + "dani";
+imprimir(variable, uno, "holas");
