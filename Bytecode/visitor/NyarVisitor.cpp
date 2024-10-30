@@ -8,6 +8,9 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
+#include "SymbolTable.h"
+
+std::shared_ptr<SymbolTable>currentScope=std::make_shared<SymbolTable>();
 
 antlrcpp::Any NyarVisitor::visitProgram(NyarParser::ProgramContext *ctx) {return visitChildren(ctx);}
 
@@ -101,35 +104,83 @@ antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx) {return vis
 antlrcpp::Any NyarVisitor::visitId(NyarParser::IdContext *ctx) {return visitChildren(ctx);}
 
 // Joaquin
-//no es lo mismo que visit array? xd
+//visita el arreglo y retorna sus elementos
 antlrcpp::Any NyarVisitor::visitArreglo(NyarParser::ArregloContext *ctx) {
-
-}
-
-antlrcpp::Any NyarVisitor::visitEqEqExp(NyarParser::EqEqExpContext *ctx) {
-}
-
-antlrcpp::Any NyarVisitor::visitArray(NyarParser::ArrayContext *ctx) {
     std::vector<antlrcpp::Any> elements;
-    for (auto expr: ctx->expr()){
-        elements.push_back(visit(expr));
+        for (auto expr: ctx->expr()){
+            elements.push_back(visit(expr));
     }
     return elements
 }
 
+antlrcpp::Any NyarVisitor::visitEqEqExp(NyarParser::EqEqExpContext *ctx) {
+}
+/* 
+antlrcpp::Any NyarVisitor::visitArray(NyarParser::ArrayContext *ctx) {
+    
+}*/
+//visita los parametros de una funcion y devuelve la lista de nombres de estos
 antlrcpp::Any NyarVisitor::visitFuncParams(NyarParser::FuncParamsContext *ctx) {
-std::vector<std::string>params;
-for(auto id: ctx->ID()){
-    params.push_back(id->getText());
- }   
- return params;
+    std::vector<std::string> params;
+    for (auto id : ctx->ID()) {
+        params.push_back(id->getText());
+    }
+    return params;
+}
+//la definicion de una funcion y la agrega a la tabla de simbolos
+antlrcpp::Any NyarVisitor::visitFuncDef(NyarParser::FuncDefContext *ctx) {
+    std::string funcName = ctx->ID()->getText();
+    std::vector<std::string> params;
+    for (auto param : ctx->funcParams()->ID()) {
+        params.push_back(param->getText());
+    }
+
+    llvm::FunctionType *funcType = llvm::FunctionType::get(builder->getVoidTy(), false); 
+    llvm::Function *function = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, funcName, module.get());
+
+    //se guardaa el nombre de las funciones en la tabla de simbolos
+    currentScope->defineFunction(funcName, params, function);
+    return nullptr;
+}
+//visita los argumentos de una funcion durante la llamada
+antlrcpp::Any NyarVisitor::visitFuncArgs(NyarParser::FuncArgsContext *ctx) {
+    std::vector<llvm::Value *> args;
+    for (auto expr : ctx->expr()) {
+        llvm::Value *argValue = std::any_cast<llvm::Value *>(visit(expr));
+        args.push_back(argValue);
+    }
+    return args;
 }
 
-antlrcpp::Any NyarVisitor::visitFuncDef(NyarParser::FuncDefContext *ctx) {return visitChildren(ctx);}
+// Visita la llamada a la funcion y genera el codigo ir 
+antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx) {
+    //traemos el nombre de la funcion
+    std::string funcName = ctx->ID()->getText();
 
-antlrcpp::Any NyarVisitor::visitFuncArgs(NyarParser::FuncArgsContext *ctx) {return visitChildren(ctx);}
+    //traemos a la funcion de la tabla de simbolos
+    auto funcSymbol = currentScope->getFunction(funcName);
 
-antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx) {return visitChildren(ctx);}
+    // Ccomprobamos si la funcion existe en este ambito
+    if (funcSymbol) {
+        llvm::Function *llvmFunc = funcSymbol->llvmFunc;
+        std::vector<llvm::Value *> args;
+
+        // evaluamos cada argumento de la llamada y los pasa como argumentos al crear la llamada
+        if (ctx->funcArgs()) {
+            for (auto expr : ctx->funcArgs()->expr()) {
+                llvm::Value *argValue = std::any_cast<llvm::Value *>(visit(expr));
+                args.push_back(argValue);
+            }
+        }
+        
+        // Crea la llamada a la func con los argumentos evaluados
+        builder->CreateCall(llvmFunc, args);
+    } else {
+        std::cerr << "Error: La función '" << funcName << "' no está definida." << std::endl;
+    }
+
+    return nullptr;
+}
 
 antlrcpp::Any NyarVisitor::visitIterar(NyarParser::IterarContext *ctx) {return visitChildren(ctx);}
 
