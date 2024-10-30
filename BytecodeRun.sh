@@ -4,4 +4,4 @@ mkdir build && cd build
 cmake ..
 make
 
-./Nyar -../test.ae
+./Nyar ../test.ae
