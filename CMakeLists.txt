@@ -13,28 +13,10 @@ message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 include_directories(./Bytecode/src)
 
 # Incluye los encabezados del runtime de ANTLR
-if(APPLE)
-    if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
-        include_directories(/opt/homebrew/Cellar/antlr/4.13.2/bin)
-        include_directories(/opt/homebrew/Cellar/antlr4-cpp-runtime/4.13.2/include/antlr4-runtime)
-    else()
-        message(STATUS "Incluir xd")
-    endif()
-else()
-        include_directories($ENV{ANTLRRUNTIMEH})
-endif()
+include_directories($ENV{ANTLRRUNTIMEH})
     
 # Añade la biblioteca del runtime de ANTLR
-if(APPLE)
-    if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
-        link_directories(/opt/homebrew/Cellar/antlr4-cpp-runtime/4.13.2/lib)
-    else()
-        message(STATUS "Incluir xd")
-    endif()
-else()
-    link_directories($ENV{ANTLRRUNTIME})
-endif()
-
+link_directories($ENV{ANTLRRUNTIME})
 
 # incluir encambezados de llvm
 include_directories(${LLVM_INCLUDE_DIRS})
