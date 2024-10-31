@@ -1,5 +1,4 @@
 #include "antlr4-runtime.h"
-
 #include "src/parser/NyarLexer.h"
 #include "src/parser/NyarParser.h"
 #include "src/visitor/NyarVisitor.h"
