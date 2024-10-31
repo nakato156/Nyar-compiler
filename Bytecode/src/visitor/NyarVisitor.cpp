@@ -1,9 +1,9 @@
 #include "NyarVisitor.h"
 
 #include "antlr4-runtime.h"
-#include "../src/utils/strfunctions.h"
+#include "utils/strfunctions.h"
 #include <optional>
-#include "../MLVM/MLVM.h"
+#include "MLVM/MLVM.h"
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
@@ -11,7 +11,7 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
-#include "../Include/SymbolTable.h"
+#include "Include/SymbolTable.h"
 #include <iostream>
 #include <typeinfo> 
 
@@ -160,8 +160,6 @@ antlrcpp::Any NyarVisitor::visitAritExp(NyarParser::AritExpContext *ctx) {
 antlrcpp::Any NyarVisitor::visitParenExp(NyarParser::ParenExpContext *ctx) {return visitChildren(ctx);}
 
 antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx) {
-    // std::string funcName = ctx->expr(0);
-    // std::cout << "funcName: " << funcName << std::endl;
     return visitChildren(ctx);
 }
 
@@ -251,7 +249,7 @@ antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx) {
         // Crea la llamada a la func con los argumentos evaluados
         builder->CreateCall(llvmFunc, args);
     } else {
-        std::cerr << "Error: La función '" << funcName << "' no está definida." << std::endl;
+        throw std::runtime_error("Error: La función '" + funcName + "' no está definida.\n");
     }
 
     return nullptr;

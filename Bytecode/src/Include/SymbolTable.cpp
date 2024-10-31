@@ -1,4 +1,4 @@
-#include "../Include/SymbolTable.h"
+#include "Include/SymbolTable.h"
 
 void SymbolTable::defineFunction(const std::string  &name, const std::vector<std::string> &params, llvm::Function *func){
     functions [name]=FunctionInfo{name,params, func};

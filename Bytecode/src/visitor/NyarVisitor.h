@@ -6,7 +6,7 @@
 #include <string>
 #include <system_error>
 
-#include "../parser/NyarParserBaseVisitor.h"
+#include "parser/NyarParserBaseVisitor.h"
 
 #include "antlr4-runtime.h"
 #include <llvm/Support/raw_ostream.h>
@@ -16,7 +16,8 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
-#include "../MLVM/MLVM.h"
+#include "MLVM/MLVM.h"
+
 class NyarVisitor : public NyarParserBaseVisitor
 {
 private:
