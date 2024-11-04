@@ -186,11 +186,33 @@ antlrcpp::Any NyarVisitor::visitArreglo(NyarParser::ArregloContext *ctx) {
 }
 
 antlrcpp::Any NyarVisitor::visitEqEqExp(NyarParser::EqEqExpContext *ctx) {
+    llvm::Value *leftValue = std::any_cast<llvm::Value*>(visit(ctx->expr(0)));
+    llvm::Value *rightValue = std::any_cast<llvm::Value*>(visit(ctx->expr(1)));
+
+    //se verifica si los tipos de operandos sean iguales
+    if (leftValue->getType() != rightValue->getType()) {
+        llvm::errs() << "Error: Los tipos de los operandos en == no coinciden.\n";
+        return nullptr;
+    }
+
+    //generamos la comparacion para enteros o floats según el tipo de los operandos
+    llvm::Value *result;
+    if (leftValue->getType()->isFloatingPointTy()) {
+        result = builder->CreateFCmpUEQ(leftValue, rightValue, "feqtmp");
+    } else if (leftValue->getType()->isIntegerTy()) {
+        result = builder->CreateICmpEQ(leftValue, rightValue, "ieqtmp");
+    } else {
+        llvm::errs() << "Error: Tipo no soportado en ==.\n";
+        return nullptr;
+    }
+
+    return result;
 }
- 
+
+ /* 
 antlrcpp::Any NyarVisitor::visitArray(NyarParser::ArrayContext *ctx) {
-    
-}
+ return 0;   
+}*/
 
 //visita los parametros de una funcion y devuelve la lista de nombres de estos
 antlrcpp::Any NyarVisitor::visitFuncParams(NyarParser::FuncParamsContext *ctx) {
@@ -255,6 +277,55 @@ antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx) {
     return nullptr;
 }
 
-antlrcpp::Any NyarVisitor::visitIterar(NyarParser::IterarContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx) {
+    // Obtenemos el bloque actual y el bloque de la función
+    llvm::Function *currentFunction = builder->GetInsertBlock()->getParent();
 
-antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx) {return visitChildren(ctx);}
+    // Creamos bloques para el "if", el "else" (opcional), y el bloque "after" (después de la condición)
+    llvm::BasicBlock *thenBlock = llvm::BasicBlock::Create(*context, "then", currentFunction);
+    llvm::BasicBlock *elseBlock = ctx->COND(1) ? llvm::BasicBlock::Create(*context, "else", currentFunction) : nullptr;
+    llvm::BasicBlock *afterBlock = llvm::BasicBlock::Create(*context, "afterCond", currentFunction);
+
+    // Visitamos la expresión de la condición y la convertimos a llvm::Value*
+    llvm::Value *condValue = nullptr;
+    antlrcpp::Any condAny = visit(ctx->expr());
+    try {
+        condValue = std::any_cast<llvm::Value*>(condAny);
+    } catch (const std::bad_any_cast& e) {
+        llvm::errs() << "Error: La expresión condicional no devuelve llvm::Value*.\n";
+        return nullptr;
+    }
+
+    // Convertimos condValue en una condición booleana
+    llvm::Value *condition = builder->CreateICmpNE(condValue, llvm::ConstantInt::get(condValue->getType(), 0), "condition");
+
+    // Generamos el salto condicional a los bloques correspondientes
+    if (elseBlock) {
+        builder->CreateCondBr(condition, thenBlock, elseBlock);
+    } else {
+        builder->CreateCondBr(condition, thenBlock, afterBlock);
+    }
+
+    // Generamos el código del bloque "then"
+    builder->SetInsertPoint(thenBlock);
+    for (auto *statCtx : ctx->stat()) {
+        visit(statCtx);  // Procesamos cada statement en el bloque "then"
+    }
+    builder->CreateBr(afterBlock);
+
+    // Generamos el código del bloque "else", si existe
+    if (elseBlock) {
+        builder->SetInsertPoint(elseBlock);
+        for (auto *statCtx : ctx->stat()) {
+            visit(statCtx);  // Procesamos cada statement en el bloque "else"
+        }
+        builder->CreateBr(afterBlock);
+    }
+
+    // Cambiamos al bloque "after" para continuar después de la condición
+    builder->SetInsertPoint(afterBlock);
+
+    return nullptr;
+}
+
+antlrcpp::Any NyarVisitor::visitIterar(NyarParser::IterarContext *ctx) {return visitChildren(ctx);}

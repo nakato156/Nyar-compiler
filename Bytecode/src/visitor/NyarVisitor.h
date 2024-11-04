@@ -71,7 +71,7 @@ public:
 
     virtual antlrcpp::Any visitEqEqExp(NyarParser::EqEqExpContext *ctx) override;
 
-    virtual antlrcpp::Any visitArray(NyarParser::ArrayContext *ctx) override;
+    //virtual antlrcpp::Any visitArray(NyarParser::ArrayContext *ctx) override;
 
     virtual antlrcpp::Any visitVariable(NyarParser::VariableContext *ctx) override;
 
