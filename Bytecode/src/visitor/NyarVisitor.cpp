@@ -2,246 +2,601 @@
 
 #include "antlr4-runtime.h"
 #include "utils/strfunctions.h"
+#include "NyarSTD/std_functions.h"
 #include <optional>
 #include "MLVM/MLVM.h"
-#include <llvm/Support/raw_ostream.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/Value.h>
-#include <llvm/IR/Type.h>
-#include <llvm/IR/Function.h>
-#include "Include/SymbolTable.h"
 #include <iostream>
-#include <typeinfo> 
+#include <typeinfo>
+#include <tuple> 
 
-std::shared_ptr<SymbolTable>currentScope=std::make_shared<SymbolTable>();
+using namespace std;
+
+tuple<optional<double>, optional<string>, shared_ptr<MLVM::Variable>, shared_ptr<MLVM::UnEvaluable>, shared_ptr<MLVM::Array<antlrcpp::Any>>, shared_ptr<MLVM::Null>> 
+extractValue(const antlrcpp::Any &anyValue) {
+    optional<double> numVal;
+    optional<string> strVal;
+    shared_ptr<MLVM::Variable> var;
+    shared_ptr<MLVM::UnEvaluable> unVal;
+    shared_ptr<MLVM::Array<antlrcpp::Any>> arrayVal;
+    shared_ptr<MLVM::Null> nullVal;
+
+    if (anyValue.type() == typeid(int)) {
+        numVal = static_cast<double>(any_cast<int>(anyValue));
+    } else if (anyValue.type() == typeid(double)) {
+        numVal = any_cast<double>(anyValue);
+    } else if (anyValue.type() == typeid(string)) {
+        strVal = any_cast<string>(anyValue);
+    } else if (anyValue.type() == typeid(shared_ptr<MLVM::Variable>)) {
+        var = any_cast<shared_ptr<MLVM::Variable>>(anyValue);
+    } else if(anyValue.type() == typeid(shared_ptr<MLVM::UnEvaluable>)){
+        unVal = any_cast<shared_ptr<MLVM::UnEvaluable>>(anyValue);
+    } else if(anyValue.type() == typeid(shared_ptr<MLVM::Array<antlrcpp::Any>>)){
+        arrayVal = any_cast<shared_ptr<MLVM::Array<antlrcpp::Any>>>(anyValue);
+    } else if (anyValue.type() == typeid(shared_ptr<MLVM::Null>)){
+        nullVal = any_cast<shared_ptr<MLVM::Null>>(anyValue);
+    } else {
+        cerr << "Unsupported type " << anyValue.type().name() << endl;
+        throw runtime_error("Unsupported type for operand in arithmetic expression");
+    }
+
+    return make_tuple(numVal, strVal, var, unVal, arrayVal, nullVal);
+}
+
+
+tuple<optional<double>, shared_ptr<MLVM::Variable>, shared_ptr<MLVM::UnEvaluable>> 
+extractNumericValue(const antlrcpp::Any &anyValue) {
+    optional<double> numVal;
+    shared_ptr<MLVM::Variable> var;
+    shared_ptr<MLVM::UnEvaluable> unVal;
+
+    if (anyValue.type() == typeid(int)) {
+        numVal = static_cast<double>(any_cast<int>(anyValue));
+    } else if (anyValue.type() == typeid(double)) {
+        numVal = any_cast<double>(anyValue);
+    } else if (anyValue.type() == typeid(shared_ptr<MLVM::Variable>)) {
+        var = any_cast<shared_ptr<MLVM::Variable>>(anyValue);
+    } else if(anyValue.type() == typeid(shared_ptr<MLVM::UnEvaluable>)){
+        cout << "no evaluable" << endl;
+        unVal = any_cast<shared_ptr<MLVM::UnEvaluable>>(anyValue);
+    } else if(anyValue.type() == typeid(void)) {
+        cout << "VOID!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+        throw runtime_error("Unsupported type VOID");
+    }  else {
+        cerr << "Unsupported type " << anyValue.type().name() << endl;
+        throw runtime_error("Unsupported type for numeric operand in arithmetic expression");
+    }
+
+    return make_tuple(numVal, var, unVal);
+}
 
 antlrcpp::Any NyarVisitor::visitProgram(NyarParser::ProgramContext *ctx) {return visitChildren(ctx);}
 
 antlrcpp::Any NyarVisitor::visitStat(NyarParser::StatContext *ctx) {return visitChildren(ctx);}
 
+antlrcpp::Any NyarVisitor::visitReturnExp(NyarParser::ReturnExpContext *ctx) {
+    auto value = visit(ctx->expr());
+    MLVMBuilder->createReturn(value);
+    return value;
+}
+
+antlrcpp::Any NyarVisitor::visitMemberAccess(NyarParser::MemberAccessContext *ctx) {
+ // Obtiene el nombre del miembro (atributo o método)
+    string memberName = ctx->ID()->getText();
+    cout << "visit member: " << memberName << "." << endl;
+
+    // Obtiene el objeto base al que se está accediendo
+    antlrcpp::Any baseAny = visit(ctx->expr());
+
+    // Extrae el valor del objeto base
+    auto [baseNum, baseStr, baseVar, baseUnVal, baseArray, baseNull] = extractValue(baseAny);
+
+    string baseRepresentation;
+
+    if (baseVar) {
+        baseRepresentation = baseVar->getVar();
+    } else if (baseUnVal) {
+        baseRepresentation = baseUnVal->toBytecode();
+    } else if (baseNum) {
+        baseRepresentation = to_string(*baseNum);
+    } else if (baseStr) {
+        baseRepresentation = *baseStr;
+    } else if (baseArray) {
+        baseRepresentation = baseArray->toBytecode();
+    } else if (baseNull) {
+        baseRepresentation = "null"; // Representación de null
+    } else {
+        cerr << "Unsupported base type in member access." << endl;
+        throw runtime_error("Unsupported base type in member access.");
+    }
+
+    // Determina si el miembro es una llamada a método o un atributo
+    bool isMethodCall = ctx->funcCall() != nullptr;
+
+    if (isMethodCall) {
+        // Es una llamada a método: DOT funcCall
+        // Obtiene la llamada al método
+        auto methodCallAny = visit(ctx->funcCall());
+        
+        // Aquí puedes decidir cómo manejar el método llamado.
+        // Supongamos que deseas pasar el objeto base como el primer argumento (similar a 'this')
+        // Necesitas obtener los argumentos de la llamada al método
+
+        // Primero, extrae el nombre del método
+        string methodName = ctx->funcCall()->ID()->getText();
+
+        // Extrae los argumentos
+        vector<string> args;
+        if (ctx->funcCall()->funcArgs()) {
+            for (auto expr : ctx->funcCall()->funcArgs()->expr()) {
+                auto argAny = visit(expr);
+                optional<double> numVal;
+                optional<string> strVal;
+                shared_ptr<MLVM::Variable> varVal;
+                shared_ptr<MLVM::UnEvaluable> unVal;
+                shared_ptr<MLVM::Array<antlrcpp::Any>> arrayVal;
+                shared_ptr<MLVM::Null> nullVal;
+
+                tie(numVal, strVal, varVal, unVal, arrayVal, nullVal) = extractValue(argAny);
+
+                if (numVal) {
+                    args.push_back(to_string(*numVal));
+                } else if (strVal) {
+                    args.push_back("\"" + *strVal + "\"");
+                } else if (varVal) {
+                    args.push_back(varVal->getVar());
+                } else if (unVal) {
+                    args.push_back(unVal->toBytecode());
+                } else if (arrayVal) {
+                    args.push_back(arrayVal->toBytecode());
+                } else if (nullVal) {
+                    args.push_back("null");
+                } else {
+                    throw runtime_error("Argumento no soportado en llamada a método.");
+                }
+            }
+        }
+
+        // Agrega el objeto base como el primer argumento (simulando 'this')
+        args.insert(args.begin(), baseRepresentation);
+
+        // Crea la llamada al método en el bytecode
+        MLVMBuilder->createCallFunc(methodName, args);
+
+        // Dependiendo de tu IR, podrías necesitar retornar algo
+        // Aquí retornamos nullptr, pero ajusta según sea necesario
+        return nullptr;
+
+    } else {
+        // Es un acceso a atributo: DOT ID
+        // Genera el acceso al atributo en el bytecode
+        // Por ejemplo, podrías tener una instrucción para acceder al atributo
+
+        // Supongamos que tienes una convención de nombre como "base.attribute"
+        string attributeAccess = baseRepresentation + "." + memberName;
+
+        // Puedes decidir cómo representar esto en tu bytecode
+        // Por ejemplo, podrías crear una variable temporal que almacene el valor del atributo
+        auto tempVar = make_shared<MLVM::Variable>("temp", attributeAccess);
+        MLVMBuilder->createVariable(tempVar);
+
+        // Retorna la representación de la variable temporal
+        return tempVar;
+    }
+}
+
 antlrcpp::Any NyarVisitor::visitNumber(NyarParser::NumberContext *ctx) {
     auto value = ctx->NUM()->getText();
-    if(value.find('.') != std::string::npos){
-        return std::stod(value);
+    cout << "number: " << value << endl;
+    if(value.find('.') != string::npos){
+        return stod(value);
     }
-    return std::stoi(value);
+    return stoi(value);
 }
 
 antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx) {
     // Obtén el identificador de la variable
-    std::string varName = ctx->ID()->getText();
-
+    string varName = ctx->ID()->getText();
+    
     // Visita la expresión y obtiene su valor (esto puede ser un valor o un puntero a un valor en la memoria)
     auto exprValue = visit(ctx->expr());
-    std::string computedValue;
+    string computedValue;
     
-    if (exprValue.type() == typeid(double)) {
-        computedValue = std::to_string(std::any_cast<double>(exprValue));
-    } else if (exprValue.type() == typeid(int)) {
-        computedValue = std::to_string(std::any_cast<int>(exprValue));
-    } else if (exprValue.type() == typeid(std::string)) {
-        computedValue = std::any_cast<std::string>(exprValue);
+    shared_ptr<MLVM::Array<antlrcpp::Any>> arrayVal;
+    optional<double> numVal;
+    optional<string> strVal;
+    shared_ptr<MLVM::Variable> varVal;
+    shared_ptr<MLVM::UnEvaluable> unVal;
+    shared_ptr<MLVM::Null> nullVal;
+
+    cout << "visitando var" << endl;
+    tie(numVal, strVal, varVal, unVal, arrayVal, nullVal) = extractValue(exprValue);
+
+    if (arrayVal) {
+        computedValue = arrayVal->toBytecode();
+    } else if (varVal) {
+        computedValue = varVal->getValue();
+    } else if (unVal) {
+        computedValue = unVal->toBytecode();
+    } else if (numVal) {
+        computedValue = to_string(*numVal);
+    } else if (strVal) {
+        computedValue = *strVal;
+    } else if (nullVal) {
+        computedValue = nullVal->toBytecode();
     } else {
-        throw std::runtime_error("Unexpected type in exprValue");
+        cerr << "Unexpected type in exprValue" << endl;
+        throw runtime_error("Unexpected type in exprValue");
     }
 
-    std::cout << "varName: " << varName << " computedValue: " << computedValue << std::endl;
+    cout << "varName: " << varName << " computedValue: " << computedValue << endl;
     // Crea la entrada en la memoria para la variable
-    auto var = std::make_shared<MVLM::Variable>(varName, computedValue);
+    auto var = make_shared<MLVM::Variable>(varName, computedValue);
+    if(ctx->type_hint){
+        var->setTypeHint(ctx->type_hint->ID()->getText());
+    }
     
     // Almacena el valor de la expresión en la memoria
-    MVLMBuilder->createVariable(var);
-    memory[varName] = exprValue;
+    MLVMBuilder->createVariable(var);
+    memory[varName] = var;
 
     return var;
 }
 
 antlrcpp::Any NyarVisitor::visitBoolean(NyarParser::BooleanContext *ctx) {
-    std::string varName = ctx->getText();
-    std::cout << "boolName: " << varName << std::endl;
+    string varName = ctx->getText();
+    cout << "boolName: " << varName << endl;
     // bool vars
     return int(varName == "verdadero");
 }
 
+antlrcpp::Any NyarVisitor::visitNnull(NyarParser::NnullContext *ctx) {
+    return make_shared<MLVM::Null>();
+}
+
 antlrcpp::Any NyarVisitor::visitString(NyarParser::StringContext *ctx) {
-    std::string str = ctx->STRING()->getText();
+    string str = ctx->STRING()->getText();
     str = str.substr(1, str.size() - 2);  // Quitar comillas
    return str;
 }
 
-antlrcpp::Any NyarVisitor::visitEqExp(NyarParser::EqExpContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitComparisonExp(NyarParser::ComparisonExpContext *ctx) {
+    string op = ctx->op->getText();
+
+    cout << "visit " << op << " exp" << endl << endl;
+
+    auto leftAny = visit(ctx->expr(0));
+    cout << "leftAny: " << leftAny.type().name() << endl;
+    auto rightAny = visit(ctx->expr(1));
+    cout << "rightAny: " << rightAny.type().name() << endl;
+
+    auto [leftNum, leftVar, leftUnVal] = extractNumericValue(leftAny);
+    if(leftVar && leftVar->isEvaluable()) {
+        try{
+            leftNum = stod(leftVar->getValue());
+        }catch(...) {
+            throw runtime_error("Operación de igualdad no soportada para los tipos de operandos");
+        }
+        leftVar = nullptr;
+    }
+
+    auto [rightNum, rightVar, rightUnVal] = extractNumericValue(rightAny);
+    if(rightVar && rightVar->isEvaluable()) {
+        try{
+            rightNum = stod(rightVar->getValue());
+        }catch(...) {
+            throw runtime_error("Operación de igualdad no soportada para los tipos de operandos");
+        }
+        rightVar = nullptr;
+    }
+
+
+    if(leftUnVal != nullptr) {
+        leftUnVal->add(op + to_string(*rightNum));
+        cout << "leftUnVal: " << leftUnVal->toBytecode() << endl;
+        return leftUnVal;
+    } else if (rightUnVal != nullptr) {
+        rightUnVal->add(to_string(*leftNum) + op);
+        cout << "rightUnVal: " << rightUnVal->toBytecode() << endl;
+        return rightUnVal;
+    }
+
+    optional<double> resultNum;
+    if (leftNum && rightNum){
+        if(op == ">"){
+            resultNum = *leftNum > *rightNum;
+        }
+        else if(op == "<"){
+            resultNum = *leftNum < *rightNum;
+        }
+        else if(op == "=="){
+            cout <<  *leftNum << " == " << *rightNum << endl;
+            resultNum = *leftNum == *rightNum;
+        }
+        else if(op == "!="){
+            resultNum = *leftNum != *rightNum;
+        }
+        else if(op == ">="){
+            resultNum = *leftNum >= *rightNum;
+        }
+        else if(op == "<="){
+            resultNum = *leftNum <= *rightNum;
+        }
+    }
+    else {
+        string operand1, operand2;
+        if(leftVar != nullptr){
+            cout << "leftVar: " << leftVar->getVar() << endl;
+            operand1 = leftVar->getVar();
+            if(rightNum){
+                operand2 = to_string(*rightNum);
+            } else if(rightVar != nullptr){
+                operand2 = rightVar->getVar();
+            }
+        }
+        else if(rightVar != nullptr){
+            if(leftNum){
+                operand1 = to_string(*leftNum);
+            } else if(leftVar != nullptr){
+                operand1 = leftVar->getVar();
+            }
+            operand2 = rightVar->getVar();
+        }
+        string expr = operand1 + op + operand2;
+        auto exprVar = make_shared<MLVM::UnEvaluable>(expr);
+        return exprVar;
+    }
+
+    if(resultNum) return *resultNum;
+    return nullptr;
+}
 
 antlrcpp::Any NyarVisitor::visitAritExp(NyarParser::AritExpContext *ctx) {
     // Visita las expresiones izquierda y derecha
     auto leftAny = visit(ctx->expr(0));
     auto rightAny = visit(ctx->expr(1));
+    cout << "type: " << rightAny.type().name() << endl;
 
-    // Determina los valores numéricos (convertir a double para manejo uniforme)
-    std::optional<double> leftNumVal;
-    std::optional<double> rightNumVal;
-    
-    std::optional<std::string> leftStrVal;
-    std::optional<std::string> rightStrVal;
-    
     // Manejar tipo de left
-    if (leftAny.type() == typeid(int)) {
-        leftNumVal = static_cast<double>(std::any_cast<int>(leftAny));
-    } else if (leftAny.type() == typeid(double)) {
-        leftNumVal = std::any_cast<double>(leftAny);
-    } else if (leftAny.type() == typeid(std::string)) {
-        leftStrVal = std::any_cast<std::string>(leftAny);
-    } else {
-        throw std::runtime_error("Unsupported type for left operand in arithmetic expression");
+    optional<double> leftNumVal;
+    optional<string> leftStrVal;
+    shared_ptr<MLVM::Variable> leftVar;
+    shared_ptr<MLVM::UnEvaluable> leftUnVal;
+    shared_ptr<MLVM::Array<antlrcpp::Any>> leftArrayVal;
+    shared_ptr<MLVM::Null> leftNullVal;
+
+    tie(leftNumVal, leftStrVal, leftVar, leftUnVal, leftArrayVal, leftNullVal) = extractValue(leftAny);
+    if(leftNullVal){
+        throw runtime_error("Operación aritmética no soportada para valores nulos");
+    };
+
+    if(leftVar && leftVar){
+        try{
+            leftNumVal = stod(leftVar->getValue());
+        }catch(...){
+            leftStrVal = leftVar->getValue();
+        }
+        leftVar = nullptr;
     }
 
     // Manejar tipo de right
-    if (rightAny.type() == typeid(int)) {
-        rightNumVal = static_cast<double>(std::any_cast<int>(rightAny));
-    } else if (rightAny.type() == typeid(double)) {
-        rightNumVal = std::any_cast<double>(rightAny);
-    } else if (rightAny.type() == typeid(std::string)){
-        rightStrVal = std::any_cast<std::string>(rightAny);
-    } else {
-        throw std::runtime_error("Unsupported type for right operand in arithmetic expression");
-    }
+    optional<double> rightNumVal;
+    optional<string> rightStrVal;
+    shared_ptr<MLVM::Variable> rightVar;
+    shared_ptr<MLVM::UnEvaluable> rightUnVal;
+    shared_ptr<MLVM::Array<antlrcpp::Any>> rightArrayVal;
+    shared_ptr<MLVM::Null> rightNullVal;
 
+    tie(rightNumVal, rightStrVal, rightVar, rightUnVal, rightArrayVal, rightNullVal) = extractValue(rightAny);
+    if(rightNullVal){
+        throw runtime_error("Operación aritmética no soportada para valores nulos");
+    };
+    if(rightVar && rightVar->isEvaluable()){
+        try{
+            rightNumVal = stod(rightVar->getValue());
+        }catch(...){
+            rightStrVal = rightVar->getValue();
+        }
+        rightVar = nullptr;
+    }
 
     // Obtener el operador
-    std::string op = ctx->op->getText();
+    string op = ctx->op->getText();
 
-    // Calcular el resultado
-    std::optional<double> resultNum;
-    std::optional<std::string> resultStr;
-
-    if (op == "+") {
-        if (leftNumVal && rightNumVal) {
-            resultNum = *leftNumVal + *rightNumVal;
-        } else if (leftStrVal && rightStrVal) {
-            resultStr = *leftStrVal + *rightStrVal;
-        } else {
-            throw std::runtime_error("Operación de suma no soportada para los tipos de operandos");
-        }
-    } else if (op == "-") {
-       if (leftNumVal && rightNumVal) {
-            resultNum = *leftNumVal - *rightNumVal;
-        } else {
-            throw std::runtime_error("Operación de suma no soportada para los tipos de operandos");
-        }
-    } else if (op == "*") {
-       if (leftNumVal && rightNumVal) {
-            resultNum = *leftNumVal + *rightNumVal;
-        } else if (leftStrVal && rightNumVal) {
-            resultStr = Strfunctions::repetir(*leftStrVal, *rightNumVal);
-        } else if (leftNumVal && rightStrVal) {
-            resultStr = Strfunctions::repetir(*rightStrVal, *leftNumVal);
-        } else {
-            throw std::runtime_error("Operación de suma no soportada para los tipos de operandos");
-        }
-    } else if (op == "/") {
-        if (leftStrVal || rightStrVal) {
-            throw std::runtime_error("Operación de división no soportada para cadenas");
-        }
-        if (rightNumVal == 0.0) {
-            throw std::runtime_error("Division por cero");
-        }
-        resultNum = *leftNumVal / *rightNumVal;
-    } else {
-        throw std::runtime_error("Operador aritmético no soportado: " + op);
+    if(leftUnVal != nullptr) {
+        string result = rightNumVal ? to_string(*rightNumVal) : *rightStrVal;
+        leftUnVal->add(op + result);
+        return leftUnVal;
+    }
+    else if (rightUnVal != nullptr) {
+        string result = leftNumVal ? to_string(*leftNumVal) : *leftStrVal;
+        rightUnVal->add(result + op);
+        return rightUnVal;
     }
 
-    std::cout << "aritExp result Num: " << *resultNum << std::endl;
-    std::cout << "aritExp result Str: " << *resultStr << std::endl;
-    if(resultNum) return *resultNum;
-    else return *resultStr;
+    // Calcular el resultado
+    optional<double> resultNum;
+    optional<string> resultStr;
+    if ((leftNumVal || leftStrVal) && (rightNumVal || rightStrVal)){
+        if (op == "+") {
+            if (leftNumVal && rightNumVal) {
+                resultNum = *leftNumVal + *rightNumVal;
+            } else if (leftStrVal && rightStrVal) {
+                resultStr = *leftStrVal + *rightStrVal;
+            } else {
+                throw runtime_error("Operación de suma no soportada para los tipos de operandos");
+            }
+        } else if (op == "-") {
+            if (leftNumVal && rightNumVal) {
+                resultNum = *leftNumVal - *rightNumVal;
+            } else {
+                throw runtime_error("Operación de suma no soportada para los tipos de operandos");
+            }
+        } else if (op == "*") {
+            if (leftNumVal && rightNumVal) {
+                resultNum = (*leftNumVal) * (*rightNumVal);
+            } else if (leftStrVal && rightNumVal) {
+                resultStr = Strfunctions::repetir(*leftStrVal, *rightNumVal);
+            } else if (leftNumVal && rightStrVal) {
+                resultStr = Strfunctions::repetir(*rightStrVal, *leftNumVal);
+            } else {
+                throw runtime_error("Operación de suma no soportada para los tipos de operandos");
+            }
+        } else if (op == "/") {
+            if (leftStrVal || rightStrVal) {
+                throw runtime_error("Operación de división no soportada para cadenas");
+            }
+            if (rightNumVal == 0.0) {
+                throw runtime_error("Division por cero");
+            }
+            resultNum = *leftNumVal / *rightNumVal;
+        } else {
+            throw runtime_error("Operador aritmético no soportado: " + op);
+        }
+    } 
+    else { // Al menos un operando es una variable no evaluable
+        cout << "No evaluable: " << endl;
+        string operand1, operand2;
+
+        if(leftVar != nullptr){
+            cout << "leftVar: " << leftVar->getVar() << endl;
+            operand1 = leftVar->getVar();
+            if(rightNumVal){
+                operand2 = to_string(*rightNumVal);
+            } else if(rightStrVal){
+                operand2 = "\"" + *rightStrVal + "\"";
+            } else if(rightVar != nullptr){
+                operand2 = rightVar->getVar();
+            }
+        }
+        else if(rightVar != nullptr){
+            if(leftNumVal){
+                operand1 = to_string(*leftNumVal);
+            } else if(leftStrVal){
+                operand1 = "\"" + *leftStrVal + "\"";
+            } else if(leftVar != nullptr){
+                operand1 = leftVar->getVar();
+            }
+            operand2 = rightVar->getVar();
+        }
+
+        // Crear una nueva Variable representando la expresión
+        string expr = operand1 + op + operand2;
+        auto exprVar = make_shared<MLVM::UnEvaluable>(expr);
+
+        return exprVar;
+    }
+
+    if(resultNum) {
+        cout << "aritExp result Num: " << *resultNum << endl;
+        return *resultNum;
+    }
+
+    if(resultStr) {
+        cout << "aritExp result Str: " << *resultStr << endl;
+        return *resultStr;
+    }
+    throw runtime_error("Expresión aritmética no evaluada correctamente");
 }
 
-antlrcpp::Any NyarVisitor::visitParenExp(NyarParser::ParenExpContext *ctx) {return visitChildren(ctx);}
+antlrcpp::Any NyarVisitor::visitParenExp(NyarParser::ParenExpContext *ctx) {return visit(ctx->expr());}
 
 antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx) {
-    return visitChildren(ctx);
+    string funcName = ctx->funcCall()->ID()->getText();
+
+    vector<string> args;
+    if (ctx->funcCall()->funcArgs()) {
+        for (auto expr : ctx->funcCall()->funcArgs()->expr()) {
+            auto argAny = visit(expr);
+            optional<double> numVal;
+            optional<string> strVal;
+            shared_ptr<MLVM::Variable> varVal;
+            shared_ptr<MLVM::UnEvaluable> unVal;
+            shared_ptr<MLVM::Array<antlrcpp::Any>> arrayVal;
+            shared_ptr<MLVM::Null> nullVal;
+
+            tie(numVal, strVal, varVal, unVal, arrayVal, nullVal) = extractValue(argAny);
+
+            if (numVal) {
+                args.push_back(to_string(*numVal));
+            } else if (strVal) {
+                args.push_back("\"" + *strVal + "\"");
+            } else if (varVal) {
+                args.push_back(varVal->getVar());
+            } else if (unVal) {
+                args.push_back(unVal->toBytecode());
+            } else if (arrayVal) {
+                args.push_back(arrayVal->toBytecode());
+            } else if (nullVal) {
+                args.push_back(nullVal->toBytecode());
+            } else {
+                throw runtime_error("Argumento no soportado en llamada a función.");
+            }
+        }
+    }
+    MLVMBuilder->createCallFunc(funcName, args);
+    return nullptr;
 }
 
 antlrcpp::Any NyarVisitor::visitId(NyarParser::IdContext *ctx) {
-    std::string varName = ctx->ID()->getText();
-    std::cout << "id: " << varName << std::endl;
+    string varName = ctx->ID()->getText();
+    cout << "visit id: " << varName << endl;
 
     // Busca la variable en la tabla de símbolos
     if (memory.find(varName) != memory.end()) {
+        memory[varName]->addReference();
         return memory[varName];
     } else {
-        throw std::runtime_error("Variable no encontrada: " + varName);
+        return make_shared<MLVM::UnEvaluable>(varName);
     }
 }
 
-// Joaquin
-//visita el arreglo y retorna sus elementos
 antlrcpp::Any NyarVisitor::visitArreglo(NyarParser::ArregloContext *ctx) {
-    std::vector<antlrcpp::Any> elements;
-    // for (auto expr: ctx->expr()){
-            // elements.push_back(visit(expr));
-    // }
+    auto elements = make_shared<MLVM::Array<antlrcpp::Any>>();
+    for (auto expr: ctx->array()->expr()){
+        elements->push_back(visit(expr));
+    }
     return elements;
 }
 
-antlrcpp::Any NyarVisitor::visitEqEqExp(NyarParser::EqEqExpContext *ctx) {
-    llvm::Value *leftValue = std::any_cast<llvm::Value*>(visit(ctx->expr(0)));
-    llvm::Value *rightValue = std::any_cast<llvm::Value*>(visit(ctx->expr(1)));
-
-    //se verifica si los tipos de operandos sean iguales
-    if (leftValue->getType() != rightValue->getType()) {
-        llvm::errs() << "Error: Los tipos de los operandos en == no coinciden.\n";
-        return nullptr;
-    }
-
-    //generamos la comparacion para enteros o floats según el tipo de los operandos
-    llvm::Value *result;
-    if (leftValue->getType()->isFloatingPointTy()) {
-        result = builder->CreateFCmpUEQ(leftValue, rightValue, "feqtmp");
-    } else if (leftValue->getType()->isIntegerTy()) {
-        result = builder->CreateICmpEQ(leftValue, rightValue, "ieqtmp");
-    } else {
-        llvm::errs() << "Error: Tipo no soportado en ==.\n";
-        return nullptr;
-    }
-
-    return result;
+antlrcpp::Any NyarVisitor::visitEstructura(NyarParser::EstructuraContext *ctx) {
+    string structName = ctx->struct_()->ID()->getText();
+    MLVMBuilder->startStructBlock(structName);
+    visit(ctx->struct_()->block());
+    MLVMBuilder->endStructBlock();
+    return nullptr;
 }
 
- /* 
-antlrcpp::Any NyarVisitor::visitArray(NyarParser::ArrayContext *ctx) {
- return 0;   
-}*/
-
-//visita los parametros de una funcion y devuelve la lista de nombres de estos
 antlrcpp::Any NyarVisitor::visitFuncParams(NyarParser::FuncParamsContext *ctx) {
-    std::vector<std::string> params;
+    vector<string> params;
     for (auto id : ctx->ID()) {
         params.push_back(id->getText());
     }
     return params;
 }
-//la definicion de una funcion y la agrega a la tabla de simbolos
+
 antlrcpp::Any NyarVisitor::visitFuncDef(NyarParser::FuncDefContext *ctx) {
-    std::string funcName = ctx->ID()->getText();
-    std::vector<std::string> params;
-    for (auto param : ctx->funcParams()->ID()) {
-        params.push_back(param->getText());
+    string funcName = ctx->ID()->getText();
+    vector<shared_ptr<MLVM::UnEvaluable>> params;
+    
+    if(ctx->funcParams()){
+        for (auto param : ctx->funcParams()->ID()) {
+            params.push_back(make_shared<MLVM::UnEvaluable>(param->getText()));
+        }
     }
 
-    llvm::FunctionType *funcType = llvm::FunctionType::get(builder->getVoidTy(), false); 
-    llvm::Function *function = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, funcName, module.get());
+    MLVMBuilder->startFunctionScope(funcName, params);
+    visit(ctx->funcBlock());
+    MLVMBuilder->endFunctionScope();
 
-    //se guardaa el nombre de las funciones en la tabla de simbolos
-    currentScope->defineFunction(funcName, params, function);
+    currentScope->defineFunction(funcName, new MLVM::Function(funcName, params));
     return nullptr;
 }
+
 //visita los argumentos de una funcion durante la llamada
 antlrcpp::Any NyarVisitor::visitFuncArgs(NyarParser::FuncArgsContext *ctx) {
-    std::vector<llvm::Value *> args;
+    vector<antlrcpp::Any> args;
     for (auto expr : ctx->expr()) {
-        llvm::Value *argValue = std::any_cast<llvm::Value *>(visit(expr));
+        auto argValue = visit(expr);
         args.push_back(argValue);
     }
     return args;
@@ -250,82 +605,163 @@ antlrcpp::Any NyarVisitor::visitFuncArgs(NyarParser::FuncArgsContext *ctx) {
 // Visita la llamada a la funcion y genera el codigo ir 
 antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx) {
     //traemos el nombre de la funcion
-    std::string funcName = ctx->ID()->getText();
+    string funcName = ctx->ID()->getText();
 
     //traemos a la funcion de la tabla de simbolos
     auto funcSymbol = currentScope->getFunction(funcName);
 
     // Ccomprobamos si la funcion existe en este ambito
-    if (funcSymbol) {
-        llvm::Function *llvmFunc = funcSymbol->llvmFunc;
-        std::vector<llvm::Value *> args;
+    if (funcSymbol || NyarSTD::functions_std.end() != find(NyarSTD::functions_std.begin(), NyarSTD::functions_std.end(), funcName)) {
+        MLVM::Function *func = funcSymbol;
+        vector<string> args;
 
         // evaluamos cada argumento de la llamada y los pasa como argumentos al crear la llamada
         if (ctx->funcArgs()) {
             for (auto expr : ctx->funcArgs()->expr()) {
-                llvm::Value *argValue = std::any_cast<llvm::Value *>(visit(expr));
-                args.push_back(argValue);
+                auto argAny = visit(expr);
+                optional<double> numVal;
+                optional<string> strVal;
+                shared_ptr<MLVM::Variable> varVal;
+                shared_ptr<MLVM::UnEvaluable> unVal;
+                shared_ptr<MLVM::Array<antlrcpp::Any>> arrayVal;
+                shared_ptr<MLVM::Null> nullVal;
+
+                tie(numVal, strVal, varVal, unVal, arrayVal, nullVal) = extractValue(argAny);
+
+                if (numVal) {
+                    args.push_back(to_string(*numVal));
+                } else if (strVal) {
+                    args.push_back("\"" + *strVal + "\"");
+                } else if (varVal) {
+                    args.push_back(varVal->getVar());
+                } else if (unVal) {
+                    args.push_back(unVal->toBytecode());
+                } else if (arrayVal) {
+                    args.push_back(arrayVal->toBytecode());
+                } else if (nullVal) {
+                    args.push_back(nullVal->toBytecode());
+                } else {
+                    throw runtime_error("Argumento no soportado en llamada a función.");
+                }
             }
         }
-        
         // Crea la llamada a la func con los argumentos evaluados
-        builder->CreateCall(llvmFunc, args);
+        MLVMBuilder->createCallFunc(funcName, args);
     } else {
-        throw std::runtime_error("Error: La función '" + funcName + "' no está definida.\n");
+        throw runtime_error("Error: La función '" + funcName + "' no está definida.\n");
     }
 
     return nullptr;
 }
 
-antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx) {
-    // Obtenemos el bloque actual y el bloque de la función
-    llvm::Function *currentFunction = builder->GetInsertBlock()->getParent();
+antlrcpp::Any NyarVisitor::visitIterar(NyarParser::IterarContext *ctx) {
+    auto controlVarName = ctx->control->getText();
 
-    // Creamos bloques para el "if", el "else" (opcional), y el bloque "after" (después de la condición)
-    llvm::BasicBlock *thenBlock = llvm::BasicBlock::Create(*context, "then", currentFunction);
-    llvm::BasicBlock *elseBlock = ctx->COND(1) ? llvm::BasicBlock::Create(*context, "else", currentFunction) : nullptr;
-    llvm::BasicBlock *afterBlock = llvm::BasicBlock::Create(*context, "afterCond", currentFunction);
+    if(ctx->DESDE()){
+        // Extraer los valores 'i' y 'f'
+        antlr4::Token* iToken = ctx->i;
+        antlr4::Token* fToken = ctx->f;
 
-    // Visitamos la expresión de la condición y la convertimos a llvm::Value*
-    llvm::Value *condValue = nullptr;
-    antlrcpp::Any condAny = visit(ctx->expr());
-    try {
-        condValue = std::any_cast<llvm::Value*>(condAny);
-    } catch (const std::bad_any_cast& e) {
-        llvm::errs() << "Error: La expresión condicional no devuelve llvm::Value*.\n";
+        string iText = iToken->getText();
+        string fText = fToken->getText();
+
+        cout << "iText: " << iText << endl;
+        cout << "fText: " << fText << endl;
+
+        // Extraer valores numéricos
+        optional<double> inicio;
+        optional<double> fin;
+
+        try {
+            inicio = stod(iText);
+        } catch(const invalid_argument&) {
+            // Si 'i' no es un número, asumir que es una variable
+            auto it = memory.find(iText);
+            if(it != memory.end() && it->second) {
+                try {
+                    inicio = stod(it->second->getValue());
+                } catch(...) {
+                    throw runtime_error("Valor inicial inválido en bucle 'desde'");
+                }
+            } else {
+                throw runtime_error("Variable 'i' no encontrada o inválida en bucle 'desde'");
+            }
+        }
+
+        // Manejar 'f'
+        try {
+            fin = stod(fText);
+        } catch(const invalid_argument&) {
+            // Si 'f' no es un número, asumir que es una variable
+            auto it = memory.find(fText);
+            if(it != memory.end() && it->second) {
+                try {
+                    fin = stod(it->second->getValue());
+                } catch(...) {
+                    throw runtime_error("Valor final inválido en bucle 'hasta'");
+                }
+            } else {
+                throw runtime_error("Variable 'f' no encontrada o inválida en bucle 'hasta'");
+            }
+        }
+
+        if(!inicio.has_value() || !fin.has_value()) {
+            throw runtime_error("Valores inicial y final inválidos en bucle 'desde-hasta'");
+        }
+
+        MLVMBuilder->createBeginForBlockRange(controlVarName, to_string(*inicio), to_string(*fin));        
+        visit(ctx->block());
+        MLVMBuilder->createEndForBlock();
+
         return nullptr;
     }
+    return visitChildren(ctx);
+}
 
-    // Convertimos condValue en una condición booleana
-    llvm::Value *condition = builder->CreateICmpNE(condValue, llvm::ConstantInt::get(condValue->getType(), 0), "condition");
+antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx)  {
+    auto condicionAny = visit(ctx->cond);
+    
+    // Extraer el valor de la condición utilizando extractValue
+    optional<double> condNum;
+    optional<string> condStr;
+    shared_ptr<MLVM::Variable> condVar;
+    shared_ptr<MLVM::UnEvaluable> condUnVal;
+    shared_ptr<MLVM::Array<antlrcpp::Any>> arrayVal;
+    shared_ptr<MLVM::Null> nullVal;
 
-    // Generamos el salto condicional a los bloques correspondientes
-    if (elseBlock) {
-        builder->CreateCondBr(condition, thenBlock, elseBlock);
+    tie(condNum, condStr, condVar, condUnVal, arrayVal, nullVal) = extractValue(condicionAny);
+
+    // Determinar la representación de la condición para MLVM
+    string condRepresentation;
+    if (nullVal){
+        condRepresentation =  "0";
+    }else if (condNum) {
+        condRepresentation = *condNum != 0.0 ? "1" : "0"; // Considerar no cero como verdaderostd
+    } else if (condStr) {
+        condRepresentation = !condStr->empty() ? "1" : "0"; // Cadena no vacía como verdadero
+    } else if (condVar) {
+        condRepresentation = condVar->getVar(); // Obtener representación de la variable
+    } else if (condUnVal) {
+        condRepresentation = condUnVal->toBytecode(); // Obtener bytecode de la expresión no evaluable
+    } else if (arrayVal) {
+        condRepresentation = arrayVal->empty() ? "0" : "1";
     } else {
-        builder->CreateCondBr(condition, thenBlock, afterBlock);
+        throw runtime_error("Condición inválida en el if");
     }
 
-    // Generamos el código del bloque "then"
-    builder->SetInsertPoint(thenBlock);
-    for (auto *statCtx : ctx->stat()) {
-        visit(statCtx);  // Procesamos cada statement en el bloque "then"
-    }
-    builder->CreateBr(afterBlock);
 
-    // Generamos el código del bloque "else", si existe
-    if (elseBlock) {
-        builder->SetInsertPoint(elseBlock);
-        for (auto *statCtx : ctx->stat()) {
-            visit(statCtx);  // Procesamos cada statement en el bloque "else"
-        }
-        builder->CreateBr(afterBlock);
+    MLVMBuilder->startIfBlock(condRepresentation);
+
+    for(auto stat : ctx->stat()){
+        visit(stat);
     }
 
-    // Cambiamos al bloque "after" para continuar después de la condición
-    builder->SetInsertPoint(afterBlock);
+    // Verificar y visitar el bloque 'else' si existe
+    if(ctx->else_()){
+        visit(ctx->else_());
+    }
+
+    MLVMBuilder->endBlock();
 
     return nullptr;
 }
-
-antlrcpp::Any NyarVisitor::visitIterar(NyarParser::IterarContext *ctx) {return visitChildren(ctx);}

@@ -1,11 +1,11 @@
 #include "Include/SymbolTable.h"
 
-void SymbolTable::defineFunction(const std::string  &name, const std::vector<std::string> &params, llvm::Function *func){
-    functions [name]=FunctionInfo{name,params, func};
+void SymbolTable::defineFunction(const std::string  &name, MLVM::Function *func){
+    functions[name] = func;
 }
-SymbolTable::FunctionInfo* SymbolTable::getFunction(const std::string &name){
+MLVM::Function* SymbolTable::getFunction(const std::string &name){
     if(functions.find(name)!=functions.end()){
-        return &functions[name];
+        return functions[name];
     }
     if (parentScope){
 
@@ -13,8 +13,9 @@ SymbolTable::FunctionInfo* SymbolTable::getFunction(const std::string &name){
     }
     return nullptr;
 }
+
 SymbolTable* SymbolTable::createChildScope(){
-    auto* childScope=new SymbolTable();
-    childScope->parentScope=this;
+    auto* childScope = new SymbolTable();
+    childScope->parentScope = this;
     return childScope;
 }

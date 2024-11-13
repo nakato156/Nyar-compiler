@@ -6,39 +6,52 @@ stat
     : variable SEMI
     | expr SEMI
     | funcDef
-    | iterar END_BLOCK
-    | condicion END_BLOCK
+    | iterar
+    | condicion
     | array SEMI
+    | returnExp
     ;
-    
+
+returnExp: RETURN expr SEMI;
+
 expr
-    : NUM   #number
-    | BOOL  #boolean
-    | STRING    #string
-    | ID        #Id
-    | LAPREN expr RPAREN #parenExp
-    | expr op=(MUL|DIV|ADD|RESTA) expr #aritExp
-    | expr op=EQEQ expr #eqEqExp
-    | expr op=(LESS | GREATER) EQUAL  expr #eqExp
-    | expr op=NEQ expr #neqExp
-    | funcCall  #fCall
-    | array     #arreglo
+    : expr op=OR expr            #logicalOrExp
+    | expr op=AND expr           #logicalAndExp
+    | expr op=(LESS | LESS_EQUAL | GREATER | GREATER_EQUAL | EQEQ | NEQ) expr #comparisonExp
+    | expr op=(MUL | DIV | ADD | RESTA) expr #aritExp
+    | LAPREN expr RPAREN           #parenExp
+    | NUM                          #number
+    | BOOL                         #boolean
+    | STRING                       #string
+    | ID                           #Id
+    | NADA                         #nnull
+    | funcCall                     #fCall
+    | array                        #arreglo
+    | struct                       #estructura
+    | expr (DOT ID | DOT funcCall) #memberAccess
     ;
+
+hint
+    : HINT_INDICATOR ID;
 
 array
     : LBRACKET (expr (COMMA expr)*)?  RBRACKET
     ;
 
 variable
-    : ID EQUAL expr
+    : ID type_hint=hint? EQUAL expr
     ;
 
 funcParams
     : ID (COMMA ID)*
     ;
 
+funcBlock
+    : START_BLOCK stat* (RETURN (expr SEMI)?)? END_BLOCK
+    ;
+
 funcDef
-    : FUNC ID LAPREN funcParams RPAREN START_BLOCK stat* END_BLOCK
+    : FUNC ID LAPREN funcParams? RPAREN funcBlock
     ;
 
 funcArgs
@@ -50,12 +63,23 @@ funcCall
     : ID LAPREN funcArgs RPAREN
     ;
 
+block
+    : START_BLOCK stat* END_BLOCK;
+
+struct
+    : STRUCTDef ID block;
+
 iterar
-    : FOR
-    | DESDE i=(NUM | ID) HASTA f=(NUM | ID)
-    | EN (ID | array)
+    : FOR control=ID DESDE i=(NUM | ID) HASTA f=(NUM | ID) block
+    | FOR control=ID EN (ID | array) block
     ;
 
+else
+    : ELSE_COND START_BLOCK stat* END_BLOCK;
+    
+elseif
+    : ELSE_COND COND cond=expr* START_BLOCK stat* END_BLOCK;
+
 condicion 
-    : COND expr START_BLOCK stat* END_BLOCK (COND START_BLOCK stat* END_BLOCK)?
+    : COND cond=expr* START_BLOCK stat* END_BLOCK elseif? else?
     ;
