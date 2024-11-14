@@ -1,5 +1,5 @@
 
-// Generated from ./NyarParser.g4 by ANTLR 4.13.2
+// Generated from NyarParser.g4 by ANTLR 4.13.0
 
 #pragma once
 
@@ -23,15 +23,11 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitNumber(NyarParser::NumberContext *ctx) override {
+  virtual std::any visitReturnExp(NyarParser::ReturnExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEqExp(NyarParser::EqExpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitBoolean(NyarParser::BooleanContext *ctx) override {
+  virtual std::any visitMemberAccess(NyarParser::MemberAccessContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -40,6 +36,30 @@ public:
   }
 
   virtual std::any visitString(NyarParser::StringContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLogicalAndExp(NyarParser::LogicalAndExpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitNumber(NyarParser::NumberContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitLogicalOrExp(NyarParser::LogicalOrExpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitBoolean(NyarParser::BooleanContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitNnull(NyarParser::NnullContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitComparisonExp(NyarParser::ComparisonExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -55,15 +75,15 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitNeqExp(NyarParser::NeqExpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitArreglo(NyarParser::ArregloContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEqEqExp(NyarParser::EqEqExpContext *ctx) override {
+  virtual std::any visitEstructura(NyarParser::EstructuraContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitHint(NyarParser::HintContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -79,6 +99,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitFuncBlock(NyarParser::FuncBlockContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitFuncDef(NyarParser::FuncDefContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -91,7 +115,23 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitBlock(NyarParser::BlockContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitStruct(NyarParser::StructContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitIterar(NyarParser::IterarContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitElse(NyarParser::ElseContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitElseif(NyarParser::ElseifContext *ctx) override {
     return visitChildren(ctx);
   }
 

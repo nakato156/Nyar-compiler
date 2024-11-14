@@ -1,5 +1,38 @@
-uno = 1;
-variable = 10+2+uno+2;
-otro = "1hola " + "nop";
+uno:int = 1;
+variable = 10+2+uno+3;
+hola = "hello" + " " + "dani";
+op = uno >= 2;
 
-Mybool = verdadero;
+myBool = falso;
+
+iterar y desde 0 hasta 3 {
+    i = y * 2;
+    uno = i;
+}
+
+funcion main() {
+    a = "hola profis";
+    iterar y desde 0 hasta 3 {
+        i = y * 3;
+        uno = i;
+    }
+    retornar uno;
+}
+
+si uno == (10*3) {
+    a = 0+uno;
+}
+
+estructura Paracaidas {
+    desplegado = 0;
+};
+
+array = ["a", "1", "xd", uno];
+
+imprimir(uno, "a");
+
+nd = NADA;
+
+si uno == (nd.a.otro) {
+
+}

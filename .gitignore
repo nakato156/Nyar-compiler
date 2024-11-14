@@ -1,5 +1,16 @@
+# Vscode
+.vscode/
+
+# Antlr
 .antlr
+
+# Build
 build/
 */.build
+
+# config files
 .env
+
+# Compiling
 *.ll
+*.ny
