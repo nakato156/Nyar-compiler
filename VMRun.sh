@@ -6,6 +6,6 @@ mkdir build && cd build
 cmake ..
 make
 
-./VM ../test.nya
+./VM ../../build/maid.ny
 
 cat Nyar.ll
