@@ -1,5 +1,5 @@
 
-// Generated from NyarParser.g4 by ANTLR 4.13.0
+// Generated from ./NyarParser.g4 by ANTLR 4.13.2
 
 
 #include "NyarParserVisitor.h"
@@ -40,7 +40,7 @@ struct NyarParserStaticData final {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-NyarParserStaticData *nyarparserParserStaticData = nullptr;
+std::unique_ptr<NyarParserStaticData> nyarparserParserStaticData = nullptr;
 
 void nyarparserParserInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
@@ -166,7 +166,7 @@ void nyarparserParserInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  nyarparserParserStaticData = staticData.release();
+  nyarparserParserStaticData = std::move(staticData);
 }
 
 }
