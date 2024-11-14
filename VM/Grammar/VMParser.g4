@@ -19,6 +19,7 @@ expr
     | STRING                                            #StringExp
     | ID                                                #IdExp
     | NULL                                              #NullExp
+    | accessObject                                      #AccessObjectExp
 	| array                                             #ArrayExp
 	| functioncall                            #FunctionCallExp 
 	| expr op=(MUL | DIV | SUM | SUB) expr    #MathExp
@@ -68,6 +69,10 @@ functiondefinition:
 returnexpression: RW_RETURN SEMICOLON expr SEMICOLON;
 
 functionarguments: expr (COMMA expr)*;
+
+accessObject: 
+	ID (DOT ID)*
+    ;
 
 functioncall:
 	RW_CALLFUNCTION SEMICOLON ID LPAREN functionarguments RPAREN;

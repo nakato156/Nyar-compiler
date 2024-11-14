@@ -44,3 +44,5 @@ nd = NADA;
 si (uno.x) == (nd.a.otro) {
     
 }
+
+dos.x = 20;

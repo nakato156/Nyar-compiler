@@ -23,45 +23,53 @@ public:
 
     virtual std::any visitStat(VMParser::StatContext *context) = 0;
 
-    virtual std::any visitNumber(VMParser::NumberContext *context) = 0;
+    virtual std::any visitIdExp(VMParser::IdExpContext *context) = 0;
+
+    virtual std::any visitFunctionCallExp(VMParser::FunctionCallExpContext *context) = 0;
 
     virtual std::any visitEqExp(VMParser::EqExpContext *context) = 0;
 
-    virtual std::any visitBoolean(VMParser::BooleanContext *context) = 0;
+    virtual std::any visitStringExp(VMParser::StringExpContext *context) = 0;
 
-    virtual std::any visitAritExp(VMParser::AritExpContext *context) = 0;
+    virtual std::any visitBooleanExp(VMParser::BooleanExpContext *context) = 0;
 
-    virtual std::any visitString(VMParser::StringContext *context) = 0;
-
-    virtual std::any visitParenExp(VMParser::ParenExpContext *context) = 0;
-
-    virtual std::any visitFCall(VMParser::FCallContext *context) = 0;
-
-    virtual std::any visitId(VMParser::IdContext *context) = 0;
+    virtual std::any visitNullExp(VMParser::NullExpContext *context) = 0;
 
     virtual std::any visitNeqExp(VMParser::NeqExpContext *context) = 0;
 
-    virtual std::any visitArreglo(VMParser::ArregloContext *context) = 0;
-
     virtual std::any visitEqEqExp(VMParser::EqEqExpContext *context) = 0;
 
-    virtual std::any visitArray(VMParser::ArrayContext *context) = 0;
+    virtual std::any visitNumberExp(VMParser::NumberExpContext *context) = 0;
+
+    virtual std::any visitMathExp(VMParser::MathExpContext *context) = 0;
+
+    virtual std::any visitArrayExp(VMParser::ArrayExpContext *context) = 0;
 
     virtual std::any visitVariable(VMParser::VariableContext *context) = 0;
 
-    virtual std::any visitFuncParams(VMParser::FuncParamsContext *context) = 0;
+    virtual std::any visitWhile(VMParser::WhileContext *context) = 0;
 
-    virtual std::any visitFuncDef(VMParser::FuncDefContext *context) = 0;
+    virtual std::any visitIf(VMParser::IfContext *context) = 0;
 
-    virtual std::any visitFuncArgs(VMParser::FuncArgsContext *context) = 0;
+    virtual std::any visitStruct(VMParser::StructContext *context) = 0;
 
-    virtual std::any visitFuncCall(VMParser::FuncCallContext *context) = 0;
+    virtual std::any visitArray(VMParser::ArrayContext *context) = 0;
 
-    virtual std::any visitIterar(VMParser::IterarContext *context) = 0;
+    virtual std::any visitArrayblock(VMParser::ArrayblockContext *context) = 0;
 
-    virtual std::any visitCondicion(VMParser::CondicionContext *context) = 0;
+    virtual std::any visitBlock(VMParser::BlockContext *context) = 0;
 
-    virtual std::any visitExternFuncions(VMParser::ExternFuncionsContext *context) = 0;
+    virtual std::any visitFunctionparameters(VMParser::FunctionparametersContext *context) = 0;
+
+    virtual std::any visitFunctionblock(VMParser::FunctionblockContext *context) = 0;
+
+    virtual std::any visitFunctiondefinition(VMParser::FunctiondefinitionContext *context) = 0;
+
+    virtual std::any visitReturnexpression(VMParser::ReturnexpressionContext *context) = 0;
+
+    virtual std::any visitFunctionarguments(VMParser::FunctionargumentsContext *context) = 0;
+
+    virtual std::any visitFunctioncall(VMParser::FunctioncallContext *context) = 0;
 
 
 };

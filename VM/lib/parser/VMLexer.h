@@ -12,12 +12,13 @@
 class  VMLexer : public antlr4::Lexer {
 public:
   enum {
-    LAPREN = 1, RPAREN = 2, ADD = 3, RESTA = 4, MUL = 5, DIV = 6, LESS = 7, 
-    GREATER = 8, EQUAL = 9, NEQ = 10, EQEQ = 11, COMMA = 12, SEMI = 13, 
-    LBRACKET = 14, RBRACKET = 15, LINE_COMMENT = 16, START_BLOCK = 17, END_BLOCK = 18, 
-    STRING = 19, COMMENT = 20, IMPORT = 21, FUNC = 22, FOR = 23, WHILE = 24, 
-    DESDE = 25, HASTA = 26, EN = 27, COND = 28, ID = 29, NUM = 30, BOOL = 31, 
-    NADA = 32, RETURN = 33, WS = 34
+    LPAREN = 1, RPAREN = 2, START_BLOCK = 3, END_BLOCK = 4, SUM = 5, SUB = 6, 
+    MUL = 7, DIV = 8, LESS = 9, GREATER = 10, EQUAL = 11, NEQ = 12, EQEQ = 13, 
+    AND = 14, OR = 15, RW_FOR = 16, RW_IF = 17, RW_END = 18, RW_DECLAREFUNCTION = 19, 
+    RW_CALLFUNCTION = 20, RW_RETURN = 21, RW_STRUCTURE = 22, RW_ARRAY = 23, 
+    RESERVEDWORDS = 24, COMMA = 25, SEMICOLON = 26, COLON = 27, LBRACKET = 28, 
+    RBRACKET = 29, LINE_COMMENT = 30, STRING = 31, COMMENT = 32, ID = 33, 
+    NUMBER = 34, BOOL = 35, NULL_ = 36, WS = 37
   };
 
   explicit VMLexer(antlr4::CharStream *input);

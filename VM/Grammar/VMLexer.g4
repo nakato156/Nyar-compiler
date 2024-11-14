@@ -39,6 +39,7 @@ COLON        : ':';
 LBRACKET     : '[';
 RBRACKET     : ']';
 
+
 LINE_COMMENT : '//' ~('\r'|'\n') -> skip;
 STRING  : ('"' | '\'') .*? ('"' | '\'');
 COMMENT : '/*' .*? '*/' -> skip;
@@ -48,3 +49,5 @@ NUMBER     : '-'?[0-9]+('.'[0-9]+)?([eE][+-]?[0-9]+)?;
 BOOL    : ('verdadero' | 'falso');
 NULL    : '@NNULL';
 WS      : [ \t\n\r]+ -> skip;
+
+DOT: '.';
