@@ -29,7 +29,7 @@ set(SOURCE_FILES
 add_executable(Nyar ${SOURCE_FILES})
 
 # Añade los directorios de inclusión para el objetivo Nyar
-target_include_directories(Nyar PUBLIC 
+target_include_directories(Nyar PUBLIC
     ${CMAKE_SOURCE_DIR}/Bytecode/src
     $ENV{ANTLRRUNTIMEH}
     ${LLVM_INCLUDE_DIRS}

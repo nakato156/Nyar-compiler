@@ -14,5 +14,11 @@ build/
 # Compiling
 *.ll
 *.ny
+<<<<<<< Updated upstream
 */Study
 /Study
+=======
+
+
+*/Study
+>>>>>>> Stashed changes

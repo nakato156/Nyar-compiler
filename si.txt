@@ -1,0 +1,5 @@
+Obtener LLVM
+clang -emit-llvm -c main.cpp `pkg-config --libs sdl2 SDL2_image`
+
+Ejecutarlo
+clang++ -target x86_64-linux-gnu -g main.cpp -o play -Iinclude -Llib $(pkg-config --cflags --libs sdl2 SDL2_image)
