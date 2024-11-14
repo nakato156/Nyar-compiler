@@ -21,8 +21,8 @@ funcion main() {
 
 funcion hola(b) {
     a = 1;
-    c = a + b    
-    return c;
+    c = a + b;
+    retornar c;
 }
 
 si uno == (10*3) {

@@ -127,7 +127,12 @@ namespace MLVM
         std::string toBytecode() const { return expressions; }
         void add(const std::string &exp)
         {
-            expressions += exp;
+            std::cout << "Adding " << exp << " to " << expressions << std::endl;
+            if(exp.at(0) == '+' || exp.at(0) == '-' || exp.at(0) == '*' || exp.at(0) == '/'){
+                expressions += exp;
+            }else{
+                expressions =  exp + expressions;
+            }
         }
     };
 
@@ -193,6 +198,7 @@ namespace MLVM
                 else if constexpr (std::is_same_v<T, antlrcpp::Any>){
                     bytecode += arg->toBytecode();
                 } }, stmt);
+                bytecode+= "\n";
             }
 
             bytecode += "}\n";
@@ -280,7 +286,16 @@ namespace MLVM
         }
 
     public:
-        void createVariable(const std::shared_ptr<MLVM::Variable> &var)
+        IRBuilder() = default;
+
+        std::shared_ptr<Variable> createTempVal(const std::string &computedVal){
+            auto temp = std::make_shared<Variable>("temp" + std::to_string(code.size()), computedVal);
+            temp.get()->addReference();
+            createVariable(temp);
+            return temp;
+        }
+
+        void createVariable(const std::shared_ptr<Variable> &var)
         {
             appendCode(var);
             auto name = var->getName();

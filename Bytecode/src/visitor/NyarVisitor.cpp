@@ -235,8 +235,9 @@ antlrcpp::Any NyarVisitor::visitMemberAccess(NyarParser::MemberAccessContext *ct
 
         // Puedes decidir cómo representar esto en tu bytecode
         // Por ejemplo, podrías crear una variable temporal que almacene el valor del atributo
-        auto tempVar = make_shared<MLVM::Variable>("temp", attributeAccess);
-        MLVMBuilder->createVariable(tempVar);
+        auto tempVar = MLVMBuilder->createTempVal(attributeAccess);
+        // auto tempVar = make_shared<MLVM::Variable>("temp", attributeAccess);
+        // MLVMBuilder->createVariable(tempVar);
 
         // Retorna la representación de la variable temporal
         return tempVar;
