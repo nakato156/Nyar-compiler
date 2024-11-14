@@ -1,6 +1,4 @@
-cd VMGrammar
+cd VM
+cd Grammar
 
-case "$OSTYPE" in
-    linux*)     antlr4 ./*.g4 -Dlanguage=Cpp -no-listener -visitor -o ../VM/Sources/AntlrNya/lib/;;
-    darwin*)    antlr ./*.g4 -Dlanguage=Cpp -no-listener -visitor -o ../VM/Sources/AntlrNya/lib/
-esac
+antlr4 ./*.g4 -Dlanguage=Cpp -no-listener -visitor -o ../lib/parser

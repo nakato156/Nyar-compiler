@@ -59,3 +59,7 @@ iterar
 condicion 
     : COND expr START_BLOCK stat* END_BLOCK (COND START_BLOCK stat* END_BLOCK)?
     ;
+
+externFuncions
+    : ID
+    ;
