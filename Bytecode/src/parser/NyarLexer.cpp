@@ -1,5 +1,5 @@
 
-// Generated from NyarLexer.g4 by ANTLR 4.13.0
+// Generated from ./NyarLexer.g4 by ANTLR 4.13.2
 
 
 #include "NyarLexer.h"
@@ -45,7 +45,7 @@ struct NyarLexerStaticData final {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-NyarLexerStaticData *nyarlexerLexerStaticData = nullptr;
+std::unique_ptr<NyarLexerStaticData> nyarlexerLexerStaticData = nullptr;
 
 void nyarlexerLexerInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
@@ -199,7 +199,7 @@ void nyarlexerLexerInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  nyarlexerLexerStaticData = staticData.release();
+  nyarlexerLexerStaticData = std::move(staticData);
 }
 
 }

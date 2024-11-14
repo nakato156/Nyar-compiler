@@ -19,6 +19,10 @@ RUN cmake --build build -j 20
 WORKDIR /TrabajoFinal/llvm-project/build
 RUN make install
 
+ENV DISPLAY=:0
+
+RUN pacman -Syu sdl2 sdl2_image --noconfirm
+
 #Make the source file
 ENV ANTLRRUNTIMEH=/usr/include/antlr4-runtime
 ENV ANTLRRUNTIME=/build/runtime

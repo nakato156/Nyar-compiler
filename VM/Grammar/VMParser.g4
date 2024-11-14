@@ -2,64 +2,72 @@ parser grammar VMParser;
 options { tokenVocab=VMLexer; }
 
 program : stat* EOF;
+
 stat 
-    : variable SEMI
-    | expr SEMI
-    | funcDef
-    | iterar END_BLOCK
-    | condicion END_BLOCK
-    | array SEMI
+    : variable
+    | while
+    | functiondefinition
+    | expr
+    | if
+	| struct
+    | returnexpression
     ;
     
 expr
-    : NUM   #number
-    | BOOL  #boolean
-    | STRING    #string
-    | ID        #Id
-    | LAPREN expr RPAREN #parenExp
-    | expr op=(MUL|DIV|ADD|RESTA) expr #aritExp
-    | expr op=EQEQ expr #eqEqExp
-    | expr op=(LESS | GREATER) EQUAL  expr #eqExp
-    | expr op=NEQ expr #neqExp
-    | funcCall  #fCall
-    | array     #arreglo
-    ;
-
-array
-    : LBRACKET (expr (COMMA expr)*)?  RBRACKET
+    : NUMBER                                            #NumberExp
+    | BOOL                                              #BooleanExp
+    | STRING                                            #StringExp
+    | ID                                                #IdExp
+    | NULL                                              #NullExp
+	| array                                             #ArrayExp
+	| functioncall                            #FunctionCallExp 
+	| expr op=(MUL | DIV | SUM | SUB) expr    #MathExp
+	| expr op=EQEQ expr                       #eqEqExp
+	| expr op=(LESS | GREATER) EQUAL expr     #eqExp
+	| expr op=NEQ expr                        #neqExp
     ;
 
 variable
-    : ID EQUAL expr
+    :
+	ID COLON hint=ID SEMICOLON NUMBER SEMICOLON REF=expr SEMICOLON
+	| ID SEMICOLON expr SEMICOLON REF=expr SEMICOLON 
     ;
 
-funcParams
-    : ID (COMMA ID)*
+//Flow Controls
+
+while:
+	RW_FOR SEMICOLON CONTROL = ID SEMICOLON FROM = (ID | NUMBER) SEMICOLON TO = ( ID
+    | NUMBER ) block 
     ;
 
-funcDef
-    : FUNC ID LAPREN funcParams RPAREN START_BLOCK stat* END_BLOCK
+if: RW_IF SEMICOLON cond = expr* block;
+
+//Data Structures
+
+struct: RW_STRUCTURE SEMICOLON ID functionblock;
+
+array: RW_ARRAY arrayblock;
+
+arrayblock:
+	START_BLOCK (expr (SEMICOLON expr)*)? END_BLOCK;
+
+//Functions
+
+block
+    :COLON stat* RW_END 
     ;
 
-funcArgs
-    : expr (COMMA expr)*
+functionparameters: ID (COMMA ID)*;
+
+functionblock: START_BLOCK stat* END_BLOCK;
+
+functiondefinition:
+	RW_DECLAREFUNCTION ID LPAREN functionparameters? RPAREN functionblock
     ;
 
+returnexpression: RW_RETURN SEMICOLON expr SEMICOLON;
 
-funcCall 
-    : ID LAPREN funcArgs RPAREN
-    ;
+functionarguments: expr (COMMA expr)*;
 
-iterar
-    : FOR
-    | DESDE i=(NUM | ID) HASTA f=(NUM | ID)
-    | EN (ID | array)
-    ;
-
-condicion 
-    : COND expr START_BLOCK stat* END_BLOCK (COND START_BLOCK stat* END_BLOCK)?
-    ;
-
-externFuncions
-    : ID
-    ;
+functioncall:
+	RW_CALLFUNCTION SEMICOLON ID LPAREN functionarguments RPAREN;

@@ -1,5 +1,5 @@
 
-// Generated from ./NyarLexer.g4 by ANTLR 4.13.2
+// Generated from ./VMLexer.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -9,22 +9,20 @@
 
 
 
-class  NyarLexer : public antlr4::Lexer {
+class  VMLexer : public antlr4::Lexer {
 public:
   enum {
     LAPREN = 1, RPAREN = 2, ADD = 3, RESTA = 4, MUL = 5, DIV = 6, LESS = 7, 
-    LESS_EQUAL = 8, GREATER = 9, GREATER_EQUAL = 10, EQUAL = 11, NEQ = 12, 
-    EQEQ = 13, COMMA = 14, SEMI = 15, LBRACKET = 16, RBRACKET = 17, OR = 18, 
-    AND = 19, DOT = 20, HINT_INDICATOR = 21, LINE_COMMENT = 22, START_BLOCK = 23, 
-    END_BLOCK = 24, STRING = 25, COMMENT = 26, IMPORT = 27, STRUCTDef = 28, 
-    FUNC = 29, FOR = 30, WHILE = 31, DESDE = 32, HASTA = 33, EN = 34, COND = 35, 
-    ELSE_COND = 36, BOOL = 37, NADA = 38, RETURN = 39, ID = 40, NUM = 41, 
-    WS = 42
+    GREATER = 8, EQUAL = 9, NEQ = 10, EQEQ = 11, COMMA = 12, SEMI = 13, 
+    LBRACKET = 14, RBRACKET = 15, LINE_COMMENT = 16, START_BLOCK = 17, END_BLOCK = 18, 
+    STRING = 19, COMMENT = 20, IMPORT = 21, FUNC = 22, FOR = 23, WHILE = 24, 
+    DESDE = 25, HASTA = 26, EN = 27, COND = 28, ID = 29, NUM = 30, BOOL = 31, 
+    NADA = 32, RETURN = 33, WS = 34
   };
 
-  explicit NyarLexer(antlr4::CharStream *input);
+  explicit VMLexer(antlr4::CharStream *input);
 
-  ~NyarLexer() override;
+  ~VMLexer() override;
 
 
   std::string getGrammarFileName() const override;
