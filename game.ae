@@ -1,0 +1,124 @@
+// Constantes
+SHIP_SPEED = 40.0;
+
+SCREEN_WIDTH = 224;
+SCREEN_HEIGHT = 256;
+
+TICKS_PER_SECOND = 60;
+NS_PER_SEC = 1000000000;
+NS_PER_TIC = NS_PER_SEC / TICKS_PER_SECOND;
+
+ROW_HEIGHT = 16;
+ROW_WIDTH = SCREEN_WIDTH - 32;
+
+PADDING = 12;
+
+// Definición de tipos
+CYAN = 0;
+RED = 1;
+YELLOW = 2;
+WHITE = 3;
+
+LEFT = 0;
+RIGHT = 1;
+DOWN = 2;
+
+// Estructuras
+estructura Vector2f {
+    x = 0.0;
+    y = 0.0;
+};
+
+estructura Vector2i {
+    x = 0;
+    y = 0;
+};
+
+estructura Box2f {
+    min = 0;
+    max = 0;
+};
+
+estructura AlienType {
+    index = 0; // Vector2i
+    size = 0;  // Vector2i
+};
+
+estructura Alien {
+    type = 0;
+    index = 0;
+    pos = 0; // Vector2f
+    last_move = 0;
+};
+
+estructura Projectile {
+    pos = 0; // Vector2f
+    down = falso;
+};
+
+estructura Explosion {
+    pos = 0; // Vector2f
+    spawn_ns = 0;
+};
+
+estructura Barrier {
+    pos = 0; // Vector2f
+    state = 0;
+};
+
+estructura InputKey {
+    down = falso;
+    pressed = falso;
+};
+
+estructura Input {
+    left = 0; // InputKey
+    right = 0; // InputKey
+    shoot = 0; // InputKey
+};
+
+estructura Ship {
+    pos = 0; // Vector2f
+};
+
+estructura Time {
+    last_second = 0;
+    last_frame = 0;
+    last_tick = 0;
+    tick_remainder = 0;
+    delta_ns = 0;
+    start = 0;
+    now = 0;
+    delta = 0.0;
+    frames = 0;
+    fps = 0;
+};
+
+estructura State {
+    window = 0;
+    renderer = 0;
+    texture = 0;
+    sprites = 0;
+    window_size = 0; // Vector2i
+    ship = 0; // Ship
+    time = 0; // Time
+    input = 0; // Input
+    aliens = 0; // Array de Aliens
+    projectiles = 0; // Array de Projectiles
+    explosions = 0; // Array de Explosions
+    barriers = 0; // Array de Barriers
+    move = 0; // Move
+    last_shuffle = 0; // Move
+    move_ticks = 0.0;
+    stage_num_aliens = 0;
+    lives = 0;
+};
+
+// Funciones
+funcion box_collide(a, b) {
+    si ((a->min->x >= b.max.x) || (a.max->x <= b->min->x) ||
+        (a->min->y >= b.max.y) || (a.max->y <= b->min->y)) {
+        retornar falso;
+    }
+    retornar verdadero;
+}
