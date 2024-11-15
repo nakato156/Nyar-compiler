@@ -21,12 +21,10 @@ expr
     | NULL                                              #NullExp
     | accessObject                                      #AccessObjectExp
 	| array                                             #ArrayExp
-	| functioncall                            #FunctionCallExp 
-	| expr op=(MUL | DIV | SUM | SUB) expr    #MathExp
-	| expr op=EQEQ expr                       #eqEqExp
-	| expr op=(LESS | GREATER) EQUAL expr     #eqExp
-	| expr op=NEQ expr                        #neqExp
-    ;
+	| functioncall                                      #FunctionCallExp 
+	| expr op=(MUL | DIV | SUM | SUB) expr              #MathExp
+	| expr op=(LESS | LESSEQUAL | GREATER | GREATEREQUAL | EQEQ | NEQ | AND | OR) expr  #logicExp
+	;
 
 variable
     :

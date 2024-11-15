@@ -13,13 +13,15 @@ MUL     : '*';
 DIV     : '/';
 
 //Logic Operations
-LESS    : '<';
-GREATER : '>';
-EQUAL   : '=';
-NEQ     : '!=';
-EQEQ    : '==';
-AND     : '&&';
-OR      : '||';
+LESS        : '<';
+LESSEQUAL   : '<=';
+GREATER     : '>';
+GREATEREQUAL: '>=';
+EQUAL       : '=';
+NEQ         : '!=';
+EQEQ        : '==';
+AND         : '&&';
+OR          : '||';
 
 //ReservedWords
 RW_FOR: '@_for';

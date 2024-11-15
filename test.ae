@@ -19,12 +19,6 @@ funcion main() {
     retornar uno;
 }
 
-funcion hola(b) {
-    a = 1;
-    c = a + b    
-    return c;
-}
-
 si uno == (10*3) {
     a = 0+uno;
 }
@@ -36,8 +30,6 @@ estructura Paracaidas {
 array = ["a", "1", "xd", uno];
 
 imprimir(uno, "a");
-
-hola(uno);
 
 nd = NADA;
 

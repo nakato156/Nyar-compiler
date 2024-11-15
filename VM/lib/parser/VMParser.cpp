@@ -54,85 +54,86 @@ void vmparserParserInitialize() {
     std::vector<std::string>{
       "program", "stat", "expr", "variable", "while", "if", "struct", "array", 
       "arrayblock", "block", "functionparameters", "functionblock", "functiondefinition", 
-      "returnexpression", "functionarguments", "functioncall"
+      "returnexpression", "functionarguments", "accessObject", "functioncall"
     },
     std::vector<std::string>{
       "", "'('", "')'", "'{'", "'}'", "'+'", "'-'", "'*'", "'/'", "'<'", 
-      "'>'", "'='", "'!='", "'=='", "'&&'", "'||'", "'@_for'", "'@si'", 
-      "'@_end'", "'@declare funcion'", "'@call'", "'@retornar'", "'@estructura'", 
-      "'@array'", "'@'", "','", "';'", "':'", "'['", "']'", "", "", "", 
-      "", "", "", "'@NNULL'"
+      "'<='", "'>'", "'>='", "'='", "'!='", "'=='", "'&&'", "'||'", "'@_for'", 
+      "'@si'", "'@_end'", "'@declare funcion'", "'@call'", "'@retornar'", 
+      "'@estructura'", "'@array'", "'@'", "','", "';'", "':'", "'['", "']'", 
+      "", "", "", "", "", "", "'@NNULL'", "", "'.'"
     },
     std::vector<std::string>{
       "", "LPAREN", "RPAREN", "START_BLOCK", "END_BLOCK", "SUM", "SUB", 
-      "MUL", "DIV", "LESS", "GREATER", "EQUAL", "NEQ", "EQEQ", "AND", "OR", 
-      "RW_FOR", "RW_IF", "RW_END", "RW_DECLAREFUNCTION", "RW_CALLFUNCTION", 
-      "RW_RETURN", "RW_STRUCTURE", "RW_ARRAY", "RESERVEDWORDS", "COMMA", 
-      "SEMICOLON", "COLON", "LBRACKET", "RBRACKET", "LINE_COMMENT", "STRING", 
-      "COMMENT", "ID", "NUMBER", "BOOL", "NULL", "WS"
+      "MUL", "DIV", "LESS", "LESSEQUAL", "GREATER", "GREATEREQUAL", "EQUAL", 
+      "NEQ", "EQEQ", "AND", "OR", "RW_FOR", "RW_IF", "RW_END", "RW_DECLAREFUNCTION", 
+      "RW_CALLFUNCTION", "RW_RETURN", "RW_STRUCTURE", "RW_ARRAY", "RESERVEDWORDS", 
+      "COMMA", "SEMICOLON", "COLON", "LBRACKET", "RBRACKET", "LINE_COMMENT", 
+      "STRING", "COMMENT", "ID", "NUMBER", "BOOL", "NULL", "WS", "DOT"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,37,191,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,40,195,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
-  	14,2,15,7,15,1,0,5,0,34,8,0,10,0,12,0,37,9,0,1,0,1,0,1,1,1,1,1,1,1,1,
-  	1,1,1,1,1,1,3,1,48,8,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,58,8,2,1,2,
-  	1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,5,2,73,8,2,10,2,12,2,
-  	76,9,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,
-  	3,3,3,94,8,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,5,5,108,
-  	8,5,10,5,12,5,111,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,8,1,8,
-  	1,8,1,8,5,8,127,8,8,10,8,12,8,130,9,8,3,8,132,8,8,1,8,1,8,1,9,1,9,5,9,
-  	138,8,9,10,9,12,9,141,9,9,1,9,1,9,1,10,1,10,1,10,5,10,148,8,10,10,10,
-  	12,10,151,9,10,1,11,1,11,5,11,155,8,11,10,11,12,11,158,9,11,1,11,1,11,
-  	1,12,1,12,1,12,1,12,3,12,166,8,12,1,12,1,12,1,12,1,13,1,13,1,13,1,13,
-  	1,13,1,14,1,14,1,14,5,14,179,8,14,10,14,12,14,182,9,14,1,15,1,15,1,15,
-  	1,15,1,15,1,15,1,15,1,15,0,1,4,16,0,2,4,6,8,10,12,14,16,18,20,22,24,26,
-  	28,30,0,3,1,0,5,8,1,0,9,10,1,0,33,34,200,0,35,1,0,0,0,2,47,1,0,0,0,4,
-  	57,1,0,0,0,6,93,1,0,0,0,8,95,1,0,0,0,10,104,1,0,0,0,12,114,1,0,0,0,14,
-  	119,1,0,0,0,16,122,1,0,0,0,18,135,1,0,0,0,20,144,1,0,0,0,22,152,1,0,0,
-  	0,24,161,1,0,0,0,26,170,1,0,0,0,28,175,1,0,0,0,30,183,1,0,0,0,32,34,3,
-  	2,1,0,33,32,1,0,0,0,34,37,1,0,0,0,35,33,1,0,0,0,35,36,1,0,0,0,36,38,1,
-  	0,0,0,37,35,1,0,0,0,38,39,5,0,0,1,39,1,1,0,0,0,40,48,3,6,3,0,41,48,3,
-  	8,4,0,42,48,3,24,12,0,43,48,3,4,2,0,44,48,3,10,5,0,45,48,3,12,6,0,46,
-  	48,3,26,13,0,47,40,1,0,0,0,47,41,1,0,0,0,47,42,1,0,0,0,47,43,1,0,0,0,
-  	47,44,1,0,0,0,47,45,1,0,0,0,47,46,1,0,0,0,48,3,1,0,0,0,49,50,6,2,-1,0,
-  	50,58,5,34,0,0,51,58,5,35,0,0,52,58,5,31,0,0,53,58,5,33,0,0,54,58,5,36,
-  	0,0,55,58,3,14,7,0,56,58,3,30,15,0,57,49,1,0,0,0,57,51,1,0,0,0,57,52,
-  	1,0,0,0,57,53,1,0,0,0,57,54,1,0,0,0,57,55,1,0,0,0,57,56,1,0,0,0,58,74,
-  	1,0,0,0,59,60,10,4,0,0,60,61,7,0,0,0,61,73,3,4,2,5,62,63,10,3,0,0,63,
-  	64,5,13,0,0,64,73,3,4,2,4,65,66,10,2,0,0,66,67,7,1,0,0,67,68,5,11,0,0,
-  	68,73,3,4,2,3,69,70,10,1,0,0,70,71,5,12,0,0,71,73,3,4,2,2,72,59,1,0,0,
-  	0,72,62,1,0,0,0,72,65,1,0,0,0,72,69,1,0,0,0,73,76,1,0,0,0,74,72,1,0,0,
-  	0,74,75,1,0,0,0,75,5,1,0,0,0,76,74,1,0,0,0,77,78,5,33,0,0,78,79,5,27,
-  	0,0,79,80,5,33,0,0,80,81,5,26,0,0,81,82,5,34,0,0,82,83,5,26,0,0,83,84,
-  	3,4,2,0,84,85,5,26,0,0,85,94,1,0,0,0,86,87,5,33,0,0,87,88,5,26,0,0,88,
-  	89,3,4,2,0,89,90,5,26,0,0,90,91,3,4,2,0,91,92,5,26,0,0,92,94,1,0,0,0,
-  	93,77,1,0,0,0,93,86,1,0,0,0,94,7,1,0,0,0,95,96,5,16,0,0,96,97,5,26,0,
-  	0,97,98,5,33,0,0,98,99,5,26,0,0,99,100,7,2,0,0,100,101,5,26,0,0,101,102,
-  	7,2,0,0,102,103,3,18,9,0,103,9,1,0,0,0,104,105,5,17,0,0,105,109,5,26,
-  	0,0,106,108,3,4,2,0,107,106,1,0,0,0,108,111,1,0,0,0,109,107,1,0,0,0,109,
-  	110,1,0,0,0,110,112,1,0,0,0,111,109,1,0,0,0,112,113,3,18,9,0,113,11,1,
-  	0,0,0,114,115,5,22,0,0,115,116,5,26,0,0,116,117,5,33,0,0,117,118,3,22,
-  	11,0,118,13,1,0,0,0,119,120,5,23,0,0,120,121,3,16,8,0,121,15,1,0,0,0,
-  	122,131,5,3,0,0,123,128,3,4,2,0,124,125,5,26,0,0,125,127,3,4,2,0,126,
-  	124,1,0,0,0,127,130,1,0,0,0,128,126,1,0,0,0,128,129,1,0,0,0,129,132,1,
-  	0,0,0,130,128,1,0,0,0,131,123,1,0,0,0,131,132,1,0,0,0,132,133,1,0,0,0,
-  	133,134,5,4,0,0,134,17,1,0,0,0,135,139,5,27,0,0,136,138,3,2,1,0,137,136,
-  	1,0,0,0,138,141,1,0,0,0,139,137,1,0,0,0,139,140,1,0,0,0,140,142,1,0,0,
-  	0,141,139,1,0,0,0,142,143,5,18,0,0,143,19,1,0,0,0,144,149,5,33,0,0,145,
-  	146,5,25,0,0,146,148,5,33,0,0,147,145,1,0,0,0,148,151,1,0,0,0,149,147,
-  	1,0,0,0,149,150,1,0,0,0,150,21,1,0,0,0,151,149,1,0,0,0,152,156,5,3,0,
-  	0,153,155,3,2,1,0,154,153,1,0,0,0,155,158,1,0,0,0,156,154,1,0,0,0,156,
-  	157,1,0,0,0,157,159,1,0,0,0,158,156,1,0,0,0,159,160,5,4,0,0,160,23,1,
-  	0,0,0,161,162,5,19,0,0,162,163,5,33,0,0,163,165,5,1,0,0,164,166,3,20,
-  	10,0,165,164,1,0,0,0,165,166,1,0,0,0,166,167,1,0,0,0,167,168,5,2,0,0,
-  	168,169,3,22,11,0,169,25,1,0,0,0,170,171,5,21,0,0,171,172,5,26,0,0,172,
-  	173,3,4,2,0,173,174,5,26,0,0,174,27,1,0,0,0,175,180,3,4,2,0,176,177,5,
-  	25,0,0,177,179,3,4,2,0,178,176,1,0,0,0,179,182,1,0,0,0,180,178,1,0,0,
-  	0,180,181,1,0,0,0,181,29,1,0,0,0,182,180,1,0,0,0,183,184,5,20,0,0,184,
-  	185,5,26,0,0,185,186,5,33,0,0,186,187,5,1,0,0,187,188,3,28,14,0,188,189,
-  	5,2,0,0,189,31,1,0,0,0,14,35,47,57,72,74,93,109,128,131,139,149,156,165,
-  	180
+  	14,2,15,7,15,2,16,7,16,1,0,5,0,36,8,0,10,0,12,0,39,9,0,1,0,1,0,1,1,1,
+  	1,1,1,1,1,1,1,1,1,1,1,3,1,50,8,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
+  	3,2,61,8,2,1,2,1,2,1,2,1,2,1,2,1,2,5,2,69,8,2,10,2,12,2,72,9,2,1,3,1,
+  	3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,90,8,3,
+  	1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,5,5,104,8,5,10,5,12,5,
+  	107,9,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,8,1,8,1,8,1,8,5,8,123,
+  	8,8,10,8,12,8,126,9,8,3,8,128,8,8,1,8,1,8,1,9,1,9,5,9,134,8,9,10,9,12,
+  	9,137,9,9,1,9,1,9,1,10,1,10,1,10,5,10,144,8,10,10,10,12,10,147,9,10,1,
+  	11,1,11,5,11,151,8,11,10,11,12,11,154,9,11,1,11,1,11,1,12,1,12,1,12,1,
+  	12,3,12,162,8,12,1,12,1,12,1,12,1,13,1,13,1,13,1,13,1,13,1,14,1,14,1,
+  	14,5,14,175,8,14,10,14,12,14,178,9,14,1,15,1,15,1,15,5,15,183,8,15,10,
+  	15,12,15,186,9,15,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,0,1,4,17,0,
+  	2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,0,3,1,0,5,8,2,0,9,12,14,17,
+  	1,0,35,36,203,0,37,1,0,0,0,2,49,1,0,0,0,4,60,1,0,0,0,6,89,1,0,0,0,8,91,
+  	1,0,0,0,10,100,1,0,0,0,12,110,1,0,0,0,14,115,1,0,0,0,16,118,1,0,0,0,18,
+  	131,1,0,0,0,20,140,1,0,0,0,22,148,1,0,0,0,24,157,1,0,0,0,26,166,1,0,0,
+  	0,28,171,1,0,0,0,30,179,1,0,0,0,32,187,1,0,0,0,34,36,3,2,1,0,35,34,1,
+  	0,0,0,36,39,1,0,0,0,37,35,1,0,0,0,37,38,1,0,0,0,38,40,1,0,0,0,39,37,1,
+  	0,0,0,40,41,5,0,0,1,41,1,1,0,0,0,42,50,3,6,3,0,43,50,3,8,4,0,44,50,3,
+  	24,12,0,45,50,3,4,2,0,46,50,3,10,5,0,47,50,3,12,6,0,48,50,3,26,13,0,49,
+  	42,1,0,0,0,49,43,1,0,0,0,49,44,1,0,0,0,49,45,1,0,0,0,49,46,1,0,0,0,49,
+  	47,1,0,0,0,49,48,1,0,0,0,50,3,1,0,0,0,51,52,6,2,-1,0,52,61,5,36,0,0,53,
+  	61,5,37,0,0,54,61,5,33,0,0,55,61,5,35,0,0,56,61,5,38,0,0,57,61,3,30,15,
+  	0,58,61,3,14,7,0,59,61,3,32,16,0,60,51,1,0,0,0,60,53,1,0,0,0,60,54,1,
+  	0,0,0,60,55,1,0,0,0,60,56,1,0,0,0,60,57,1,0,0,0,60,58,1,0,0,0,60,59,1,
+  	0,0,0,61,70,1,0,0,0,62,63,10,2,0,0,63,64,7,0,0,0,64,69,3,4,2,3,65,66,
+  	10,1,0,0,66,67,7,1,0,0,67,69,3,4,2,2,68,62,1,0,0,0,68,65,1,0,0,0,69,72,
+  	1,0,0,0,70,68,1,0,0,0,70,71,1,0,0,0,71,5,1,0,0,0,72,70,1,0,0,0,73,74,
+  	5,35,0,0,74,75,5,29,0,0,75,76,5,35,0,0,76,77,5,28,0,0,77,78,5,36,0,0,
+  	78,79,5,28,0,0,79,80,3,4,2,0,80,81,5,28,0,0,81,90,1,0,0,0,82,83,5,35,
+  	0,0,83,84,5,28,0,0,84,85,3,4,2,0,85,86,5,28,0,0,86,87,3,4,2,0,87,88,5,
+  	28,0,0,88,90,1,0,0,0,89,73,1,0,0,0,89,82,1,0,0,0,90,7,1,0,0,0,91,92,5,
+  	18,0,0,92,93,5,28,0,0,93,94,5,35,0,0,94,95,5,28,0,0,95,96,7,2,0,0,96,
+  	97,5,28,0,0,97,98,7,2,0,0,98,99,3,18,9,0,99,9,1,0,0,0,100,101,5,19,0,
+  	0,101,105,5,28,0,0,102,104,3,4,2,0,103,102,1,0,0,0,104,107,1,0,0,0,105,
+  	103,1,0,0,0,105,106,1,0,0,0,106,108,1,0,0,0,107,105,1,0,0,0,108,109,3,
+  	18,9,0,109,11,1,0,0,0,110,111,5,24,0,0,111,112,5,28,0,0,112,113,5,35,
+  	0,0,113,114,3,22,11,0,114,13,1,0,0,0,115,116,5,25,0,0,116,117,3,16,8,
+  	0,117,15,1,0,0,0,118,127,5,3,0,0,119,124,3,4,2,0,120,121,5,28,0,0,121,
+  	123,3,4,2,0,122,120,1,0,0,0,123,126,1,0,0,0,124,122,1,0,0,0,124,125,1,
+  	0,0,0,125,128,1,0,0,0,126,124,1,0,0,0,127,119,1,0,0,0,127,128,1,0,0,0,
+  	128,129,1,0,0,0,129,130,5,4,0,0,130,17,1,0,0,0,131,135,5,29,0,0,132,134,
+  	3,2,1,0,133,132,1,0,0,0,134,137,1,0,0,0,135,133,1,0,0,0,135,136,1,0,0,
+  	0,136,138,1,0,0,0,137,135,1,0,0,0,138,139,5,20,0,0,139,19,1,0,0,0,140,
+  	145,5,35,0,0,141,142,5,27,0,0,142,144,5,35,0,0,143,141,1,0,0,0,144,147,
+  	1,0,0,0,145,143,1,0,0,0,145,146,1,0,0,0,146,21,1,0,0,0,147,145,1,0,0,
+  	0,148,152,5,3,0,0,149,151,3,2,1,0,150,149,1,0,0,0,151,154,1,0,0,0,152,
+  	150,1,0,0,0,152,153,1,0,0,0,153,155,1,0,0,0,154,152,1,0,0,0,155,156,5,
+  	4,0,0,156,23,1,0,0,0,157,158,5,21,0,0,158,159,5,35,0,0,159,161,5,1,0,
+  	0,160,162,3,20,10,0,161,160,1,0,0,0,161,162,1,0,0,0,162,163,1,0,0,0,163,
+  	164,5,2,0,0,164,165,3,22,11,0,165,25,1,0,0,0,166,167,5,23,0,0,167,168,
+  	5,28,0,0,168,169,3,4,2,0,169,170,5,28,0,0,170,27,1,0,0,0,171,176,3,4,
+  	2,0,172,173,5,27,0,0,173,175,3,4,2,0,174,172,1,0,0,0,175,178,1,0,0,0,
+  	176,174,1,0,0,0,176,177,1,0,0,0,177,29,1,0,0,0,178,176,1,0,0,0,179,184,
+  	5,35,0,0,180,181,5,40,0,0,181,183,5,35,0,0,182,180,1,0,0,0,183,186,1,
+  	0,0,0,184,182,1,0,0,0,184,185,1,0,0,0,185,31,1,0,0,0,186,184,1,0,0,0,
+  	187,188,5,22,0,0,188,189,5,28,0,0,189,190,5,35,0,0,190,191,5,1,0,0,191,
+  	192,3,28,14,0,192,193,5,2,0,0,193,33,1,0,0,0,15,37,49,60,68,70,89,105,
+  	124,127,135,145,152,161,176,184
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -226,18 +227,18 @@ VMParser::ProgramContext* VMParser::program() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(35);
+    setState(37);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 131012952064) != 0)) {
-      setState(32);
+      ((1ULL << _la) & 524051808256) != 0)) {
+      setState(34);
       stat();
-      setState(37);
+      setState(39);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(38);
+    setState(40);
     match(VMParser::EOF);
    
   }
@@ -309,54 +310,54 @@ VMParser::StatContext* VMParser::stat() {
     exitRule();
   });
   try {
-    setState(47);
+    setState(49);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(40);
+      setState(42);
       variable();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(41);
+      setState(43);
       while_();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(42);
+      setState(44);
       functiondefinition();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(43);
+      setState(45);
       expr(0);
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(44);
+      setState(46);
       if_();
       break;
     }
 
     case 6: {
       enterOuterAlt(_localctx, 6);
-      setState(45);
+      setState(47);
       struct_();
       break;
     }
 
     case 7: {
       enterOuterAlt(_localctx, 7);
-      setState(46);
+      setState(48);
       returnexpression();
       break;
     }
@@ -420,34 +421,54 @@ std::any VMParser::FunctionCallExpContext::accept(tree::ParseTreeVisitor *visito
   else
     return visitor->visitChildren(this);
 }
-//----------------- EqExpContext ------------------------------------------------------------------
+//----------------- LogicExpContext ------------------------------------------------------------------
 
-std::vector<VMParser::ExprContext *> VMParser::EqExpContext::expr() {
+std::vector<VMParser::ExprContext *> VMParser::LogicExpContext::expr() {
   return getRuleContexts<VMParser::ExprContext>();
 }
 
-VMParser::ExprContext* VMParser::EqExpContext::expr(size_t i) {
+VMParser::ExprContext* VMParser::LogicExpContext::expr(size_t i) {
   return getRuleContext<VMParser::ExprContext>(i);
 }
 
-tree::TerminalNode* VMParser::EqExpContext::EQUAL() {
-  return getToken(VMParser::EQUAL, 0);
-}
-
-tree::TerminalNode* VMParser::EqExpContext::LESS() {
+tree::TerminalNode* VMParser::LogicExpContext::LESS() {
   return getToken(VMParser::LESS, 0);
 }
 
-tree::TerminalNode* VMParser::EqExpContext::GREATER() {
+tree::TerminalNode* VMParser::LogicExpContext::LESSEQUAL() {
+  return getToken(VMParser::LESSEQUAL, 0);
+}
+
+tree::TerminalNode* VMParser::LogicExpContext::GREATER() {
   return getToken(VMParser::GREATER, 0);
 }
 
-VMParser::EqExpContext::EqExpContext(ExprContext *ctx) { copyFrom(ctx); }
+tree::TerminalNode* VMParser::LogicExpContext::GREATEREQUAL() {
+  return getToken(VMParser::GREATEREQUAL, 0);
+}
+
+tree::TerminalNode* VMParser::LogicExpContext::EQEQ() {
+  return getToken(VMParser::EQEQ, 0);
+}
+
+tree::TerminalNode* VMParser::LogicExpContext::NEQ() {
+  return getToken(VMParser::NEQ, 0);
+}
+
+tree::TerminalNode* VMParser::LogicExpContext::AND() {
+  return getToken(VMParser::AND, 0);
+}
+
+tree::TerminalNode* VMParser::LogicExpContext::OR() {
+  return getToken(VMParser::OR, 0);
+}
+
+VMParser::LogicExpContext::LogicExpContext(ExprContext *ctx) { copyFrom(ctx); }
 
 
-std::any VMParser::EqExpContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any VMParser::LogicExpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
-    return parserVisitor->visitEqExp(this);
+    return parserVisitor->visitLogicExp(this);
   else
     return visitor->visitChildren(this);
 }
@@ -463,6 +484,21 @@ VMParser::StringExpContext::StringExpContext(ExprContext *ctx) { copyFrom(ctx); 
 std::any VMParser::StringExpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitStringExp(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- AccessObjectExpContext ------------------------------------------------------------------
+
+VMParser::AccessObjectContext* VMParser::AccessObjectExpContext::accessObject() {
+  return getRuleContext<VMParser::AccessObjectContext>(0);
+}
+
+VMParser::AccessObjectExpContext::AccessObjectExpContext(ExprContext *ctx) { copyFrom(ctx); }
+
+
+std::any VMParser::AccessObjectExpContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
+    return parserVisitor->visitAccessObjectExp(this);
   else
     return visitor->visitChildren(this);
 }
@@ -493,52 +529,6 @@ VMParser::NullExpContext::NullExpContext(ExprContext *ctx) { copyFrom(ctx); }
 std::any VMParser::NullExpContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
     return parserVisitor->visitNullExp(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- NeqExpContext ------------------------------------------------------------------
-
-std::vector<VMParser::ExprContext *> VMParser::NeqExpContext::expr() {
-  return getRuleContexts<VMParser::ExprContext>();
-}
-
-VMParser::ExprContext* VMParser::NeqExpContext::expr(size_t i) {
-  return getRuleContext<VMParser::ExprContext>(i);
-}
-
-tree::TerminalNode* VMParser::NeqExpContext::NEQ() {
-  return getToken(VMParser::NEQ, 0);
-}
-
-VMParser::NeqExpContext::NeqExpContext(ExprContext *ctx) { copyFrom(ctx); }
-
-
-std::any VMParser::NeqExpContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
-    return parserVisitor->visitNeqExp(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- EqEqExpContext ------------------------------------------------------------------
-
-std::vector<VMParser::ExprContext *> VMParser::EqEqExpContext::expr() {
-  return getRuleContexts<VMParser::ExprContext>();
-}
-
-VMParser::ExprContext* VMParser::EqEqExpContext::expr(size_t i) {
-  return getRuleContext<VMParser::ExprContext>(i);
-}
-
-tree::TerminalNode* VMParser::EqEqExpContext::EQEQ() {
-  return getToken(VMParser::EQEQ, 0);
-}
-
-VMParser::EqEqExpContext::EqEqExpContext(ExprContext *ctx) { copyFrom(ctx); }
-
-
-std::any VMParser::EqEqExpContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
-    return parserVisitor->visitEqEqExp(this);
   else
     return visitor->visitChildren(this);
 }
@@ -633,78 +623,87 @@ VMParser::ExprContext* VMParser::expr(int precedence) {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(57);
+    setState(60);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case VMParser::NUMBER: {
-        _localctx = _tracker.createInstance<NumberExpContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 2, _ctx)) {
+    case 1: {
+      _localctx = _tracker.createInstance<NumberExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
 
-        setState(50);
-        match(VMParser::NUMBER);
-        break;
-      }
+      setState(52);
+      match(VMParser::NUMBER);
+      break;
+    }
 
-      case VMParser::BOOL: {
-        _localctx = _tracker.createInstance<BooleanExpContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
-        setState(51);
-        match(VMParser::BOOL);
-        break;
-      }
+    case 2: {
+      _localctx = _tracker.createInstance<BooleanExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(53);
+      match(VMParser::BOOL);
+      break;
+    }
 
-      case VMParser::STRING: {
-        _localctx = _tracker.createInstance<StringExpContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
-        setState(52);
-        match(VMParser::STRING);
-        break;
-      }
+    case 3: {
+      _localctx = _tracker.createInstance<StringExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(54);
+      match(VMParser::STRING);
+      break;
+    }
 
-      case VMParser::ID: {
-        _localctx = _tracker.createInstance<IdExpContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
-        setState(53);
-        match(VMParser::ID);
-        break;
-      }
+    case 4: {
+      _localctx = _tracker.createInstance<IdExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(55);
+      match(VMParser::ID);
+      break;
+    }
 
-      case VMParser::NULL_: {
-        _localctx = _tracker.createInstance<NullExpContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
-        setState(54);
-        match(VMParser::NULL_);
-        break;
-      }
+    case 5: {
+      _localctx = _tracker.createInstance<NullExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(56);
+      match(VMParser::NULL_);
+      break;
+    }
 
-      case VMParser::RW_ARRAY: {
-        _localctx = _tracker.createInstance<ArrayExpContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
-        setState(55);
-        array();
-        break;
-      }
+    case 6: {
+      _localctx = _tracker.createInstance<AccessObjectExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(57);
+      accessObject();
+      break;
+    }
 
-      case VMParser::RW_CALLFUNCTION: {
-        _localctx = _tracker.createInstance<FunctionCallExpContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
-        setState(56);
-        functioncall();
-        break;
-      }
+    case 7: {
+      _localctx = _tracker.createInstance<ArrayExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(58);
+      array();
+      break;
+    }
+
+    case 8: {
+      _localctx = _tracker.createInstance<FunctionCallExpContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(59);
+      functioncall();
+      break;
+    }
 
     default:
-      throw NoViableAltException(this);
+      break;
     }
     _ctx->stop = _input->LT(-1);
-    setState(74);
+    setState(70);
     _errHandler->sync(this);
     alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
@@ -712,17 +711,17 @@ VMParser::ExprContext* VMParser::expr(int precedence) {
         if (!_parseListeners.empty())
           triggerExitRuleEvent();
         previousContext = _localctx;
-        setState(72);
+        setState(68);
         _errHandler->sync(this);
         switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 3, _ctx)) {
         case 1: {
           auto newContext = _tracker.createInstance<MathExpContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpr);
-          setState(59);
+          setState(62);
 
-          if (!(precpred(_ctx, 4))) throw FailedPredicateException(this, "precpred(_ctx, 4)");
-          setState(60);
+          if (!(precpred(_ctx, 2))) throw FailedPredicateException(this, "precpred(_ctx, 2)");
+          setState(63);
           antlrcpp::downCast<MathExpContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
           if (!((((_la & ~ 0x3fULL) == 0) &&
@@ -733,61 +732,30 @@ VMParser::ExprContext* VMParser::expr(int precedence) {
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(61);
-          expr(5);
+          setState(64);
+          expr(3);
           break;
         }
 
         case 2: {
-          auto newContext = _tracker.createInstance<EqEqExpContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
-          _localctx = newContext;
-          pushNewRecursionContext(newContext, startState, RuleExpr);
-          setState(62);
-
-          if (!(precpred(_ctx, 3))) throw FailedPredicateException(this, "precpred(_ctx, 3)");
-          setState(63);
-          antlrcpp::downCast<EqEqExpContext *>(_localctx)->op = match(VMParser::EQEQ);
-          setState(64);
-          expr(4);
-          break;
-        }
-
-        case 3: {
-          auto newContext = _tracker.createInstance<EqExpContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
+          auto newContext = _tracker.createInstance<LogicExpContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
           _localctx = newContext;
           pushNewRecursionContext(newContext, startState, RuleExpr);
           setState(65);
 
-          if (!(precpred(_ctx, 2))) throw FailedPredicateException(this, "precpred(_ctx, 2)");
+          if (!(precpred(_ctx, 1))) throw FailedPredicateException(this, "precpred(_ctx, 1)");
           setState(66);
-          antlrcpp::downCast<EqExpContext *>(_localctx)->op = _input->LT(1);
+          antlrcpp::downCast<LogicExpContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
-          if (!(_la == VMParser::LESS
-
-          || _la == VMParser::GREATER)) {
-            antlrcpp::downCast<EqExpContext *>(_localctx)->op = _errHandler->recoverInline(this);
+          if (!((((_la & ~ 0x3fULL) == 0) &&
+            ((1ULL << _la) & 253440) != 0))) {
+            antlrcpp::downCast<LogicExpContext *>(_localctx)->op = _errHandler->recoverInline(this);
           }
           else {
             _errHandler->reportMatch(this);
             consume();
           }
           setState(67);
-          match(VMParser::EQUAL);
-          setState(68);
-          expr(3);
-          break;
-        }
-
-        case 4: {
-          auto newContext = _tracker.createInstance<NeqExpContext>(_tracker.createInstance<ExprContext>(parentContext, parentState));
-          _localctx = newContext;
-          pushNewRecursionContext(newContext, startState, RuleExpr);
-          setState(69);
-
-          if (!(precpred(_ctx, 1))) throw FailedPredicateException(this, "precpred(_ctx, 1)");
-          setState(70);
-          antlrcpp::downCast<NeqExpContext *>(_localctx)->op = match(VMParser::NEQ);
-          setState(71);
           expr(2);
           break;
         }
@@ -796,7 +764,7 @@ VMParser::ExprContext* VMParser::expr(int precedence) {
           break;
         } 
       }
-      setState(76);
+      setState(72);
       _errHandler->sync(this);
       alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx);
     }
@@ -872,43 +840,43 @@ VMParser::VariableContext* VMParser::variable() {
     exitRule();
   });
   try {
-    setState(93);
+    setState(89);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(77);
+      setState(73);
       match(VMParser::ID);
-      setState(78);
+      setState(74);
       match(VMParser::COLON);
-      setState(79);
+      setState(75);
       antlrcpp::downCast<VariableContext *>(_localctx)->hint = match(VMParser::ID);
-      setState(80);
+      setState(76);
       match(VMParser::SEMICOLON);
-      setState(81);
+      setState(77);
       match(VMParser::NUMBER);
-      setState(82);
+      setState(78);
       match(VMParser::SEMICOLON);
-      setState(83);
+      setState(79);
       antlrcpp::downCast<VariableContext *>(_localctx)->REF = expr(0);
-      setState(84);
+      setState(80);
       match(VMParser::SEMICOLON);
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(86);
+      setState(82);
       match(VMParser::ID);
-      setState(87);
+      setState(83);
       match(VMParser::SEMICOLON);
-      setState(88);
+      setState(84);
       expr(0);
-      setState(89);
+      setState(85);
       match(VMParser::SEMICOLON);
-      setState(90);
+      setState(86);
       antlrcpp::downCast<VariableContext *>(_localctx)->REF = expr(0);
-      setState(91);
+      setState(87);
       match(VMParser::SEMICOLON);
       break;
     }
@@ -992,15 +960,15 @@ VMParser::WhileContext* VMParser::while_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(95);
+    setState(91);
     match(VMParser::RW_FOR);
-    setState(96);
+    setState(92);
     match(VMParser::SEMICOLON);
-    setState(97);
+    setState(93);
     antlrcpp::downCast<WhileContext *>(_localctx)->CONTROL = match(VMParser::ID);
-    setState(98);
+    setState(94);
     match(VMParser::SEMICOLON);
-    setState(99);
+    setState(95);
     antlrcpp::downCast<WhileContext *>(_localctx)->FROM = _input->LT(1);
     _la = _input->LA(1);
     if (!(_la == VMParser::ID
@@ -1012,9 +980,9 @@ VMParser::WhileContext* VMParser::while_() {
       _errHandler->reportMatch(this);
       consume();
     }
-    setState(100);
+    setState(96);
     match(VMParser::SEMICOLON);
-    setState(101);
+    setState(97);
     antlrcpp::downCast<WhileContext *>(_localctx)->TO = _input->LT(1);
     _la = _input->LA(1);
     if (!(_la == VMParser::ID
@@ -1026,7 +994,7 @@ VMParser::WhileContext* VMParser::while_() {
       _errHandler->reportMatch(this);
       consume();
     }
-    setState(102);
+    setState(98);
     block();
    
   }
@@ -1092,22 +1060,22 @@ VMParser::IfContext* VMParser::if_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(104);
+    setState(100);
     match(VMParser::RW_IF);
-    setState(105);
+    setState(101);
     match(VMParser::SEMICOLON);
-    setState(109);
+    setState(105);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 131005939712) != 0)) {
-      setState(106);
+      ((1ULL << _la) & 524023758848) != 0)) {
+      setState(102);
       antlrcpp::downCast<IfContext *>(_localctx)->cond = expr(0);
-      setState(111);
+      setState(107);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(112);
+    setState(108);
     block();
    
   }
@@ -1168,13 +1136,13 @@ VMParser::StructContext* VMParser::struct_() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(114);
+    setState(110);
     match(VMParser::RW_STRUCTURE);
-    setState(115);
+    setState(111);
     match(VMParser::SEMICOLON);
-    setState(116);
+    setState(112);
     match(VMParser::ID);
-    setState(117);
+    setState(113);
     functionblock();
    
   }
@@ -1227,9 +1195,9 @@ VMParser::ArrayContext* VMParser::array() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(119);
+    setState(115);
     match(VMParser::RW_ARRAY);
-    setState(120);
+    setState(116);
     arrayblock();
    
   }
@@ -1299,30 +1267,30 @@ VMParser::ArrayblockContext* VMParser::arrayblock() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(122);
+    setState(118);
     match(VMParser::START_BLOCK);
-    setState(131);
+    setState(127);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 131005939712) != 0)) {
-      setState(123);
+      ((1ULL << _la) & 524023758848) != 0)) {
+      setState(119);
       expr(0);
-      setState(128);
+      setState(124);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == VMParser::SEMICOLON) {
-        setState(124);
+        setState(120);
         match(VMParser::SEMICOLON);
-        setState(125);
+        setState(121);
         expr(0);
-        setState(130);
+        setState(126);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
     }
-    setState(133);
+    setState(129);
     match(VMParser::END_BLOCK);
    
   }
@@ -1384,20 +1352,20 @@ VMParser::BlockContext* VMParser::block() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(135);
+    setState(131);
     match(VMParser::COLON);
-    setState(139);
+    setState(135);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 131012952064) != 0)) {
-      setState(136);
+      ((1ULL << _la) & 524051808256) != 0)) {
+      setState(132);
       stat();
-      setState(141);
+      setState(137);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(142);
+    setState(138);
     match(VMParser::RW_END);
    
   }
@@ -1459,17 +1427,17 @@ VMParser::FunctionparametersContext* VMParser::functionparameters() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(144);
+    setState(140);
     match(VMParser::ID);
-    setState(149);
+    setState(145);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == VMParser::COMMA) {
-      setState(145);
+      setState(141);
       match(VMParser::COMMA);
-      setState(146);
+      setState(142);
       match(VMParser::ID);
-      setState(151);
+      setState(147);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1533,20 +1501,20 @@ VMParser::FunctionblockContext* VMParser::functionblock() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(152);
+    setState(148);
     match(VMParser::START_BLOCK);
-    setState(156);
+    setState(152);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 131012952064) != 0)) {
-      setState(153);
+      ((1ULL << _la) & 524051808256) != 0)) {
+      setState(149);
       stat();
-      setState(158);
+      setState(154);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(159);
+    setState(155);
     match(VMParser::END_BLOCK);
    
   }
@@ -1616,23 +1584,23 @@ VMParser::FunctiondefinitionContext* VMParser::functiondefinition() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(161);
+    setState(157);
     match(VMParser::RW_DECLAREFUNCTION);
-    setState(162);
+    setState(158);
     match(VMParser::ID);
-    setState(163);
+    setState(159);
     match(VMParser::LPAREN);
-    setState(165);
+    setState(161);
     _errHandler->sync(this);
 
     _la = _input->LA(1);
     if (_la == VMParser::ID) {
-      setState(164);
+      setState(160);
       functionparameters();
     }
-    setState(167);
+    setState(163);
     match(VMParser::RPAREN);
-    setState(168);
+    setState(164);
     functionblock();
    
   }
@@ -1693,13 +1661,13 @@ VMParser::ReturnexpressionContext* VMParser::returnexpression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(170);
+    setState(166);
     match(VMParser::RW_RETURN);
-    setState(171);
+    setState(167);
     match(VMParser::SEMICOLON);
-    setState(172);
+    setState(168);
     expr(0);
-    setState(173);
+    setState(169);
     match(VMParser::SEMICOLON);
    
   }
@@ -1761,19 +1729,95 @@ VMParser::FunctionargumentsContext* VMParser::functionarguments() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(175);
+    setState(171);
     expr(0);
-    setState(180);
+    setState(176);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == VMParser::COMMA) {
-      setState(176);
+      setState(172);
       match(VMParser::COMMA);
-      setState(177);
+      setState(173);
       expr(0);
-      setState(182);
+      setState(178);
       _errHandler->sync(this);
       _la = _input->LA(1);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- AccessObjectContext ------------------------------------------------------------------
+
+VMParser::AccessObjectContext::AccessObjectContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+std::vector<tree::TerminalNode *> VMParser::AccessObjectContext::ID() {
+  return getTokens(VMParser::ID);
+}
+
+tree::TerminalNode* VMParser::AccessObjectContext::ID(size_t i) {
+  return getToken(VMParser::ID, i);
+}
+
+std::vector<tree::TerminalNode *> VMParser::AccessObjectContext::DOT() {
+  return getTokens(VMParser::DOT);
+}
+
+tree::TerminalNode* VMParser::AccessObjectContext::DOT(size_t i) {
+  return getToken(VMParser::DOT, i);
+}
+
+
+size_t VMParser::AccessObjectContext::getRuleIndex() const {
+  return VMParser::RuleAccessObject;
+}
+
+
+std::any VMParser::AccessObjectContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<VMParserVisitor*>(visitor))
+    return parserVisitor->visitAccessObject(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+VMParser::AccessObjectContext* VMParser::accessObject() {
+  AccessObjectContext *_localctx = _tracker.createInstance<AccessObjectContext>(_ctx, getState());
+  enterRule(_localctx, 30, VMParser::RuleAccessObject);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    size_t alt;
+    enterOuterAlt(_localctx, 1);
+    setState(179);
+    match(VMParser::ID);
+    setState(184);
+    _errHandler->sync(this);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 14, _ctx);
+    while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
+      if (alt == 1) {
+        setState(180);
+        match(VMParser::DOT);
+        setState(181);
+        match(VMParser::ID); 
+      }
+      setState(186);
+      _errHandler->sync(this);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 14, _ctx);
     }
    
   }
@@ -1831,7 +1875,7 @@ std::any VMParser::FunctioncallContext::accept(tree::ParseTreeVisitor *visitor) 
 
 VMParser::FunctioncallContext* VMParser::functioncall() {
   FunctioncallContext *_localctx = _tracker.createInstance<FunctioncallContext>(_ctx, getState());
-  enterRule(_localctx, 30, VMParser::RuleFunctioncall);
+  enterRule(_localctx, 32, VMParser::RuleFunctioncall);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -1842,17 +1886,17 @@ VMParser::FunctioncallContext* VMParser::functioncall() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(183);
-    match(VMParser::RW_CALLFUNCTION);
-    setState(184);
-    match(VMParser::SEMICOLON);
-    setState(185);
-    match(VMParser::ID);
-    setState(186);
-    match(VMParser::LPAREN);
     setState(187);
-    functionarguments();
+    match(VMParser::RW_CALLFUNCTION);
     setState(188);
+    match(VMParser::SEMICOLON);
+    setState(189);
+    match(VMParser::ID);
+    setState(190);
+    match(VMParser::LPAREN);
+    setState(191);
+    functionarguments();
+    setState(192);
     match(VMParser::RPAREN);
    
   }
@@ -1877,10 +1921,8 @@ bool VMParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateI
 
 bool VMParser::exprSempred(ExprContext *_localctx, size_t predicateIndex) {
   switch (predicateIndex) {
-    case 0: return precpred(_ctx, 4);
-    case 1: return precpred(_ctx, 3);
-    case 2: return precpred(_ctx, 2);
-    case 3: return precpred(_ctx, 1);
+    case 0: return precpred(_ctx, 2);
+    case 1: return precpred(_ctx, 1);
 
   default:
     break;

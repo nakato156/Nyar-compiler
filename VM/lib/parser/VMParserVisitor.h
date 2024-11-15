@@ -27,17 +27,15 @@ public:
 
     virtual std::any visitFunctionCallExp(VMParser::FunctionCallExpContext *context) = 0;
 
-    virtual std::any visitEqExp(VMParser::EqExpContext *context) = 0;
+    virtual std::any visitLogicExp(VMParser::LogicExpContext *context) = 0;
 
     virtual std::any visitStringExp(VMParser::StringExpContext *context) = 0;
+
+    virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *context) = 0;
 
     virtual std::any visitBooleanExp(VMParser::BooleanExpContext *context) = 0;
 
     virtual std::any visitNullExp(VMParser::NullExpContext *context) = 0;
-
-    virtual std::any visitNeqExp(VMParser::NeqExpContext *context) = 0;
-
-    virtual std::any visitEqEqExp(VMParser::EqEqExpContext *context) = 0;
 
     virtual std::any visitNumberExp(VMParser::NumberExpContext *context) = 0;
 
@@ -68,6 +66,8 @@ public:
     virtual std::any visitReturnexpression(VMParser::ReturnexpressionContext *context) = 0;
 
     virtual std::any visitFunctionarguments(VMParser::FunctionargumentsContext *context) = 0;
+
+    virtual std::any visitAccessObject(VMParser::AccessObjectContext *context) = 0;
 
     virtual std::any visitFunctioncall(VMParser::FunctioncallContext *context) = 0;
 

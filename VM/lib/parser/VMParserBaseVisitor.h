@@ -31,11 +31,15 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEqExp(VMParser::EqExpContext *ctx) override {
+  virtual std::any visitLogicExp(VMParser::LogicExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual std::any visitStringExp(VMParser::StringExpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -44,14 +48,6 @@ public:
   }
 
   virtual std::any visitNullExp(VMParser::NullExpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitNeqExp(VMParser::NeqExpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitEqEqExp(VMParser::EqEqExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -112,6 +108,10 @@ public:
   }
 
   virtual std::any visitFunctionarguments(VMParser::FunctionargumentsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAccessObject(VMParser::AccessObjectContext *ctx) override {
     return visitChildren(ctx);
   }
 
