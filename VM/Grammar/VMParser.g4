@@ -19,13 +19,12 @@ expr
     | STRING                                            #StringExp
     | ID                                                #IdExp
     | NULL                                              #NullExp
+    | accessObject                                      #AccessObjectExp
 	| array                                             #ArrayExp
-	| functioncall                            #FunctionCallExp 
-	| expr op=(MUL | DIV | SUM | SUB) expr    #MathExp
-	| expr op=EQEQ expr                       #eqEqExp
-	| expr op=(LESS | GREATER) EQUAL expr     #eqExp
-	| expr op=NEQ expr                        #neqExp
-    ;
+	| functioncall                                      #FunctionCallExp 
+	| expr op=(MUL | DIV | SUM | SUB) expr              #MathExp
+	| expr op=(LESS | LESSEQUAL | GREATER | GREATEREQUAL | EQEQ | NEQ | AND | OR) expr  #logicExp
+	;
 
 variable
     :
@@ -68,6 +67,10 @@ functiondefinition:
 returnexpression: RW_RETURN SEMICOLON expr SEMICOLON;
 
 functionarguments: expr (COMMA expr)*;
+
+accessObject: 
+	ID (DOT ID)*
+    ;
 
 functioncall:
 	RW_CALLFUNCTION SEMICOLON ID LPAREN functionarguments RPAREN;

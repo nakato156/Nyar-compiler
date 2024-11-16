@@ -37,13 +37,12 @@ array = ["a", "1", "xd", uno];
 
 imprimir(uno, "a");
 
-hola(uno);
-
 nd = NADA;
 
 si (uno.x) == (nd.a.otro) {
     
 }
+
 
 porfis_and = uno && 2;
 porfis_or = nd || 2;

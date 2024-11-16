@@ -1,3 +1,5 @@
+./VMGCompile.sh
+
 cd VM
 
 rm -r -f build &&
