@@ -19,6 +19,12 @@ funcion main() {
     retornar uno;
 }
 
+funcion hola(b) {
+    a = 1;
+    c = a + b;
+    retornar c;
+}
+
 si uno == (10*3) {
     a = 0+uno;
 }
@@ -37,4 +43,8 @@ si (uno.x) == (nd.a.otro) {
     
 }
 
-dos.x = 20;
+
+porfis_and = uno && 2;
+porfis_or = nd || 2;
+
+resultado = main();

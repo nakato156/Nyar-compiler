@@ -127,7 +127,12 @@ namespace MLVM
         std::string toBytecode() const { return expressions; }
         void add(const std::string &exp)
         {
-            expressions += exp;
+            std::cout << "Adding " << exp << " to " << expressions << std::endl;
+            if(exp.at(0) == '+' || exp.at(0) == '-' || exp.at(0) == '*' || exp.at(0) == '/'){
+                expressions += exp;
+            }else{
+                expressions =  exp + expressions;
+            }
         }
     };
 
@@ -193,6 +198,7 @@ namespace MLVM
                 else if constexpr (std::is_same_v<T, antlrcpp::Any>){
                     bytecode += arg->toBytecode();
                 } }, stmt);
+                bytecode+= "\n";
             }
 
             bytecode += "}\n";
@@ -257,16 +263,6 @@ namespace MLVM
         std::unordered_map<std::string, std::shared_ptr<SymbolInfo>> symbol_table;
         std::stack<std::shared_ptr<Function>> functionStack;
 
-        template <typename Func, typename... Args>
-        auto decorador(Func func, Args &&...args)
-        {
-            return [this, func, &args...]()
-            {
-                auto res = func(std::forward<Args>(args)...);
-                return res;
-            };
-        }
-
         void appendCode(const CodeInstruction &instruction)
         {
             if (!functionStack.empty())
@@ -280,7 +276,16 @@ namespace MLVM
         }
 
     public:
-        void createVariable(const std::shared_ptr<MLVM::Variable> &var)
+        IRBuilder() = default;
+
+        std::shared_ptr<Variable> createTempVal(const std::string &computedVal){
+            auto temp = std::make_shared<Variable>("temp" + std::to_string(code.size()), computedVal);
+            temp.get()->addReference();
+            createVariable(temp);
+            return temp;
+        }
+
+        void createVariable(const std::shared_ptr<Variable> &var)
         {
             appendCode(var);
             auto name = var->getName();
@@ -300,44 +305,35 @@ namespace MLVM
             appendCode("@imprimir;" + data + ";");
         }
 
-        void createReturn(const antlrcpp::Any &data)
-        {
-            if (functionStack.empty())
-            {
+        void createReturn(const antlrcpp::Any &data) {
+            if (functionStack.empty()) {
                 throw std::runtime_error("No se puede usar return fuera de una función");
             }
             appendCode("@retornar;" + bytecodeToString(data) + ";");
         }
 
-        void createComp(const std::string &op1, const std::string &op2, const std::string &symb)
-        {
+        void createComp(const std::string &op1, const std::string &op2, const std::string &symb) {
             appendCode("@comparar;" + op1 + ";" + symb + ";" + op2 + ";");
         }
 
-        void createBeginForBlockRange(const std::string &control, const std::string &inicio, const std::string &fin)
-        {
+        void createBeginForBlockRange(const std::string &control, const std::string &inicio, const std::string &fin) {
             appendCode("@_for;" + control + ";" + inicio + ";" + fin + ":");
         }
 
-        void createEndForBlock()
-        {
+        void createEndForBlock() {
             appendCode("@_end");
         }
 
-        void startIfBlock(const std::string &condition)
-        {
+        void startIfBlock(const std::string &condition) {
             appendCode("@si;" + condition + ":");
         }
-        void endBlock()
-        {
+        void endBlock() {
             appendCode("@_end");
         }
 
-        void startFunctionScope(const std::string &name, const std::vector<std::shared_ptr<UnEvaluable>> &args)
-        {
+        void startFunctionScope(const std::string &name, const std::vector<std::shared_ptr<UnEvaluable>> &args) {
             auto newFunction = std::make_shared<Function>(name, args);
-            if (!functionStack.empty())
-            {
+            if (!functionStack.empty()) {
                 functionStack.top()->appendCode(newFunction->toBytecode());
             }
             functionStack.push(newFunction);
@@ -386,7 +382,7 @@ namespace MLVM
             appendCode("}");
         }
 
-        void createCallFunc(const std::string &name, const std::vector<std::string> &args)
+        std::string createCallFunc(const std::string &name, const std::vector<std::string> &args)
         {
             std::string str_args = "@call;" + name + "(";
             for (const auto &arg : args)
@@ -397,6 +393,7 @@ namespace MLVM
             }
             str_args += ")";
             appendCode(str_args);
+            return str_args;
         }
 
         void generateBytecode(std::string filename) const

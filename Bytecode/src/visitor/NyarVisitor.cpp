@@ -45,12 +45,10 @@ extractValue(const antlrcpp::Any &anyValue)
     {
         arrayVal = any_cast<shared_ptr<MLVM::Array<antlrcpp::Any>>>(anyValue);
     }
-    else if (anyValue.type() == typeid(shared_ptr<MLVM::Null>))
-    {
+    else if (anyValue.type() == typeid(shared_ptr<MLVM::Null>)) {
         nullVal = any_cast<shared_ptr<MLVM::Null>>(anyValue);
     }
-    else
-    {
+    else {
         cerr << "Unsupported type " << anyValue.type().name() << endl;
         throw runtime_error("Unsupported type for operand in arithmetic expression");
     }
@@ -90,7 +88,7 @@ extractNumericValue(const antlrcpp::Any &anyValue)
     else
     {
         cerr << "Unsupported type " << anyValue.type().name() << endl;
-        throw runtime_error("Unsupported type for numeric operand in arithmetic expression");
+        throw runtime_error("Unsupported type 2 for numeric operand in arithmetic expression");
     }
 
     return make_tuple(numVal, var, unVal);
@@ -235,8 +233,9 @@ antlrcpp::Any NyarVisitor::visitMemberAccess(NyarParser::MemberAccessContext *ct
 
         // Puedes decidir cómo representar esto en tu bytecode
         // Por ejemplo, podrías crear una variable temporal que almacene el valor del atributo
-        auto tempVar = make_shared<MLVM::Variable>("temp", attributeAccess);
-        MLVMBuilder->createVariable(tempVar);
+        auto tempVar = MLVMBuilder->createTempVal(attributeAccess);
+        // auto tempVar = make_shared<MLVM::Variable>("temp", attributeAccess);
+        // MLVMBuilder->createVariable(tempVar);
 
         // Retorna la representación de la variable temporal
         return tempVar;
@@ -254,6 +253,70 @@ antlrcpp::Any NyarVisitor::visitNumber(NyarParser::NumberContext *ctx)
     return stoi(value);
 }
 
+antlrcpp::Any NyarVisitor::visitLogicalAndExp(NyarParser::LogicalAndExpContext *ctx) {
+    // Extraemos los operandos izquierdo y derecho de la expresión lógica AND
+    auto leftValue = visit(ctx->expr(0));
+    auto rightValue = visit(ctx->expr(1));
+    
+    // Extraemos los valores numéricos o evaluables de los operandos
+    auto [leftNum, leftStrVal, leftVar, leftUnEval, leftArray, leftNull] = extractValue(leftValue);
+    auto [rightNum, rightStrVal,  rightVar, rightUnEval, rightArray, rightNull] = extractValue(rightValue);
+
+    if (leftNull || rightNull) return make_shared<MLVM::UnEvaluable>("0");
+
+    // Verifica si ambos operandos son numéricos (booleanos representados como 0 o 1)
+    if (leftNum && rightNum) {
+        bool result = (*leftNum != 0) && (*rightNum != 0);
+        return result ? 1.0 : 0.0;
+    }
+
+    if (leftNum) leftStrVal = to_string(*leftNum);
+    if (rightNum) rightStrVal = to_string(*rightNum);
+
+    // Si no son valores numéricos, es probable que los operandos sean variables o no evaluables
+    // Aquí puedes añadir la lógica para manejar esas situaciones según el comportamiento de tu sistema.
+    if (leftVar || rightVar) {
+        if(leftVar) leftStrVal = leftVar->getValue();
+        if(rightVar) rightStrVal = rightVar->getValue();
+        
+        return make_shared<MLVM::UnEvaluable>(*leftStrVal + " && " + *rightStrVal);
+    } else if (leftUnEval || rightUnEval) {
+        // Si uno de los operandos es no evaluable, devuelve un valor no evaluable
+        return make_shared<MLVM::UnEvaluable>(leftUnEval->toBytecode() + " && " + rightUnEval->toBytecode());
+    }
+    // En caso de otros tipos de operandos, podrías lanzar un error o manejarlo de otra forma
+    throw runtime_error("Unsupported types for logical AND operation");
+};
+
+antlrcpp::Any NyarVisitor::visitLogicalOrExp(NyarParser::LogicalOrExpContext *ctx) {
+    auto leftValue = visit(ctx->expr(0));
+    auto rightValue = visit(ctx->expr(1));
+    
+    // Extraemos los valores numéricos o evaluables de los operandos
+    auto [leftNum, leftStrVal, leftVar, leftUnEval, leftArray, leftNull] = extractValue(leftValue);
+    auto [rightNum, rightStrVal,  rightVar, rightUnEval, rightArray, rightNull] = extractValue(rightValue);
+
+    // Verifica si ambos operandos son numéricos (booleanos representados como 0 o 1)
+    if (leftNum && rightNum) {
+        bool result = (*leftNum != 0) || (*rightNum != 0);
+        return result ? 1.0 : 0.0;
+    }
+
+    if (leftNum) leftStrVal = to_string(*leftNum);
+    if (rightNum) rightStrVal = to_string(*rightNum);
+
+    if (leftVar || rightVar) {
+        if(leftVar) leftStrVal = leftVar->getValue();
+        if(rightVar) rightStrVal = rightVar->getValue();
+        
+        return make_shared<MLVM::UnEvaluable>(*leftStrVal + " || " + *rightStrVal);
+    } else if (leftUnEval || rightUnEval) {
+        return make_shared<MLVM::UnEvaluable>(leftUnEval->toBytecode() + " || " + rightUnEval->toBytecode());
+    }
+    throw runtime_error("Unsupported types for logical OR operation");
+};
+
+
 antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx)
 {
     // Obtén el identificador de la variable
@@ -270,7 +333,6 @@ antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx)
     shared_ptr<MLVM::UnEvaluable> unVal;
     shared_ptr<MLVM::Null> nullVal;
 
-    cout << "visitando var" << endl;
     tie(numVal, strVal, varVal, unVal, arrayVal, nullVal) = extractValue(exprValue);
 
     if (arrayVal)
@@ -300,11 +362,9 @@ antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx)
     }
     else
     {
-        cerr << "Unexpected type in exprValue" << endl;
         throw runtime_error("Unexpected type in exprValue");
     }
 
-    cout << "varName: " << varName << " computedValue: " << computedValue << endl;
     // Crea la entrada en la memoria para la variable
     auto var = make_shared<MLVM::Variable>(varName, computedValue);
     if (ctx->type_hint)
@@ -322,8 +382,6 @@ antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx)
 antlrcpp::Any NyarVisitor::visitBoolean(NyarParser::BooleanContext *ctx)
 {
     string varName = ctx->getText();
-    cout << "boolName: " << varName << endl;
-    // bool vars
     return int(varName == "verdadero");
 }
 
@@ -343,13 +401,8 @@ antlrcpp::Any NyarVisitor::visitComparisonExp(NyarParser::ComparisonExpContext *
 {
     string op = ctx->op->getText();
 
-    cout << "visit " << op << " exp" << endl
-         << endl;
-
     auto leftAny = visit(ctx->expr(0));
-    cout << "leftAny: " << leftAny.type().name() << endl;
     auto rightAny = visit(ctx->expr(1));
-    cout << "rightAny: " << rightAny.type().name() << endl;
 
     auto [leftNum, leftVar, leftUnVal] = extractNumericValue(leftAny);
     if (leftVar && leftVar->isEvaluable())
@@ -382,13 +435,11 @@ antlrcpp::Any NyarVisitor::visitComparisonExp(NyarParser::ComparisonExpContext *
     if (leftUnVal != nullptr)
     {
         leftUnVal->add(op + to_string(*rightNum));
-        cout << "leftUnVal: " << leftUnVal->toBytecode() << endl;
         return leftUnVal;
     }
     else if (rightUnVal != nullptr)
     {
         rightUnVal->add(to_string(*leftNum) + op);
-        cout << "rightUnVal: " << rightUnVal->toBytecode() << endl;
         return rightUnVal;
     }
 
@@ -405,7 +456,6 @@ antlrcpp::Any NyarVisitor::visitComparisonExp(NyarParser::ComparisonExpContext *
         }
         else if (op == "==")
         {
-            cout << *leftNum << " == " << *rightNum << endl;
             resultNum = *leftNum == *rightNum;
         }
         else if (op == "!=")
@@ -426,7 +476,6 @@ antlrcpp::Any NyarVisitor::visitComparisonExp(NyarParser::ComparisonExpContext *
         string operand1, operand2;
         if (leftVar != nullptr)
         {
-            cout << "leftVar: " << leftVar->getVar() << endl;
             operand1 = leftVar->getVar();
             if (rightNum)
             {
@@ -664,10 +713,9 @@ antlrcpp::Any NyarVisitor::visitAritExp(NyarParser::AritExpContext *ctx)
 
 antlrcpp::Any NyarVisitor::visitParenExp(NyarParser::ParenExpContext *ctx) { return visit(ctx->expr()); }
 
-antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx)
-{
+antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx) {
     string funcName = ctx->funcCall()->ID()->getText();
-
+    cout << "visit fcall: " << funcName << endl;
     vector<string> args;
     if (ctx->funcCall()->funcArgs())
     {
@@ -713,8 +761,9 @@ antlrcpp::Any NyarVisitor::visitFCall(NyarParser::FCallContext *ctx)
             }
         }
     }
-    MLVMBuilder->createCallFunc(funcName, args);
-    return nullptr;
+    
+    string callF = MLVMBuilder->createCallFunc(funcName, args);
+    return std::make_shared<MLVM::UnEvaluable>(callF);
 }
 
 antlrcpp::Any NyarVisitor::visitId(NyarParser::IdContext *ctx)
@@ -857,7 +906,8 @@ antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx)
             }
         }
         // Crea la llamada a la func con los argumentos evaluados
-        MLVMBuilder->createCallFunc(funcName, args);
+        auto callF = MLVMBuilder->createCallFunc(funcName, args);
+        return std::make_shared<MLVM::UnEvaluable>(callF);
     }
     else
     {
