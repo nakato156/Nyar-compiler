@@ -1,5 +1,5 @@
 
-// Generated from ./NyarParser.g4 by ANTLR 4.13.2
+// Generated from NyarParser.g4 by ANTLR 4.13.0
 
 #pragma once
 
@@ -405,8 +405,8 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *LAPREN();
-    FuncArgsContext *funcArgs();
     antlr4::tree::TerminalNode *RPAREN();
+    FuncArgsContext *funcArgs();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

@@ -1,10 +1,12 @@
 #include "strfunctions.h"
 
-std::string Strfunctions::repetir(const std::string& str, double veces) {
+using namespace std;
+
+string Strfunctions::repetir(const string& str, double veces) {
     if (veces <= 0) return ""; // Retorna vacío si no se requiere repetición
     if (veces == 1) return str; // Retorna la cadena original si solo se requiere una repetición
 
-    std::string resultado;
+    string resultado;
     resultado.reserve(str.size() * veces); // Reserva memoria una vez para toda la cadena final
 
     // Primero duplicamos la cadena base para evitar múltiples concatenaciones
@@ -23,11 +25,11 @@ std::string Strfunctions::repetir(const std::string& str, double veces) {
     return resultado;
 }
 
-std::string Strfunctions::repetir(double veces, const std::string& str) {
+string Strfunctions::repetir(double veces, const string& str) {
     if (veces <= 0) return ""; // Retorna vacío si no se requiere repetición
     if (veces == 1) return str; // Retorna la cadena original si solo se requiere una repetición
 
-    std::string resultado;
+    string resultado;
     resultado.reserve(str.size() * veces); // Reserva memoria una vez para toda la cadena final
 
     // Primero duplicamos la cadena base para evitar múltiples concatenaciones
@@ -44,4 +46,15 @@ std::string Strfunctions::repetir(double veces, const std::string& str) {
     resultado.append(str, 0, str.size() * (veces - duplicaciones));
 
     return resultado;
+}
+
+string Strfunctions::join(const vector<string>& elements, const string& delimiter = "") {
+    ostringstream oss;
+    for (size_t i = 0; i < elements.size(); ++i) {
+        oss << elements[i];
+        if (i < elements.size() - 1) {
+            oss << delimiter;
+        }
+    }
+    return oss.str();
 }

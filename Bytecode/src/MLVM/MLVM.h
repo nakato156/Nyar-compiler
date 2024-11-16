@@ -382,7 +382,7 @@ namespace MLVM
             appendCode("}");
         }
 
-        void createCallFunc(const std::string &name, const std::vector<std::string> &args)
+        std::string createCallFunc(const std::string &name, const std::vector<std::string> &args)
         {
             std::string str_args = "@call;" + name + "(";
             for (const auto &arg : args)
@@ -393,6 +393,7 @@ namespace MLVM
             }
             str_args += ")";
             appendCode(str_args);
+            return str_args;
         }
 
         void generateBytecode(std::string filename) const

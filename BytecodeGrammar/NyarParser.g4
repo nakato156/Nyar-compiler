@@ -60,7 +60,7 @@ funcArgs
 
 
 funcCall 
-    : ID LAPREN funcArgs RPAREN
+    : ID LAPREN funcArgs? RPAREN
     ;
 
 block

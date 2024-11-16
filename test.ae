@@ -47,3 +47,5 @@ si (uno.x) == (nd.a.otro) {
 
 porfis_and = uno && 2;
 porfis_or = nd || 2;
+
+resultado = main();
