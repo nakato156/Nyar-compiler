@@ -263,16 +263,6 @@ namespace MLVM
         std::unordered_map<std::string, std::shared_ptr<SymbolInfo>> symbol_table;
         std::stack<std::shared_ptr<Function>> functionStack;
 
-        template <typename Func, typename... Args>
-        auto decorador(Func func, Args &&...args)
-        {
-            return [this, func, &args...]()
-            {
-                auto res = func(std::forward<Args>(args)...);
-                return res;
-            };
-        }
-
         void appendCode(const CodeInstruction &instruction)
         {
             if (!functionStack.empty())
@@ -315,44 +305,35 @@ namespace MLVM
             appendCode("@imprimir;" + data + ";");
         }
 
-        void createReturn(const antlrcpp::Any &data)
-        {
-            if (functionStack.empty())
-            {
+        void createReturn(const antlrcpp::Any &data) {
+            if (functionStack.empty()) {
                 throw std::runtime_error("No se puede usar return fuera de una función");
             }
             appendCode("@retornar;" + bytecodeToString(data) + ";");
         }
 
-        void createComp(const std::string &op1, const std::string &op2, const std::string &symb)
-        {
+        void createComp(const std::string &op1, const std::string &op2, const std::string &symb) {
             appendCode("@comparar;" + op1 + ";" + symb + ";" + op2 + ";");
         }
 
-        void createBeginForBlockRange(const std::string &control, const std::string &inicio, const std::string &fin)
-        {
+        void createBeginForBlockRange(const std::string &control, const std::string &inicio, const std::string &fin) {
             appendCode("@_for;" + control + ";" + inicio + ";" + fin + ":");
         }
 
-        void createEndForBlock()
-        {
+        void createEndForBlock() {
             appendCode("@_end");
         }
 
-        void startIfBlock(const std::string &condition)
-        {
+        void startIfBlock(const std::string &condition) {
             appendCode("@si;" + condition + ":");
         }
-        void endBlock()
-        {
+        void endBlock() {
             appendCode("@_end");
         }
 
-        void startFunctionScope(const std::string &name, const std::vector<std::shared_ptr<UnEvaluable>> &args)
-        {
+        void startFunctionScope(const std::string &name, const std::vector<std::shared_ptr<UnEvaluable>> &args) {
             auto newFunction = std::make_shared<Function>(name, args);
-            if (!functionStack.empty())
-            {
+            if (!functionStack.empty()) {
                 functionStack.top()->appendCode(newFunction->toBytecode());
             }
             functionStack.push(newFunction);

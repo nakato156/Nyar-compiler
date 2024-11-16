@@ -255,6 +255,70 @@ antlrcpp::Any NyarVisitor::visitNumber(NyarParser::NumberContext *ctx)
     return stoi(value);
 }
 
+antlrcpp::Any NyarVisitor::visitLogicalAndExp(NyarParser::LogicalAndExpContext *ctx) {
+    // Extraemos los operandos izquierdo y derecho de la expresión lógica AND
+    auto leftValue = visit(ctx->expr(0));
+    auto rightValue = visit(ctx->expr(1));
+    
+    // Extraemos los valores numéricos o evaluables de los operandos
+    auto [leftNum, leftStrVal, leftVar, leftUnEval, leftArray, leftNull] = extractValue(leftValue);
+    auto [rightNum, rightStrVal,  rightVar, rightUnEval, rightArray, rightNull] = extractValue(rightValue);
+
+    if (leftNull || rightNull) return make_shared<MLVM::UnEvaluable>("0");
+
+    // Verifica si ambos operandos son numéricos (booleanos representados como 0 o 1)
+    if (leftNum && rightNum) {
+        bool result = (*leftNum != 0) && (*rightNum != 0);
+        return result ? 1.0 : 0.0;
+    }
+
+    if (leftNum) leftStrVal = to_string(*leftNum);
+    if (rightNum) rightStrVal = to_string(*rightNum);
+
+    // Si no son valores numéricos, es probable que los operandos sean variables o no evaluables
+    // Aquí puedes añadir la lógica para manejar esas situaciones según el comportamiento de tu sistema.
+    if (leftVar || rightVar) {
+        if(leftVar) leftStrVal = leftVar->getValue();
+        if(rightVar) rightStrVal = rightVar->getValue();
+        
+        return make_shared<MLVM::UnEvaluable>(*leftStrVal + " && " + *rightStrVal);
+    } else if (leftUnEval || rightUnEval) {
+        // Si uno de los operandos es no evaluable, devuelve un valor no evaluable
+        return make_shared<MLVM::UnEvaluable>(leftUnEval->toBytecode() + " && " + rightUnEval->toBytecode());
+    }
+    // En caso de otros tipos de operandos, podrías lanzar un error o manejarlo de otra forma
+    throw runtime_error("Unsupported types for logical AND operation");
+};
+
+antlrcpp::Any NyarVisitor::visitLogicalOrExp(NyarParser::LogicalOrExpContext *ctx) {
+    auto leftValue = visit(ctx->expr(0));
+    auto rightValue = visit(ctx->expr(1));
+    
+    // Extraemos los valores numéricos o evaluables de los operandos
+    auto [leftNum, leftStrVal, leftVar, leftUnEval, leftArray, leftNull] = extractValue(leftValue);
+    auto [rightNum, rightStrVal,  rightVar, rightUnEval, rightArray, rightNull] = extractValue(rightValue);
+
+    // Verifica si ambos operandos son numéricos (booleanos representados como 0 o 1)
+    if (leftNum && rightNum) {
+        bool result = (*leftNum != 0) || (*rightNum != 0);
+        return result ? 1.0 : 0.0;
+    }
+
+    if (leftNum) leftStrVal = to_string(*leftNum);
+    if (rightNum) rightStrVal = to_string(*rightNum);
+
+    if (leftVar || rightVar) {
+        if(leftVar) leftStrVal = leftVar->getValue();
+        if(rightVar) rightStrVal = rightVar->getValue();
+        
+        return make_shared<MLVM::UnEvaluable>(*leftStrVal + " || " + *rightStrVal);
+    } else if (leftUnEval || rightUnEval) {
+        return make_shared<MLVM::UnEvaluable>(leftUnEval->toBytecode() + " || " + rightUnEval->toBytecode());
+    }
+    throw runtime_error("Unsupported types for logical OR operation");
+};
+
+
 antlrcpp::Any NyarVisitor::visitVariable(NyarParser::VariableContext *ctx)
 {
     // Obtén el identificador de la variable

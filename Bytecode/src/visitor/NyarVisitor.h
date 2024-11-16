@@ -35,6 +35,10 @@ public:
 
     virtual antlrcpp::Any visitNumber(NyarParser::NumberContext *ctx) override;
 
+    virtual antlrcpp::Any visitLogicalAndExp(NyarParser::LogicalAndExpContext *ctx) override;
+
+    virtual antlrcpp::Any visitLogicalOrExp(NyarParser::LogicalOrExpContext *ctx) override;
+
     virtual antlrcpp::Any visitComparisonExp(NyarParser::ComparisonExpContext *ctx) override;
 
     virtual antlrcpp::Any visitBoolean(NyarParser::BooleanContext *ctx) override;
