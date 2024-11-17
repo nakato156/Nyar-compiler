@@ -215,7 +215,6 @@ public:
   class  VariableContext : public antlr4::ParserRuleContext {
   public:
     antlr4::Token *hint = nullptr;
-    VMParser::ExprContext *data = nullptr;
     VMParser::ExprContext *ref = nullptr;
     VariableContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;

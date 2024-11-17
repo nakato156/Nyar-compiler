@@ -72,7 +72,7 @@ std::any VMVisitor::visitLogicExp(VMParser::LogicExpContext *ctx)
     }
     else
     {
-        std::cout << "Value not found" << std::endl;
+        LogsErrorsV("Logical operation not found");
     }
 
     return nullptr;
@@ -129,7 +129,7 @@ std::any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
     }
     else
     {
-        std::cout << "Value not found" << std::endl;
+        LogsErrorsV("Mathematical operation not found");
     }
 
     return nullptr;

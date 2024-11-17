@@ -831,7 +831,7 @@ VMParser::VariableContext* VMParser::variable() {
       setState(77);
       match(VMParser::SEMICOLON);
       setState(78);
-      antlrcpp::downCast<VariableContext *>(_localctx)->data = expr(0);
+      expr(0);
       setState(79);
       match(VMParser::SEMICOLON);
       setState(80);
@@ -848,7 +848,7 @@ VMParser::VariableContext* VMParser::variable() {
       setState(84);
       match(VMParser::SEMICOLON);
       setState(85);
-      antlrcpp::downCast<VariableContext *>(_localctx)->data = expr(0);
+      expr(0);
       setState(86);
       match(VMParser::SEMICOLON);
       setState(87);

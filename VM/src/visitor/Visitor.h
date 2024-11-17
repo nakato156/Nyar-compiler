@@ -1,10 +1,23 @@
+//For someone
+
 #include "antlr4-runtime.h"
 #include "../../lib/parser/VMParserBaseVisitor.h"
+#include "../JIT.h"
 
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Function.h"
+
+#include "llvm/IR/PassManager.h"
+#include "llvm/Passes/PassBuilder.h"
+#include "llvm/Analysis/LoopAnalysisManager.h"
+#include "llvm/Analysis/CGSCCPassManager.h"
+#include "llvm/Passes/StandardInstrumentations.h"
+#include "llvm/Transforms/Scalar/Reassociate.h"
+#include "llvm/Transforms/Scalar/GVN.h"
+#include "llvm/Transforms/Scalar/SimplifyCFG.h"
+#include "llvm/Transforms/InstCombine/InstCombine.h"
 
 class VMVisitor : public VMParserBaseVisitor
 {
@@ -12,6 +25,15 @@ private:
     llvm::LLVMContext * Context;
     llvm::Module * Module;
     llvm::IRBuilder<> * Builder;
+    
+    std::unique_ptr<llvm::orc::KaleidoscopeJIT> KJIT;
+    std::unique_ptr<llvm::FunctionPassManager> TheFPM;
+    std::unique_ptr<llvm::LoopAnalysisManager> TheLAM;
+    std::unique_ptr<llvm::FunctionAnalysisManager> TheFAM;
+    std::unique_ptr<llvm::CGSCCAnalysisManager> TheCGAM;
+    std::unique_ptr<llvm::ModuleAnalysisManager> TheMAM;
+    std::unique_ptr<llvm::PassInstrumentationCallbacks> ThePIC;
+    std::unique_ptr<llvm::StandardInstrumentations> TheSI;
 
     std::map<std::string, llvm::Value*> SymbolTable;
 
@@ -25,8 +47,12 @@ public:
     VMVisitor()
     {
         Context = new llvm::LLVMContext();
-        Module = new llvm::Module("LLVMProject", *Context);
+        Module = new llvm::Module("NyarJIT", *Context);
+        //Module->setDataLayout(KJIT->getDataLayout());
+
         Builder = new llvm::IRBuilder<>(*Context);
+        
+
         mathOperations = {
                 {"+", 0},
                 {"-", 1},
@@ -48,12 +74,28 @@ public:
             {"float", 1},
             {"bool", 2}
         };
+
+        TheFPM = std::make_unique<llvm::FunctionPassManager>();
+        TheLAM = std::make_unique<llvm::LoopAnalysisManager>();
+        TheFAM = std::make_unique<llvm::FunctionAnalysisManager>();
+        TheCGAM =std::make_unique<llvm::CGSCCAnalysisManager>();
+        TheMAM = std::make_unique<llvm::ModuleAnalysisManager>();
+        ThePIC = std::make_unique<llvm::PassInstrumentationCallbacks>();
+        TheSI =  std::make_unique<llvm::StandardInstrumentations>(*Context, true);
+        TheSI->registerCallbacks(*ThePIC, TheMAM.get());
+
+
+        TheFPM->addPass(llvm::InstCombinePass());
+        TheFPM->addPass(llvm::ReassociatePass());
+        TheFPM->addPass(llvm::GVNPass());
+        TheFPM->addPass(llvm::SimplifyCFGPass());
+
+        llvm::PassBuilder PB;
+        PB.registerModuleAnalyses(*TheMAM);
+        PB.registerFunctionAnalyses(*TheFAM);
+        PB.crossRegisterProxies(*TheLAM, *TheFAM, *TheCGAM, *TheMAM);
     };
-    ~VMVisitor() {
-        delete Context;
-        delete Module;
-        delete Builder;
-    };
+    ~VMVisitor() = default;
 
     void saveModule(const std::string &filePath);
 
@@ -82,7 +124,7 @@ public:
     virtual std::any visitFunctionarguments(VMParser::FunctionargumentsContext *ctx);
     virtual std::any visitAccessObject(VMParser::AccessObjectContext *ctx);
     virtual std::any visitFunctioncall(VMParser::FunctioncallContext *ctx);
-    virtual std::any visitElse(VMParser::ElseContext *ctx) override;
+    virtual std::any visitElse(VMParser::ElseContext *ctx);
 
     llvm::Value *BoolValue(bool Value);
     llvm::Value *IntValue(int Value);
@@ -91,8 +133,9 @@ public:
     llvm::Value *LongLongValue(unsigned long long Value);
 
     llvm::Value *SearchVariable(std::string Variable);
-    std::tuple<std::optional<double>, std::optional<std::string>> detectValue(const antlrcpp::Any &value);
 
     llvm::Value * searchOrCast(std::string valueString);
     std::tuple<llvm::Value *, llvm::Value *> castOrNotCast(llvm::Value *leftValue, llvm::Value *rightValue);
+    llvm::Value *LogsErrorsV(const char *Str);
+    void LogError(const char *Str);
 };

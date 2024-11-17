@@ -51,13 +51,15 @@ llvm::Value *VMVisitor::SearchVariable(std::string Variable)
 
     if (it != SymbolTable.end())
     {
-        std::cout << "Found Variable: " << Variable << "Data: " << it->second << std::endl;
+        std::cout << "Found Variable: " << Variable << std::endl;
+        std::cout << "Data: " << it->second << std::endl;
         return it->second;
     }
     return nullptr;
 }
 
-llvm::Value * VMVisitor::searchOrCast(std::string valueString) {
+llvm::Value *VMVisitor::searchOrCast(std::string valueString)
+{
     llvm::Value *value = SearchVariable(valueString);
     if (value == nullptr)
     {
@@ -66,7 +68,8 @@ llvm::Value * VMVisitor::searchOrCast(std::string valueString) {
     return value;
 }
 
-std::tuple<llvm::Value *, llvm::Value *> VMVisitor::castOrNotCast(llvm::Value *leftValue, llvm::Value *rightValue) {
+std::tuple<llvm::Value *, llvm::Value *> VMVisitor::castOrNotCast(llvm::Value *leftValue, llvm::Value *rightValue)
+{
     // Gets to see if the both of the are the same type, if not it cast them as double
     llvm::Type *doubleType = llvm::Type::getDoubleTy(*Context);
 
@@ -83,4 +86,15 @@ std::tuple<llvm::Value *, llvm::Value *> VMVisitor::castOrNotCast(llvm::Value *l
     }
 
     return std::tuple(leftValue, rightValue);
+}
+
+llvm::Value *VMVisitor::LogsErrorsV(const char *Str)
+{
+    LogError(Str);
+    return nullptr;
+}
+
+void VMVisitor::LogError(const char *Str)
+{
+    fprintf(stderr, "LogError: %s\n", Str);
 }
