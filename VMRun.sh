@@ -3,7 +3,5 @@ make clean
 
 mkdir -p ./build/VM && cd ./build/VM
 
-cmake -S ../../VM/ -B ./
+cmake -DCMAKE_BUILD_TYPE=Debug -S ../../VM/ -B ./
 make
-
-./VM ../bytecode/maid.ny
