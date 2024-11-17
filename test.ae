@@ -42,7 +42,9 @@ hola(uno);
 nd = NADA;
 
 si (uno.x) == (nd.a.otro) {
-    
+    murio= 0;
+} sino {
+    murio = 1;
 }
 
 porfis_and = uno && 2;

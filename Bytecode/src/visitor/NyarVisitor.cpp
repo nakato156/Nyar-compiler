@@ -1057,6 +1057,7 @@ antlrcpp::Any NyarVisitor::visitCondicion(NyarParser::CondicionContext *ctx)
     // Verificar y visitar el bloque 'else' si existe
     if (ctx->else_())
     {
+        MLVMBuilder->createStartSino();
         visit(ctx->else_());
     }
 
