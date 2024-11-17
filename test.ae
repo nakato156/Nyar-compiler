@@ -28,6 +28,9 @@ funcion hola(b) {
 si uno == (10*3) {
     a = 0+uno;
 }
+sino {
+    a = 2+1;
+}
 
 estructura Paracaidas {
     desplegado = 0;
@@ -37,8 +40,6 @@ array = ["a", "1", "xd", uno];
 
 imprimir(uno, "a");
 
-hola(uno);
-
 nd = NADA;
 
 si (uno.x) == (nd.a.otro) {
@@ -46,6 +47,7 @@ si (uno.x) == (nd.a.otro) {
 } sino {
     murio = 1;
 }
+
 
 porfis_and = uno && 2;
 porfis_or = nd || 2;

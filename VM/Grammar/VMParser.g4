@@ -15,22 +15,19 @@ stat
     
 expr
     : NUMBER                                            #NumberExp
-    | BOOL                                              #BooleanExp
     | STRING                                            #StringExp
     | ID                                                #IdExp
     | NULL                                              #NullExp
+    | accessObject                                      #AccessObjectExp
 	| array                                             #ArrayExp
-	| functioncall                            #FunctionCallExp 
-	| expr op=(MUL | DIV | SUM | SUB) expr    #MathExp
-	| expr op=EQEQ expr                       #eqEqExp
-	| expr op=(LESS | GREATER) EQUAL expr     #eqExp
-	| expr op=NEQ expr                        #neqExp
-    ;
+	| functioncall                                      #FunctionCallExp 
+	| expr op=(MUL | DIV | SUM | SUB) expr              #MathExp
+	| expr op=(LESS | LESSEQUAL | GREATER | GREATEREQUAL | EQEQ | NEQ | AND | OR) expr  #logicExp
+	;
 
 variable
-    :
-	ID COLON hint=ID SEMICOLON NUMBER SEMICOLON REF=expr SEMICOLON
-	| ID SEMICOLON expr SEMICOLON REF=expr SEMICOLON 
+    : ID COLON hint=ID SEMICOLON expr SEMICOLON ref=expr SEMICOLON
+	| ID SEMICOLON expr SEMICOLON ref=expr SEMICOLON 
     ;
 
 //Flow Controls
@@ -40,7 +37,8 @@ while:
     | NUMBER ) block 
     ;
 
-if: RW_IF SEMICOLON cond = expr* block;
+if: RW_IF SEMICOLON cond = expr* block else?;
+else: RW_IFELSE block;
 
 //Data Structures
 
@@ -62,12 +60,18 @@ functionparameters: ID (COMMA ID)*;
 functionblock: START_BLOCK stat* END_BLOCK;
 
 functiondefinition:
-	RW_DECLAREFUNCTION ID LPAREN functionparameters? RPAREN functionblock
+	RW_DECLAREFUNCTION ID LPAREN functionparameters? RPAREN functionblock 
     ;
 
 returnexpression: RW_RETURN SEMICOLON expr SEMICOLON;
 
 functionarguments: expr (COMMA expr)*;
 
+accessObject: 
+	ID (DOT ID)*
+    ;
+
 functioncall:
-	RW_CALLFUNCTION SEMICOLON ID LPAREN functionarguments RPAREN;
+	RW_CALLFUNCTION SEMICOLON ID LPAREN functionarguments? RPAREN;
+
+//Agregar elseif

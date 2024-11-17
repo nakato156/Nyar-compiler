@@ -23,51 +23,39 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitNumber(VMParser::NumberContext *ctx) override {
+  virtual std::any visitIdExp(VMParser::IdExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitEqExp(VMParser::EqExpContext *ctx) override {
+  virtual std::any visitFunctionCallExp(VMParser::FunctionCallExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitBoolean(VMParser::BooleanContext *ctx) override {
+  virtual std::any visitLogicExp(VMParser::LogicExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAritExp(VMParser::AritExpContext *ctx) override {
+  virtual std::any visitStringExp(VMParser::StringExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitString(VMParser::StringContext *ctx) override {
+  virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitParenExp(VMParser::ParenExpContext *ctx) override {
+  virtual std::any visitNullExp(VMParser::NullExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFCall(VMParser::FCallContext *ctx) override {
+  virtual std::any visitNumberExp(VMParser::NumberExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitId(VMParser::IdContext *ctx) override {
+  virtual std::any visitMathExp(VMParser::MathExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitNeqExp(VMParser::NeqExpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitArreglo(VMParser::ArregloContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitEqEqExp(VMParser::EqEqExpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitArray(VMParser::ArrayContext *ctx) override {
+  virtual std::any visitArrayExp(VMParser::ArrayExpContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -75,31 +63,59 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFuncParams(VMParser::FuncParamsContext *ctx) override {
+  virtual std::any visitWhile(VMParser::WhileContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFuncDef(VMParser::FuncDefContext *ctx) override {
+  virtual std::any visitIf(VMParser::IfContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFuncArgs(VMParser::FuncArgsContext *ctx) override {
+  virtual std::any visitElse(VMParser::ElseContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitFuncCall(VMParser::FuncCallContext *ctx) override {
+  virtual std::any visitStruct(VMParser::StructContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitIterar(VMParser::IterarContext *ctx) override {
+  virtual std::any visitArray(VMParser::ArrayContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitCondicion(VMParser::CondicionContext *ctx) override {
+  virtual std::any visitArrayblock(VMParser::ArrayblockContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitExternFuncions(VMParser::ExternFuncionsContext *ctx) override {
+  virtual std::any visitBlock(VMParser::BlockContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFunctionparameters(VMParser::FunctionparametersContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFunctionblock(VMParser::FunctionblockContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFunctiondefinition(VMParser::FunctiondefinitionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitReturnexpression(VMParser::ReturnexpressionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFunctionarguments(VMParser::FunctionargumentsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitAccessObject(VMParser::AccessObjectContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitFunctioncall(VMParser::FunctioncallContext *ctx) override {
     return visitChildren(ctx);
   }
 

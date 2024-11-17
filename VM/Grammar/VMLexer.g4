@@ -13,17 +13,20 @@ MUL     : '*';
 DIV     : '/';
 
 //Logic Operations
-LESS    : '<';
-GREATER : '>';
-EQUAL   : '=';
-NEQ     : '!=';
-EQEQ    : '==';
-AND     : '&&';
-OR      : '||';
+LESS        : '<';
+LESSEQUAL   : '<=';
+GREATER     : '>';
+GREATEREQUAL: '>=';
+EQUAL       : '=';
+NEQ         : '!=';
+EQEQ        : '==';
+AND         : '&&';
+OR          : '||';
 
 //ReservedWords
 RW_FOR: '@_for';
 RW_IF: '@si';
+RW_IFELSE: '@sino';
 RW_END: '@_end';
 RW_DECLAREFUNCTION: '@declare funcion';
 RW_CALLFUNCTION: '@call';
@@ -39,6 +42,7 @@ COLON        : ':';
 LBRACKET     : '[';
 RBRACKET     : ']';
 
+
 LINE_COMMENT : '//' ~('\r'|'\n') -> skip;
 STRING  : ('"' | '\'') .*? ('"' | '\'');
 COMMENT : '/*' .*? '*/' -> skip;
@@ -48,3 +52,5 @@ NUMBER     : '-'?[0-9]+('.'[0-9]+)?([eE][+-]?[0-9]+)?;
 BOOL    : ('verdadero' | 'falso');
 NULL    : '@NNULL';
 WS      : [ \t\n\r]+ -> skip;
+
+DOT: '.';
