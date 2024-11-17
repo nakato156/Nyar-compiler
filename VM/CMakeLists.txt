@@ -25,15 +25,16 @@ add_definitions(${LLVM_DEFINITIONS_LIST})
 
 # Busca todos los archivos .cpp en src/lib
 file(GLOB LIB_SOURCES "./lib/**/*.cpp")
+file(GLOB VISITOR_SOURCE "./src/**/*.cpp")
 
 message(STATUS "${LIB_SOURCES}")
 
 # Añade la ruta de los archivos fuente
 set(SOURCE_FILES
     ./main.cpp
-    ./src/visitor/Visitor.cpp
     ./lib/parser
     ${LIB_SOURCES}
+    ${VISITOR_SOURCE}
 )
 
 # Crea el ejecutable

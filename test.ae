@@ -28,6 +28,9 @@ funcion hola(b) {
 si uno == (10*3) {
     a = 0+uno;
 }
+sino {
+    a = 2+1;
+}
 
 estructura Paracaidas {
     desplegado = 0;

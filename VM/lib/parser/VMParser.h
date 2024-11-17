@@ -15,19 +15,19 @@ public:
     LPAREN = 1, RPAREN = 2, START_BLOCK = 3, END_BLOCK = 4, SUM = 5, SUB = 6, 
     MUL = 7, DIV = 8, LESS = 9, LESSEQUAL = 10, GREATER = 11, GREATEREQUAL = 12, 
     EQUAL = 13, NEQ = 14, EQEQ = 15, AND = 16, OR = 17, RW_FOR = 18, RW_IF = 19, 
-    RW_END = 20, RW_DECLAREFUNCTION = 21, RW_CALLFUNCTION = 22, RW_RETURN = 23, 
-    RW_STRUCTURE = 24, RW_ARRAY = 25, RESERVEDWORDS = 26, COMMA = 27, SEMICOLON = 28, 
-    COLON = 29, LBRACKET = 30, RBRACKET = 31, LINE_COMMENT = 32, STRING = 33, 
-    COMMENT = 34, ID = 35, NUMBER = 36, BOOL = 37, NULL_ = 38, WS = 39, 
-    DOT = 40
+    RW_IFELSE = 20, RW_END = 21, RW_DECLAREFUNCTION = 22, RW_CALLFUNCTION = 23, 
+    RW_RETURN = 24, RW_STRUCTURE = 25, RW_ARRAY = 26, RESERVEDWORDS = 27, 
+    COMMA = 28, SEMICOLON = 29, COLON = 30, LBRACKET = 31, RBRACKET = 32, 
+    LINE_COMMENT = 33, STRING = 34, COMMENT = 35, ID = 36, NUMBER = 37, 
+    BOOL = 38, NULL_ = 39, WS = 40, DOT = 41
   };
 
   enum {
     RuleProgram = 0, RuleStat = 1, RuleExpr = 2, RuleVariable = 3, RuleWhile = 4, 
-    RuleIf = 5, RuleStruct = 6, RuleArray = 7, RuleArrayblock = 8, RuleBlock = 9, 
-    RuleFunctionparameters = 10, RuleFunctionblock = 11, RuleFunctiondefinition = 12, 
-    RuleReturnexpression = 13, RuleFunctionarguments = 14, RuleAccessObject = 15, 
-    RuleFunctioncall = 16
+    RuleIf = 5, RuleElse = 6, RuleStruct = 7, RuleArray = 8, RuleArrayblock = 9, 
+    RuleBlock = 10, RuleFunctionparameters = 11, RuleFunctionblock = 12, 
+    RuleFunctiondefinition = 13, RuleReturnexpression = 14, RuleFunctionarguments = 15, 
+    RuleAccessObject = 16, RuleFunctioncall = 17
   };
 
   explicit VMParser(antlr4::TokenStream *input);
@@ -53,6 +53,7 @@ public:
   class VariableContext;
   class WhileContext;
   class IfContext;
+  class ElseContext;
   class StructContext;
   class ArrayContext;
   class ArrayblockContext;
@@ -167,15 +168,6 @@ public:
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  BooleanExpContext : public ExprContext {
-  public:
-    BooleanExpContext(ExprContext *ctx);
-
-    antlr4::tree::TerminalNode *BOOL();
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-  };
-
   class  NullExpContext : public ExprContext {
   public:
     NullExpContext(ExprContext *ctx);
@@ -223,7 +215,8 @@ public:
   class  VariableContext : public antlr4::ParserRuleContext {
   public:
     antlr4::Token *hint = nullptr;
-    VMParser::ExprContext *REF = nullptr;
+    VMParser::ExprContext *data = nullptr;
+    VMParser::ExprContext *ref = nullptr;
     VariableContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     std::vector<antlr4::tree::TerminalNode *> ID();
@@ -231,7 +224,6 @@ public:
     antlr4::tree::TerminalNode *COLON();
     std::vector<antlr4::tree::TerminalNode *> SEMICOLON();
     antlr4::tree::TerminalNode* SEMICOLON(size_t i);
-    antlr4::tree::TerminalNode *NUMBER();
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
 
@@ -273,6 +265,7 @@ public:
     antlr4::tree::TerminalNode *RW_IF();
     antlr4::tree::TerminalNode *SEMICOLON();
     BlockContext *block();
+    ElseContext *else_();
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
 
@@ -282,6 +275,20 @@ public:
   };
 
   IfContext* if_();
+
+  class  ElseContext : public antlr4::ParserRuleContext {
+  public:
+    ElseContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *RW_IFELSE();
+    BlockContext *block();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ElseContext* else_();
 
   class  StructContext : public antlr4::ParserRuleContext {
   public:
@@ -453,8 +460,8 @@ public:
     antlr4::tree::TerminalNode *SEMICOLON();
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *LPAREN();
-    FunctionargumentsContext *functionarguments();
     antlr4::tree::TerminalNode *RPAREN();
+    FunctionargumentsContext *functionarguments();
 
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

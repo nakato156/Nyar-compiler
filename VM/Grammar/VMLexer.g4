@@ -26,6 +26,7 @@ OR          : '||';
 //ReservedWords
 RW_FOR: '@_for';
 RW_IF: '@si';
+RW_IFELSE: '@sino';
 RW_END: '@_end';
 RW_DECLAREFUNCTION: '@declare funcion';
 RW_CALLFUNCTION: '@call';

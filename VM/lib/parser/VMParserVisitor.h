@@ -33,8 +33,6 @@ public:
 
     virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *context) = 0;
 
-    virtual std::any visitBooleanExp(VMParser::BooleanExpContext *context) = 0;
-
     virtual std::any visitNullExp(VMParser::NullExpContext *context) = 0;
 
     virtual std::any visitNumberExp(VMParser::NumberExpContext *context) = 0;
@@ -48,6 +46,8 @@ public:
     virtual std::any visitWhile(VMParser::WhileContext *context) = 0;
 
     virtual std::any visitIf(VMParser::IfContext *context) = 0;
+
+    virtual std::any visitElse(VMParser::ElseContext *context) = 0;
 
     virtual std::any visitStruct(VMParser::StructContext *context) = 0;
 
