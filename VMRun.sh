@@ -1,5 +1,3 @@
-./VMGCompile.sh
-
 cd VM
 
 rm -r -f build &&
@@ -10,4 +8,4 @@ make
 
 ./VM ../../build/maid.ny
 
-cat Nyar.ll
+#cat Nyar.ll
