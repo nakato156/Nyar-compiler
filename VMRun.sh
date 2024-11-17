@@ -1,11 +1,9 @@
-cd VM
-
-rm -r -f build &&
+rm -rf ./build/VM &&
 make clean
-mkdir build && cd build
-cmake ..
+
+mkdir -p ./build/VM && cd ./build/VM
+
+cmake -S ../../VM/ -B ./
 make
 
-./VM ../../build/maid.ny
-
-#cat Nyar.ll
+./VM ../bytecode/maid.ny

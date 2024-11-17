@@ -17,6 +17,8 @@ std::any VMVisitor::visitWhile(VMParser::WhileContext *ctx)
     llvm::BasicBlock *WhileConditionBB = llvm::BasicBlock::Create(*Context, "while.condition", function);
     llvm::BasicBlock *WhileBodyBB = llvm::BasicBlock::Create(*Context, "while.body", function);
     llvm::BasicBlock *WhileAfterBB = llvm::BasicBlock::Create(*Context, "after.while", function);
+
+    return nullptr;
 }
 
 std::any VMVisitor::visitIf(VMParser::IfContext *ctx)

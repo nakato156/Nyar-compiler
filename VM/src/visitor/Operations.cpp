@@ -17,6 +17,8 @@ std::any VMVisitor::visitLogicExp(VMParser::LogicExpContext *ctx)
     std::cout << "Operacion Logica" << std::endl;
     std::cout << ctx->expr(0)->getText() << " " << ctx->op->getText() << " " << ctx->expr(1)->getText() << std::endl;
 
+    visitChildren(ctx);
+
     if (logicOperations.find(ctx->op->getText()) != logicOperations.end())
     {
 
@@ -73,7 +75,7 @@ std::any VMVisitor::visitLogicExp(VMParser::LogicExpContext *ctx)
         std::cout << "Value not found" << std::endl;
     }
 
-    return visitChildren(ctx);
+    return nullptr;
 }
 
 std::any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
@@ -82,9 +84,6 @@ std::any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
     std::cout << ctx->expr(0)->getText() << " " << ctx->op->getText() << " " << ctx->expr(1)->getText() << std::endl;
 
     visitChildren(ctx);
-
-    // Types
-
 
     if (mathOperations.find(ctx->op->getText()) != mathOperations.end())
     {
