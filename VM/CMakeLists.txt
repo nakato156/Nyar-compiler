@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 project(VM)
 
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
 # Especifica la versión de C++
 set(CMAKE_CXX_STANDARD 17)
 
@@ -25,7 +28,7 @@ add_definitions(${LLVM_DEFINITIONS_LIST})
 
 # Busca todos los archivos .cpp en src/lib
 file(GLOB LIB_SOURCES "./lib/**/*.cpp")
-file(GLOB VISITOR_SOURCE "./src/**/*.cpp")
+file(GLOB VISITOR_SOURCE "./src/*/*.cpp")
 
 message(STATUS "${LIB_SOURCES}")
 
@@ -33,6 +36,7 @@ message(STATUS "${LIB_SOURCES}")
 set(SOURCE_FILES
     ./main.cpp
     ./lib/parser
+    ./src/
     ${LIB_SOURCES}
     ${VISITOR_SOURCE}
 )
@@ -43,7 +47,7 @@ add_executable(VM ${SOURCE_FILES})
 # Añade los directorios de búsqueda de las bibliotecas para el proyecto Nyar
 target_link_directories(VM PUBLIC)
 
-llvm_map_components_to_libnames(llvm_libs support core irreader)
+llvm_map_components_to_libnames(llvm_libs support core irreader orcjit passes)
 
 # Enlaza el runtime de ANTLR y LLVM con tu proyecto
 target_link_libraries(VM antlr4-runtime ${llvm_libs})

@@ -1,0 +1,50 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build VM Run",
+            "type": "shell",
+            "command": [
+                "bash -c '${workspaceFolder}/VMRun.sh && ${workspaceFolder}/VMGCompile.sh'",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build Bytecode Run",
+            "type": "shell",
+            "command": [
+                "${workspaceFolder}/BytecodeRun.sh",
+                "${workspaceFolder}/BytecodeGCompile.sh",
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build Bytecode Grammar Test",
+            "type": "shell",
+            "command": 
+                "${workspaceFolder}/BytecodeGTest.sh",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build VM Grammar Test",
+            "type": "shell",
+            "command": 
+                "${workspaceFolder}/VMGTest.sh",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}

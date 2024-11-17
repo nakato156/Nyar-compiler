@@ -12,10 +12,6 @@
 #include "llvm/IR/Value.h"
 #include "llvm/IR/Verifier.h"
 
-std::any VMVisitor::visitStruct(VMParser::StructContext *ctx) { return visitChildren(ctx); }
-std::any VMVisitor::visitArray(VMParser::ArrayContext *ctx) { return visitChildren(ctx); }
-std::any VMVisitor::visitArrayblock(VMParser::ArrayblockContext *ctx) { return visitChildren(ctx); }
-std::any VMVisitor::visitAccessObject(VMParser::AccessObjectContext *ctx) { return visitChildren(ctx); }
 std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx) { return visitChildren(ctx); }
 std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx) { return visitChildren(ctx); }
 std::any VMVisitor::visitNullExp(VMParser::NullExpContext *ctx) { return visitChildren(ctx); }
@@ -24,3 +20,8 @@ std::any VMVisitor::visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx)
 {
     return visitChildren(ctx);
 }
+
+std::any VMVisitor::visitArray(VMParser::ArrayContext *ctx) { return visitChildren(ctx); }
+std::any VMVisitor::visitArrayblock(VMParser::ArrayblockContext *ctx) { return visitChildren(ctx); }
+std::any VMVisitor::visitStruct(VMParser::StructContext *ctx) { return visitChildren(ctx); }
+std::any VMVisitor::visitAccessObject(VMParser::AccessObjectContext *ctx) { return visitChildren(ctx); }

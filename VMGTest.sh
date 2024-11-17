@@ -13,4 +13,4 @@ cd GrammarTest
 cd VM
 
 javac VM*.java
-grun VM program -gui ../../build/maid.ny
+grun VM program -gui ../../build/bytecode/maid.ny

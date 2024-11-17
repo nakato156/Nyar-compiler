@@ -1,11 +1,7 @@
-cd VM
-
-rm -r -f build &&
+rm -rf ./build/VM &&
 make clean
-mkdir build && cd build
-cmake ..
+
+mkdir -p ./build/VM && cd ./build/VM
+
+cmake -DCMAKE_BUILD_TYPE=Debug -S ../../VM/ -B ./
 make
-
-./VM ../../build/maid.ny
-
-#cat Nyar.ll

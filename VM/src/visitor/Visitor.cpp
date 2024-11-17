@@ -11,7 +11,7 @@
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Value.h"
 #include "llvm/IR/Verifier.h"
-
+#include "llvm/IR/Type.h"
 
 std::any VMVisitor::visitProgram(VMParser::ProgramContext *ctx)
 {
@@ -32,6 +32,7 @@ std::any VMVisitor::visitProgram(VMParser::ProgramContext *ctx)
 
     return nullptr;
 }
+
 std::any VMVisitor::visitStat(VMParser::StatContext *ctx)
 {
     std::cout << ctx->getText() << std::endl;
@@ -40,35 +41,65 @@ std::any VMVisitor::visitStat(VMParser::StatContext *ctx)
 
 std::any VMVisitor::visitIdExp(VMParser::IdExpContext *ctx) { return visitChildren(ctx); }
 
-
-
 std::any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
 {
+    std::cout << "\tAsignacion de Variable\t" << std::endl;
+    std::cout << ctx->ID(0)->getText() << " " << ctx->expr(0)->getText() << " " << ctx->ref->getText() << std::endl;
+
     llvm::Value *dataValue = nullptr;
     llvm::Type *dataType = nullptr;
     llvm::Value *Allocation = nullptr;
 
-    std::cout << "\tAsignacion de Variable\t" << std::endl;
-    std::cout << ctx->ID(0)->getText() << " " << ctx->data->getText() << " " << ctx->ref->getText() << std::endl;
-
-    visitChildren(ctx);
-
     if (ctx->hint == nullptr)
     {
-        std::cout << "La variable no contiene hints" << std::endl;
-        auto [baseNum, baseString] = detectValue(ctx->data);
+        /*
+            Tipos de datos que pueden ingresar,
+                Strings, Integers, Doubles, NULLS
+                Punteros
+        */
 
-        if (baseNum)
+        /*
+            Se va a asumir que son double si hay un punto,
+            si no tiene punto integer
+        */
+
+        std::cout << "La variable no contiene hints" << std::endl;
+
+        // Christian TASKETE
+        //AIUDA
+        std::string value = ctx->expr(0)->getText();
+
+        if (value.find('.') != std::string::npos)
         {
-            std::cout << "It is a NUM" << std::endl;
+            std::cout << "Variable DOUBLE" << std::endl;
+            dataType = llvm::Type::getDoubleTy(*Context);
         }
-        else if (baseString)
+        else if (value.find_first_not_of("0123456789") == std::string::npos)
         {
-            std::cout << "It is a STRING" << std::endl;
+            std::cout << "Variable INTEGER" << std::endl;
+            dataType = llvm::Type::getInt64Ty(*Context);
+        }
+        else if (value.front() == '"' && value.back() == '"')
+        {
+            //AIUDA
+            std::cout << "Variable STRING" << std::endl;
+            
+            //Nota - Se que es erroneo pero para que no me bote error xd
+            dataType = llvm::Type::getInt64Ty(*Context);
+            // dataType = llvm::Type::getInt8PtrTy(*Context);
+        }
+        else
+        {
+            LogsErrorsV("Unknown Type of Variable");
         }
     }
     else
     {
+        /*
+            Tipos de datos aceptados como hint en nyar
+                Integers, Float y Boolean
+        */
+
         std::cout << "La variable contiene hints" << std::endl;
         if (languageDataTypes.find(ctx->hint->getText()) != languageDataTypes.end())
         {
@@ -76,60 +107,29 @@ std::any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
             {
             case 0:
                 dataType = llvm::Type::getInt32Ty(*Context);
-                Allocation = Builder->CreateAlloca(dataType, nullptr, ctx->ID(0)->getText());
-
-                dataValue = IntValue(std::stoi(ctx->data->getText()));
+                dataValue = IntValue(std::stoi(ctx->expr(0)->getText()));
                 break;
 
             case 1:
                 dataType = llvm::Type::getFloatTy(*Context);
-                Allocation = Builder->CreateAlloca(dataType, nullptr, ctx->ID(0)->getText());
-
-                dataValue = FloatValue(std::stof(ctx->data->getText()));
+                dataValue = FloatValue(std::stof(ctx->expr(0)->getText()));
                 break;
 
             case 2:
                 dataType = llvm::Type::getInt1Ty(*Context);
-                Allocation = Builder->CreateAlloca(dataType, nullptr, ctx->ID(0)->getText());
-
-                dataValue = BoolValue(std::stoi(ctx->data->getText()));
+                dataValue = BoolValue(std::stoi(ctx->expr(0)->getText()));
                 break;
             }
         }
         else
         {
-            std::cout << "Nyar doesn't support this type of hint for the language." << std::endl;
+            LogsErrorsV("Nyar doesn't support this type of hint for the language.");
         }
     }
+    Allocation = Builder->CreateAlloca(dataType, nullptr, ctx->ID(0)->getText());
 
     // Asign data to symboltable
+
     SymbolTable[ctx->ID(0)->getText()] = dataValue;
-    //    std::cout << SymbolTable[ctx->ID(0)->getText()] << std::endl;
-
     return nullptr;
-}
-
-std::tuple<std::optional<double>, std::optional<std::string>> VMVisitor::detectValue(const antlrcpp::Any &value)
-{
-    std::optional<double> numVar;
-    std::optional<std::string> stringValue;
-
-    if (value.type() == typeid(int))
-    {
-        numVar = std::any_cast<int>(value);
-    }
-    else if (value.type() == typeid(double))
-    {
-        numVar = std::any_cast<double>(value);
-    }
-    else if (value.type() == typeid(std::string))
-    {
-        stringValue = std::any_cast<std::string>(value);
-    }
-    else
-    {
-        std::cout << "Type not supported." << value.type().name() << std::endl;
-    }
-
-    return std::make_tuple(numVar, stringValue);
 }
