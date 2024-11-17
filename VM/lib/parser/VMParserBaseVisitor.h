@@ -43,10 +43,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitBooleanExp(VMParser::BooleanExpContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual std::any visitNullExp(VMParser::NullExpContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -72,6 +68,10 @@ public:
   }
 
   virtual std::any visitIf(VMParser::IfContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitElse(VMParser::ElseContext *ctx) override {
     return visitChildren(ctx);
   }
 

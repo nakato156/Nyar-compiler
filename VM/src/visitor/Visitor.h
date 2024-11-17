@@ -9,19 +9,50 @@
 class VMVisitor : public VMParserBaseVisitor
 {
 private:
-    std::unique_ptr<llvm::LLVMContext> Context;
-    std::unique_ptr<llvm::Module> Module;
-    std::unique_ptr<llvm::IRBuilder<>> Builder;
+    llvm::LLVMContext * Context;
+    llvm::Module * Module;
+    llvm::IRBuilder<> * Builder;
+
+    std::map<std::string, llvm::Value*> SymbolTable;
+
+    std::map<std::string, int> logicOperations;
+    std::map<std::string, int> mathOperations;
+    std::map<std::string, int> languageDataTypes;
+
+    llvm::Function * function;
 
 public:
     VMVisitor()
     {
-        Context = std::make_unique<llvm::LLVMContext>();
-        Module = std::make_unique<llvm::Module>("LLVMProject", *Context);
-        Builder = std::make_unique<llvm::IRBuilder<>>(*Context);
+        Context = new llvm::LLVMContext();
+        Module = new llvm::Module("LLVMProject", *Context);
+        Builder = new llvm::IRBuilder<>(*Context);
+        mathOperations = {
+                {"+", 0},
+                {"-", 1},
+                {"*", 2},
+                {"/", 3}};
+
+        logicOperations = {
+            {"< ", 0},
+            {"<=", 1}, // Similar as 0, 7
+            {"> ", 2},
+            {">=", 3}, // Similar as 2, 7
+            {"==", 4},
+            {"!=", 5}, 
+            {"&&", 6},
+            {"||", 7}};
+
+        languageDataTypes = {
+            {"int", 0},
+            {"float", 1},
+            {"bool", 2}
+        };
     };
     ~VMVisitor() {
-
+        delete Context;
+        delete Module;
+        delete Builder;
     };
 
     void saveModule(const std::string &filePath);
@@ -33,7 +64,6 @@ public:
     virtual std::any visitLogicExp(VMParser::LogicExpContext *ctx);
     virtual std::any visitStringExp(VMParser::StringExpContext *ctx);
     virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx);
-    virtual std::any visitBooleanExp(VMParser::BooleanExpContext *ctx);
     virtual std::any visitNullExp(VMParser::NullExpContext *ctx);
     virtual std::any visitNumberExp(VMParser::NumberExpContext *ctx);
     virtual std::any visitMathExp(VMParser::MathExpContext *ctx);
@@ -52,4 +82,17 @@ public:
     virtual std::any visitFunctionarguments(VMParser::FunctionargumentsContext *ctx);
     virtual std::any visitAccessObject(VMParser::AccessObjectContext *ctx);
     virtual std::any visitFunctioncall(VMParser::FunctioncallContext *ctx);
+    virtual std::any visitElse(VMParser::ElseContext *ctx) override;
+
+    llvm::Value *BoolValue(bool Value);
+    llvm::Value *IntValue(int Value);
+    llvm::Value *DoubleValue(double Value);
+    llvm::Value *FloatValue(float Value);
+    llvm::Value *LongLongValue(unsigned long long Value);
+
+    llvm::Value *SearchVariable(std::string Variable);
+    std::tuple<std::optional<double>, std::optional<std::string>> detectValue(const antlrcpp::Any &value);
+
+    llvm::Value * searchOrCast(std::string valueString);
+    std::tuple<llvm::Value *, llvm::Value *> castOrNotCast(llvm::Value *leftValue, llvm::Value *rightValue);
 };
