@@ -32,9 +32,8 @@ variable
     ;
 
 //Flow Controls
-
 for:
-	RW_FOR SEMICOLON CONTROL = ID SEMICOLON FROM = (ID | NUMBER) SEMICOLON TO = ( ID
+	RW_FOR SEMICOLON CONTROL=ID SEMICOLON FROM = (ID | NUMBER) SEMICOLON TO = ( ID
     | NUMBER ) block 
     ;
 
