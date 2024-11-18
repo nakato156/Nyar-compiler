@@ -68,7 +68,10 @@ public:
             {"==", 4},
             {"!=", 5}, 
             {"&&", 6},
-            {"||", 7}};
+            {"||", 7},
+            {"T",8},   // For internal purposes    
+            {"F",9}    // For internal purposes
+            };
 
         languageDataTypes = {
             {"int", 0},
@@ -111,7 +114,7 @@ public:
     virtual antlrcpp::Any visitMathExp(VMParser::MathExpContext *ctx);
     virtual antlrcpp::Any visitArrayExp(VMParser::ArrayExpContext *ctx);
     virtual antlrcpp::Any visitVariable(VMParser::VariableContext *ctx);
-    virtual antlrcpp::Any visitWhile(VMParser::WhileContext *ctx);
+    virtual antlrcpp::Any visitFor(VMParser::ForContext *ctx);
     virtual antlrcpp::Any visitIf(VMParser::IfContext *ctx);
     virtual antlrcpp::Any visitStruct(VMParser::StructContext *ctx);
     virtual antlrcpp::Any visitArray(VMParser::ArrayContext *ctx);
@@ -138,4 +141,6 @@ public:
     std::tuple<llvm::Value *, llvm::Value *> castOrNotCast(llvm::Value *leftValue, llvm::Value *rightValue);
     llvm::Value *LogsErrorsV(const char *Str);
     void LogError(const char *Str);
+
+    llvm::Value *RetLogOp(llvm::Value *leftValue, llvm::Value *rightValue, std::string caseLog);
 };

@@ -1,5 +1,5 @@
 
-// Generated from ./VMParser.g4 by ANTLR 4.13.0
+// Generated from ./VMParser.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -23,7 +23,7 @@ public:
   };
 
   enum {
-    RuleProgram = 0, RuleStat = 1, RuleExpr = 2, RuleVariable = 3, RuleWhile = 4, 
+    RuleProgram = 0, RuleStat = 1, RuleExpr = 2, RuleVariable = 3, RuleFor = 4, 
     RuleIf = 5, RuleElse = 6, RuleStruct = 7, RuleArray = 8, RuleArrayblock = 9, 
     RuleBlock = 10, RuleFunctionparameters = 11, RuleFunctionblock = 12, 
     RuleFunctiondefinition = 13, RuleReturnexpression = 14, RuleFunctionarguments = 15, 
@@ -51,7 +51,7 @@ public:
   class StatContext;
   class ExprContext;
   class VariableContext;
-  class WhileContext;
+  class ForContext;
   class IfContext;
   class ElseContext;
   class StructContext;
@@ -86,7 +86,7 @@ public:
     StatContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     VariableContext *variable();
-    WhileContext *while_();
+    ForContext *for_();
     FunctiondefinitionContext *functiondefinition();
     ExprContext *expr();
     IfContext *if_();
@@ -168,6 +168,17 @@ public:
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  ParenExpContext : public ExprContext {
+  public:
+    ParenExpContext(ExprContext *ctx);
+
+    antlr4::tree::TerminalNode *LPAREN();
+    ExprContext *expr();
+    antlr4::tree::TerminalNode *RPAREN();
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  NullExpContext : public ExprContext {
   public:
     NullExpContext(ExprContext *ctx);
@@ -233,12 +244,12 @@ public:
 
   VariableContext* variable();
 
-  class  WhileContext : public antlr4::ParserRuleContext {
+  class  ForContext : public antlr4::ParserRuleContext {
   public:
     antlr4::Token *CONTROL = nullptr;
     antlr4::Token *FROM = nullptr;
     antlr4::Token *TO = nullptr;
-    WhileContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    ForContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *RW_FOR();
     std::vector<antlr4::tree::TerminalNode *> SEMICOLON();
@@ -254,7 +265,7 @@ public:
    
   };
 
-  WhileContext* while_();
+  ForContext* for_();
 
   class  IfContext : public antlr4::ParserRuleContext {
   public:

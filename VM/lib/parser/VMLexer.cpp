@@ -1,5 +1,5 @@
 
-// Generated from ./VMLexer.g4 by ANTLR 4.13.0
+// Generated from ./VMLexer.g4 by ANTLR 4.13.2
 
 
 #include "VMLexer.h"
@@ -45,7 +45,7 @@ struct VMLexerStaticData final {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-VMLexerStaticData *vmlexerLexerStaticData = nullptr;
+std::unique_ptr<VMLexerStaticData> vmlexerLexerStaticData = nullptr;
 
 void vmlexerLexerInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
@@ -200,7 +200,7 @@ void vmlexerLexerInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  vmlexerLexerStaticData = staticData.release();
+  vmlexerLexerStaticData = std::move(staticData);
 }
 
 }
