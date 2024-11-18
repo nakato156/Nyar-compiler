@@ -55,11 +55,11 @@ std::unique_ptr<llvm::Module> abrirArchivo(int argc, char *argv[])
 
         cout << tree -> toStringTree(&parser) << endl;               
 
-        // visitor.saveModule("Nyar.ll");
+        visitor.saveModule("Nyar.ll");
 
         // Crear un LLVM context y un módulo
-        llvm::LLVMContext llvmContext;
-        auto module = std::make_unique<llvm::Module>("NyarModule", llvmContext);
+        //llvm::LLVMContext llvmContext;
+        //auto module = std::make_unique<llvm::Module>("NyarModule", llvmContext);
 
         // Aquí es donde debes agregar la conversión del árbol AST
         // a un módulo de LLVM. El código de conversión depende
@@ -69,26 +69,26 @@ std::unique_ptr<llvm::Module> abrirArchivo(int argc, char *argv[])
         // Por ejemplo, si tienes una función en el AST y quieres
         // agregarla al módulo, puedes hacerlo de la siguiente manera:
         
-        llvm::IRBuilder<> builder(llvmContext);
+        //llvm::IRBuilder<> builder(llvmContext);
 
         // Crear una función simple (esto es solo un ejemplo)
-        llvm::FunctionType *funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(llvmContext), false);
-        llvm::Function *func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, "myFunction", *module);
+        //llvm::FunctionType *funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(llvmContext), false);
+        //llvm::Function *func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, "myFunction", *module);
 
         // Agregar instrucciones a la función, esto es solo un ejemplo.
-        llvm::BasicBlock *entry = llvm::BasicBlock::Create(llvmContext, "entry", func);
-        builder.SetInsertPoint(entry);
-        builder.CreateRetVoid();
+        //llvm::BasicBlock *entry = llvm::BasicBlock::Create(llvmContext, "entry", func);
+        //builder.SetInsertPoint(entry);
+        //builder.CreateRetVoid();
 
         // Ahora tenemos un módulo con una función simple
         // Puedes procesar más cosas del AST y construir el módulo de acuerdo a tus necesidades
 
         // Guardar el módulo en un archivo .ll (opcional)
-        std::error_code EC;
-        llvm::raw_fd_ostream file_out("Nyar.ll", EC, llvm::sys::fs::OF_Text);
-        module->print(file_out, nullptr);
+        //std::error_code EC;
+        //llvm::raw_fd_ostream file_out("Nyar.ll", EC, llvm::sys::fs::OF_Text);
+        //module->print(file_out, nullptr);
 
-        return module; // 
+        return nullptr; // 
     }
     return nullptr;
 }
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     }
 
     // Crear el JIT
-    auto jit = llvm::orc::KaleidoscopeJIT::Create();
+    //auto jit = llvm::orc::KaleidoscopeJIT::Create();
 
     // llvm::InitializeNativeTarget();
     // llvm::InitializeNativeTargetAsmPrinter();
