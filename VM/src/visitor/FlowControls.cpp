@@ -15,13 +15,14 @@
 std::any VMVisitor::visitFor(VMParser::ForContext *ctx)
 {
     std::cout << "\tBloque FOR" << std::endl;
-    std::cout << ctx->CONTROL->getText() << " " << ctx->FROM->getText() << " " << ctx->TO->getText() << std::endl;
+    std::cout << ctx->CONTROL->getText() << " " << ctx->FROM->getText() << " " << ctx->TO->getText() << 
+            ctx->block()->getText() << std::endl;
     
+    std::string varName = ctx->CONTROL->getText();
+
     if(ctx->CONTROL == nullptr) {
         return nullptr;
     }
-
-    std::string varName = ctx->CONTROL->getText();
 
     llvm::Value * startValue;
 
@@ -43,8 +44,6 @@ std::any VMVisitor::visitFor(VMParser::ForContext *ctx)
 
     llvm::Value *StepValue = nullptr;
 
-    
-
     return nullptr;
 }
 
@@ -58,9 +57,7 @@ std::any VMVisitor::visitIf(VMParser::IfContext *ctx)
     {
         return nullptr;
     }
-    llvm::Value *conditionalValue = nullptr;
-
-    visit(ctx->cond);
+    llvm::Value *conditionalValue = std::any_cast<llvm::Value *> (visit(ctx->cond));
 
     conditionalValue = Builder->CreateFCmpONE(conditionalValue, llvm::ConstantFP::get(*Context, llvm::APFloat(0.0)), "ifcond");
 
@@ -74,14 +71,17 @@ std::any VMVisitor::visitIf(VMParser::IfContext *ctx)
 
     Builder->SetInsertPoint(ThenBasicBlock);
 
-    // The block doesn't exist
-    if (ctx->block() == nullptr)
-    {
-        return nullptr;
-    }
-
+    // Then block
     llvm::Value *thenValue = nullptr;
-    visit(ctx->block());
+    if (ctx->block() != nullptr)
+    {
+        thenValue = std::any_cast<llvm::Value *> (visit(ctx->block()));
+        if(!thenValue) {
+            thenValue = llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
+        }
+    }
+    //llvm::Value *thenValue = std::any_cast<llvm::Value *>(visit(ctx->block()));
+  
 
     Builder->CreateBr(MergeBasicBlock);
     ThenBasicBlock = Builder->GetInsertBlock();
@@ -89,13 +89,16 @@ std::any VMVisitor::visitIf(VMParser::IfContext *ctx)
     FunctionBlock->insert(FunctionBlock->end(), ElseBasicBlock);
     Builder->SetInsertPoint(ElseBasicBlock);
 
-    // If the else condition doesn't exist
-    if (ctx->else_() == nullptr)
-    {
-        return nullptr;
-    }
-    visit(ctx->else_());
+    // Else block
     llvm::Value *elseValue = nullptr;
+    if (ctx->else_() != nullptr)
+    {
+        elseValue = std::any_cast<llvm::Value *>(visit(ctx->else_()));
+        if (!elseValue)
+        {
+            elseValue = llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
+        }
+    }
 
     Builder->CreateBr(MergeBasicBlock);
     ElseBasicBlock = Builder->GetInsertBlock();
@@ -104,23 +107,43 @@ std::any VMVisitor::visitIf(VMParser::IfContext *ctx)
     Builder->SetInsertPoint(MergeBasicBlock);
 
     llvm::PHINode *PhiNo = Builder->CreatePHI(llvm::Type::getDoubleTy(*Context), 2, "iftmp");
-    PhiNo->addIncoming(thenValue,ThenBasicBlock);
-    PhiNo->addIncoming(elseValue,ElseBasicBlock);
 
-    return nullptr;
+    if (thenValue->getType() != PhiNo->getType())
+    {
+        thenValue = Builder->CreateFPCast(thenValue, PhiNo->getType(), "thencast");
+    }
+    if (elseValue->getType() != PhiNo->getType())
+    {
+        elseValue = Builder->CreateFPCast(elseValue, PhiNo->getType(), "elsecast");
+    }
+
+    PhiNo->addIncoming(thenValue, ThenBasicBlock);
+    PhiNo->addIncoming(elseValue, ElseBasicBlock);
+
+    return PhiNo;
 }
 
 std::any VMVisitor::visitElse(VMParser::ElseContext *ctx)
 {
-    std::cout << "\tBloque ELSE" << std::endl;
+    std::cout << "\tBloque Else"<< std::endl;
     std::cout << ctx->block()->getText() << std::endl;
 
-    return visitChildren(ctx);
+    if(ctx->block() != nullptr) {
+        return visit(ctx->block());
+    }
+
+    return llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
 }
 
 std::any VMVisitor::visitBlock(VMParser::BlockContext *ctx) { 
     std::cout << "\tBloque" << std::endl;
-    std::cout << ctx->stat(0)->getText() << std::endl;
+    llvm::Value * lastValue = nullptr;
 
-    return visitChildren(ctx);
+    for (auto it: ctx->stat())
+    {
+       std::cout << it->getText() << std::endl;
+       lastValue = std::any_cast<llvm::Value *> (visit(it));
+    }
+
+    return lastValue ? lastValue : llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
 }

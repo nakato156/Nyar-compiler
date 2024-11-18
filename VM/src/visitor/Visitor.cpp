@@ -40,7 +40,7 @@ antlrcpp::Any VMVisitor::visitStat(VMParser::StatContext *ctx)
 }
 
 antlrcpp::Any VMVisitor::visitIdExp(VMParser::IdExpContext *ctx) { 
-    std::cout << "Nombre Variable: " <<  ctx->ID()->getText();
+    std::cout << "Nombre Variable: " <<  ctx->ID()->getText() << std::endl;
 
     if(SymbolTable.find(ctx->ID()->getText()) != SymbolTable.end()) {
         return SymbolTable[ctx->ID()->getText()]; 
@@ -75,13 +75,12 @@ antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
             return nullptr;
         }
         dataType = dataValue->getType();
-        
     }
     else
     {
         /*
             Tipos de datos aceptados como hint en nyar
-                Integers, Float y Boolean
+                Integers, Float y Boolean 
         */
 
         std::cout << "La variable contiene hints" << std::endl;

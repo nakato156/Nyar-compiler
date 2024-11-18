@@ -12,22 +12,25 @@
 #include "llvm/IR/Value.h"
 #include "llvm/IR/Verifier.h"
 
-std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx) { 
+std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx)
+{
     std::vector<llvm::Value *> values;
     llvm::Type *elemntType = nullptr;
 
-    if(ctx->array()->arrayblock()){
+    if (ctx->array()->arrayblock())
+    {
         for (auto &element : ctx->array()->arrayblock()->expr())
         {
-            llvm::Value *value = std::any_cast<llvm::Value*>(visit(element));
+            llvm::Value *value = std::any_cast<llvm::Value *>(visit(element));
         }
     }
     return values;
 }
 
 // Christian TASKETE
-//AIUDA
-std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx) { 
+// AIUDA
+std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx)
+{
     std::cout << "Variable STRING" << std::endl;
     std::string value = ctx->getText();
 
@@ -35,7 +38,7 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx) {
     std::string cleanValue = value.substr(1, value.size() - 2);
 
     llvm::Constant *strConstant = llvm::ConstantDataArray::getString(*Context, cleanValue);
-            
+
     // Asignar la cadena a memoria (en global o local)
     llvm::GlobalVariable *strVar = new llvm::GlobalVariable(
         *Module,
@@ -43,14 +46,22 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx) {
         true,
         llvm::GlobalValue::PrivateLinkage,
         strConstant,
-        "str_" + std::to_string(counterStrike++) + "_" + ctx->getText()
-    );
+        "str_" + std::to_string(counterStrike++) + "_" + ctx->getText());
     return strVar;
 }
-std::any VMVisitor::visitNullExp(VMParser::NullExpContext *ctx) { return visitChildren(ctx); }
-std::any VMVisitor::visitNumberExp(VMParser::NumberExpContext *ctx) { 
+
+std::any VMVisitor::visitNullExp(VMParser::NullExpContext *ctx)
+{
+    llvm::Value *returnValue = llvm::ConstantInt::getSigned((llvm::Type::getInt32Ty(*Context)), 0);
+
+    // NULL ARE 0, because of time xd
+    return returnValue;
+}
+
+std::any VMVisitor::visitNumberExp(VMParser::NumberExpContext *ctx)
+{
     std::string value = ctx->getText();
-    std::cout << "Numero: " << value;
+    std::cout << "Numero: " << value << std::endl;
 
     if (value.find('.') != std::string::npos)
     {
@@ -61,10 +72,13 @@ std::any VMVisitor::visitNumberExp(VMParser::NumberExpContext *ctx) {
     {
         std::cout << "Variable INTEGER" << std::endl;
         return LongLongValue(std::stoll(value));
-    }else {
+    }
+    else
+    {
         return LongLongValue(std::stoll(ctx->getText()));
     }
 }
+
 std::any VMVisitor::visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx)
 {
     return visitChildren(ctx);
