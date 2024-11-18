@@ -12,19 +12,21 @@
 #include "llvm/IR/Value.h"
 #include "llvm/IR/Verifier.h"
 
-std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx)
-{
-    std::vector<llvm::Value *> values;
-    llvm::Type *elemntType = nullptr;
 
-    if (ctx->array()->arrayblock())
+std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx) { 
+    std::vector<llvm::Constant *> values;
+    llvm::Type *elementType = llvm::Type::getInt32Ty(*Context); // Por ejemplo
+    llvm::ArrayType *arrayType = llvm::ArrayType::get(elementType, ctx->array()->arrayblock()->expr().size());
+
+    for (auto &element : ctx->array()->arrayblock()->expr())
     {
-        for (auto &element : ctx->array()->arrayblock()->expr())
-        {
-            llvm::Value *value = std::any_cast<llvm::Value *>(visit(element));
-        }
+        llvm::Constant *value = std::any_cast<llvm::Constant*>(visit(element));
+        values.push_back(value);
     }
-    return values;
+
+    llvm::Constant *arrayConstant = llvm::ConstantArray::get(arrayType, values);
+    Builder->CreateGlobalStringPtr(arrayConstant->getName());
+    return arrayConstant;
 }
 
 // Christian TASKETE
@@ -36,8 +38,11 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx)
 
     auto dataType = llvm::Type::getInt8Ty(*Context);
     std::string cleanValue = value.substr(1, value.size() - 2);
+    
+    std::cout << "Cadena: " << cleanValue << std::endl;
 
     llvm::Constant *strConstant = llvm::ConstantDataArray::getString(*Context, cleanValue);
+    std::cout << "Cadena: " << strConstant->getName().str() << std::endl;
 
     // Asignar la cadena a memoria (en global o local)
     llvm::GlobalVariable *strVar = new llvm::GlobalVariable(
@@ -46,8 +51,19 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx)
         true,
         llvm::GlobalValue::PrivateLinkage,
         strConstant,
-        "str_" + std::to_string(counterStrike++) + "_" + ctx->getText());
-    return strVar;
+        "str_" + std::to_string(counterStrike++) + "_" + cleanValue.replace(cleanValue.find(" "), 1, "_")
+    );
+    std::cout << "Cadena Gblob: " << strVar->getName().str() << std::endl;
+
+    llvm::Constant *zero = llvm::ConstantInt::get(llvm::Type::getInt32Ty(*Context), 0);
+    std::vector<llvm::Constant*> indices = {zero, zero};
+    llvm::Constant *strPtr = llvm::ConstantExpr::getGetElementPtr(
+        strVar->getValueType(),
+        strVar,
+        indices
+    );
+
+    return strPtr;
 }
 
 std::any VMVisitor::visitNullExp(VMParser::NullExpContext *ctx)
