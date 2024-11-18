@@ -1,5 +1,5 @@
 
-// Generated from ./VMParser.g4 by ANTLR 4.13.0
+// Generated from ./VMParser.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -43,6 +43,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitParenExp(VMParser::ParenExpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitNullExp(VMParser::NullExpContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -63,7 +67,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitWhile(VMParser::WhileContext *ctx) override {
+  virtual std::any visitFor(VMParser::ForContext *ctx) override {
     return visitChildren(ctx);
   }
 

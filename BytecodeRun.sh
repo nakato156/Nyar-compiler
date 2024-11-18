@@ -4,6 +4,6 @@ make clean
 mkdir -p ./build/bytecode && cd ./build/bytecode
 
 cmake -S ../../ -B ./
-make
+make -j$(nproc)
 
 ./Nyar ../../test.ae
