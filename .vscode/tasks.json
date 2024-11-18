@@ -45,6 +45,15 @@
             "problemMatcher": [
                 "$gcc"
             ]
+        },
+        {
+            "label": "Final Nyar",
+            "type": "shell",
+            "command": 
+                "${workspaceFolder}/CompilerNyar.sh",
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ]
 }

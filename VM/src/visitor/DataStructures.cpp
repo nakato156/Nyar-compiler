@@ -33,39 +33,40 @@ std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx) {
 // AIUDA
 std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx)
 {
-    std::cout << "Variable STRING" << std::endl;
+    std::cout << "Processing STRING expression" << std::endl;
+
+    // Extract the string value and clean it6 (remove quotes)
     std::string value = ctx->getText();
-
-    auto dataType = llvm::Type::getInt8Ty(*Context);
     std::string cleanValue = value.substr(1, value.size() - 2);
-    
-    std::cout << "Cadena: " << cleanValue << std::endl;
 
+    std::cout << "Cleaned String: " << cleanValue << std::endl;
+
+    // Create a string constant in LLVM
     llvm::Constant *strConstant = llvm::ConstantDataArray::getString(*Context, cleanValue);
-    std::cout << "Cadena: " << strConstant->getName().str() << std::endl;
 
-    // Asignar la cadena a memoria (en global o local)
+    // Define a global variable to hold the string
+    std::string varName = "str_" + std::to_string(counterStrike++);
     llvm::GlobalVariable *strVar = new llvm::GlobalVariable(
         *Module,
         strConstant->getType(),
-        true,
+        true, // isConstant
         llvm::GlobalValue::PrivateLinkage,
         strConstant,
-        "str_" + std::to_string(counterStrike++) + "_" + cleanValue.replace(cleanValue.find(" "), 1, "_")
-    );
-    std::cout << "Cadena Gblob: " << strVar->getName().str() << std::endl;
+        varName);
 
+    std::cout << "Global String Variable: " << strVar->getName().str() << std::endl;
+
+    // Return a pointer to the string's beginning (as a Value*)
     llvm::Constant *zero = llvm::ConstantInt::get(llvm::Type::getInt32Ty(*Context), 0);
-    std::vector<llvm::Constant*> indices = {zero, zero};
-    llvm::Constant *strPtr = llvm::ConstantExpr::getGetElementPtr(
-        strVar->getValueType(),
+    std::vector<llvm::Constant *> indices = {zero, zero};
+
+    llvm::Value *strPtr = llvm::ConstantExpr::getGetElementPtr(
+        strConstant->getType(),
         strVar,
-        indices
-    );
+        indices);
 
     return strPtr;
 }
-
 std::any VMVisitor::visitNullExp(VMParser::NullExpContext *ctx)
 {
     llvm::Value *returnValue = llvm::ConstantInt::getSigned((llvm::Type::getInt32Ty(*Context)), 0);
