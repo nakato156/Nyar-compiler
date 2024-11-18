@@ -13,7 +13,7 @@
 #include "llvm/IR/Verifier.h"
 #include "llvm/IR/Type.h"
 
-std::any VMVisitor::visitProgram(VMParser::ProgramContext *ctx)
+antlrcpp::Any VMVisitor::visitProgram(VMParser::ProgramContext *ctx)
 {
     std::cout << ctx->getText() << std::endl;
     llvm::FunctionType *functionType = llvm::FunctionType::get(llvm::Type::getInt64Ty(*Context), false);
@@ -33,65 +33,49 @@ std::any VMVisitor::visitProgram(VMParser::ProgramContext *ctx)
     return nullptr;
 }
 
-std::any VMVisitor::visitStat(VMParser::StatContext *ctx)
+antlrcpp::Any VMVisitor::visitStat(VMParser::StatContext *ctx)
 {
     std::cout << ctx->getText() << std::endl;
     return visitChildren(ctx);
 }
 
-std::any VMVisitor::visitIdExp(VMParser::IdExpContext *ctx) { return visitChildren(ctx); }
+antlrcpp::Any VMVisitor::visitIdExp(VMParser::IdExpContext *ctx) { 
+    std::cout << "Nombre Variable: " <<  ctx->ID()->getText();
 
-std::any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
+    if(SymbolTable.find(ctx->ID()->getText()) != SymbolTable.end()) {
+        return SymbolTable[ctx->ID()->getText()]; 
+    }
+    else {
+        std::cout << "Variable no encontrada" << std::endl;
+    }
+
+    return nullptr;
+}
+
+antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
 {
     std::cout << "\tAsignacion de Variable\t" << std::endl;
-    std::cout << ctx->ID(0)->getText() << " " << ctx->expr(0)->getText() << " " << ctx->ref->getText() << std::endl;
+    std::cout << ctx->ID(0)->getText() << " " 
+              << (ctx->hint ? ctx->hint->getText() : "No Hint") 
+              << " " 
+              << (ctx->ref ? ctx->ref->getText() : "No Ref") 
+              << std::endl;
 
     llvm::Value *dataValue = nullptr;
     llvm::Type *dataType = nullptr;
-    llvm::Value *Allocation = nullptr;
 
     if (ctx->hint == nullptr)
     {
-        /*
-            Tipos de datos que pueden ingresar,
-                Strings, Integers, Doubles, NULLS
-                Punteros
-        */
-
-        /*
-            Se va a asumir que son double si hay un punto,
-            si no tiene punto integer
-        */
-
-        std::cout << "La variable no contiene hints" << std::endl;
-
-        // Christian TASKETE
-        //AIUDA
-        std::string value = ctx->expr(0)->getText();
-
-        if (value.find('.') != std::string::npos)
-        {
-            std::cout << "Variable DOUBLE" << std::endl;
-            dataType = llvm::Type::getDoubleTy(*Context);
+        // Procesar la expresión asignada
+        auto x = visit(ctx->expr(0));
+        std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
+        dataValue = std::any_cast<llvm::Value*>(x);
+        if (!dataValue) {
+            LogsErrorsV("Error al procesar la expresión de la variable");
+            return nullptr;
         }
-        else if (value.find_first_not_of("0123456789") == std::string::npos)
-        {
-            std::cout << "Variable INTEGER" << std::endl;
-            dataType = llvm::Type::getInt64Ty(*Context);
-        }
-        else if (value.front() == '"' && value.back() == '"')
-        {
-            //AIUDA
-            std::cout << "Variable STRING" << std::endl;
-            
-            //Nota - Se que es erroneo pero para que no me bote error xd
-            dataType = llvm::Type::getInt64Ty(*Context);
-            // dataType = llvm::Type::getInt8PtrTy(*Context);
-        }
-        else
-        {
-            LogsErrorsV("Unknown Type of Variable");
-        }
+        dataType = dataValue->getType();
+        
     }
     else
     {
@@ -126,10 +110,23 @@ std::any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
             LogsErrorsV("Nyar doesn't support this type of hint for the language.");
         }
     }
-    Allocation = Builder->CreateAlloca(dataType, nullptr, ctx->ID(0)->getText());
 
+    std::string varName = ctx->ID(0)->getText();
+    llvm::Value *Allocation = Builder->CreateAlloca(dataType, 0, varName.c_str());;
+    Builder->CreateStore(dataValue, Allocation);
+
+    // Manejar la referencia si existe
+    if (ctx->ref) {
+        llvm::Value *refValue = std::any_cast<llvm::Value*>(visit(ctx->ref));
+        if (refValue) {
+            // Implementar la lógica para manejar la referencia
+            SymbolTable[ctx->ID(0)->getText()] = refValue;
+        } else {
+            LogsErrorsV("Error al procesar la referencia de la variable");
+        }
+    }
+    
     // Asign data to symboltable
-
-    SymbolTable[ctx->ID(0)->getText()] = dataValue;
-    return nullptr;
+    // SymbolTable[ctx->ID(0)->getText()] = dataValue;
+    return SymbolTable[ctx->ID(0)->getText()];
 }

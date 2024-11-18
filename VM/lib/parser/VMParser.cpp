@@ -1,5 +1,5 @@
 
-// Generated from ./VMParser.g4 by ANTLR 4.13.2
+// Generated from ./VMParser.g4 by ANTLR 4.13.0
 
 
 #include "VMParserVisitor.h"
@@ -40,7 +40,7 @@ struct VMParserStaticData final {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
 static thread_local
 #endif
-std::unique_ptr<VMParserStaticData> vmparserParserStaticData = nullptr;
+VMParserStaticData *vmparserParserStaticData = nullptr;
 
 void vmparserParserInitialize() {
 #if ANTLR4_USE_THREAD_LOCAL_CACHE
@@ -150,7 +150,7 @@ void vmparserParserInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  vmparserParserStaticData = std::move(staticData);
+  vmparserParserStaticData = staticData.release();
 }
 
 }

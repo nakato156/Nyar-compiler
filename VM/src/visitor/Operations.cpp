@@ -78,17 +78,17 @@ std::any VMVisitor::visitLogicExp(VMParser::LogicExpContext *ctx)
     return nullptr;
 }
 
-std::any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
+antlrcpp::Any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
 {
     std::cout << "\tOperacion Matematica\t" << std::endl;
     std::cout << ctx->expr(0)->getText() << " " << ctx->op->getText() << " " << ctx->expr(1)->getText() << std::endl;
 
-    visitChildren(ctx);
-
+    llvm::Value *result = nullptr;
     if (mathOperations.find(ctx->op->getText()) != mathOperations.end())
     {
-        llvm::Value *leftValue = searchOrCast(ctx->expr(0)->getText());
-        llvm::Value *rightValue = searchOrCast(ctx->expr(1)->getText());
+        llvm::Value *leftValue = std::any_cast<llvm::Value*>(visit(ctx->expr(0)));
+        llvm::Value *rightValue = std::any_cast<llvm::Value*>(visit(ctx->expr(1)));
+
 
         std::tie(leftValue, rightValue) = castOrNotCast(leftValue, rightValue);
 
@@ -96,17 +96,17 @@ std::any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
         {
         case 0:
             std::cout << "Aplicando suma" << std::endl;
-            Builder->CreateFAdd(leftValue, rightValue, "addtmp");
+            result = Builder->CreateFAdd(leftValue, rightValue, "addtmp");
             break;
 
         case 1:
             std::cout << "Aplicando Resta" << std::endl;
-            Builder->CreateFSub(leftValue, rightValue, "subtmp");
+            result = Builder->CreateFSub(leftValue, rightValue, "subtmp");
             break;
 
         case 2:
             std::cout << "Aplicando Multiplicacion" << std::endl;
-            Builder->CreateFMul(leftValue, rightValue, "multmp");
+            result = Builder->CreateFMul(leftValue, rightValue, "multmp");
             break;
 
         case 3:
@@ -114,11 +114,13 @@ std::any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
             std::cout << "Aplicando Division" << std::endl;
             if (std::stoi(ctx->expr(1)->getText()) != 0)
             {
-                Builder->CreateFDiv(leftValue, rightValue, "divtmp");
+                result = Builder->CreateFDiv(leftValue, rightValue, "divtmp");
             }
             else
             {
+                //Agregarlo cuando suceda, Crack :D
                 std::cerr << "ERROR: Division entre 0" << std::endl;
+                throw std::runtime_error("Division entre 0 >-<");
             }
 
             break;
@@ -131,6 +133,6 @@ std::any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)
     {
         LogsErrorsV("Mathematical operation not found");
     }
-
-    return nullptr;
+    std::cout << "TERMINADO" << std::endl;
+    return result;
 }
