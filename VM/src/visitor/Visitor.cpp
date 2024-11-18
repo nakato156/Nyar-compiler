@@ -119,14 +119,11 @@ antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
     if (ctx->ref) {
         llvm::Value *refValue = std::any_cast<llvm::Value*>(visit(ctx->ref));
         if (refValue) {
-            // Implementar la lógica para manejar la referencia
             SymbolTable[ctx->ID(0)->getText()] = refValue;
         } else {
             LogsErrorsV("Error al procesar la referencia de la variable");
         }
     }
     
-    // Asign data to symboltable
-    // SymbolTable[ctx->ID(0)->getText()] = dataValue;
     return SymbolTable[ctx->ID(0)->getText()];
 }

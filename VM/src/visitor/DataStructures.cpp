@@ -13,16 +13,18 @@
 #include "llvm/IR/Verifier.h"
 
 std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx) { 
-    std::vector<llvm::Value *> values;
-    llvm::Type *elemntType = nullptr;
+    std::vector<llvm::Constant *> values;
+    llvm::Type *elementType = llvm::Type::getInt32Ty(*Context); // Por ejemplo
+    llvm::ArrayType *arrayType = llvm::ArrayType::get(elementType, ctx->array()->arrayblock()->expr().size());
 
-    if(ctx->array()->arrayblock()){
-        for (auto &element : ctx->array()->arrayblock()->expr())
-        {
-            llvm::Value *value = std::any_cast<llvm::Value*>(visit(element));
-        }
+    for (auto &element : ctx->array()->arrayblock()->expr())
+    {
+        llvm::Constant *value = std::any_cast<llvm::Constant*>(visit(element));
+        values.push_back(value);
     }
-    return values;
+
+    llvm::Constant *arrayConstant = llvm::ConstantArray::get(arrayType, values);
+    return Builder->CreateGlobalStringPtr(arrayConstant->getName());
 }
 
 // Christian TASKETE
