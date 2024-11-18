@@ -384,7 +384,7 @@ namespace MLVM
 
         void createStartSino()
         {
-            appendCode("@_end\n@sino;");
+            appendCode("@_end\n@sino:");
         }
 
         std::string createCallFunc(const std::string &name, const std::vector<std::string> &args)

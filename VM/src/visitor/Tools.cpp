@@ -31,7 +31,6 @@ llvm::Value *VMVisitor::IntValue(int Value)
 
 llvm::Value *VMVisitor::DoubleValue(double Value)
 {
-    std::cout << "Valor: " <<  Value;
     return llvm::ConstantFP::get((llvm::Type::getDoubleTy(*Context)), Value);
 }
 
