@@ -43,7 +43,9 @@ imprimir(uno, "a");
 nd = NADA;
 
 si (uno.x) == (nd.a.otro) {
-    
+    murio= 0;
+} sino {
+    murio = 1;
 }
 
 

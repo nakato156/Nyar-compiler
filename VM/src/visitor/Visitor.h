@@ -43,6 +43,7 @@ private:
 
     llvm::Function * function;
 
+    int counterStrike = 0;
 public:
     VMVisitor()
     {
@@ -84,7 +85,6 @@ public:
         TheSI =  std::make_unique<llvm::StandardInstrumentations>(*Context, true);
         TheSI->registerCallbacks(*ThePIC, TheMAM.get());
 
-
         TheFPM->addPass(llvm::InstCombinePass());
         TheFPM->addPass(llvm::ReassociatePass());
         TheFPM->addPass(llvm::GVNPass());
@@ -99,32 +99,32 @@ public:
 
     void saveModule(const std::string &filePath);
 
-    virtual std::any visitProgram(VMParser::ProgramContext *ctx);
-    virtual std::any visitStat(VMParser::StatContext *ctx);
-    virtual std::any visitIdExp(VMParser::IdExpContext *ctx);
-    virtual std::any visitFunctionCallExp(VMParser::FunctionCallExpContext *ctx);
-    virtual std::any visitLogicExp(VMParser::LogicExpContext *ctx);
-    virtual std::any visitStringExp(VMParser::StringExpContext *ctx);
-    virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx);
-    virtual std::any visitNullExp(VMParser::NullExpContext *ctx);
-    virtual std::any visitNumberExp(VMParser::NumberExpContext *ctx);
-    virtual std::any visitMathExp(VMParser::MathExpContext *ctx);
-    virtual std::any visitArrayExp(VMParser::ArrayExpContext *ctx);
-    virtual std::any visitVariable(VMParser::VariableContext *ctx);
-    virtual std::any visitWhile(VMParser::WhileContext *ctx);
-    virtual std::any visitIf(VMParser::IfContext *ctx);
-    virtual std::any visitStruct(VMParser::StructContext *ctx);
-    virtual std::any visitArray(VMParser::ArrayContext *ctx);
-    virtual std::any visitArrayblock(VMParser::ArrayblockContext *ctx);
-    virtual std::any visitBlock(VMParser::BlockContext *ctx);
-    virtual std::any visitFunctionparameters(VMParser::FunctionparametersContext *ctx);
-    virtual std::any visitFunctionblock(VMParser::FunctionblockContext *ctx);
-    virtual std::any visitFunctiondefinition(VMParser::FunctiondefinitionContext *ctx);
-    virtual std::any visitReturnexpression(VMParser::ReturnexpressionContext *ctx);
-    virtual std::any visitFunctionarguments(VMParser::FunctionargumentsContext *ctx);
-    virtual std::any visitAccessObject(VMParser::AccessObjectContext *ctx);
-    virtual std::any visitFunctioncall(VMParser::FunctioncallContext *ctx);
-    virtual std::any visitElse(VMParser::ElseContext *ctx);
+    virtual antlrcpp::Any visitProgram(VMParser::ProgramContext *ctx);
+    virtual antlrcpp::Any visitStat(VMParser::StatContext *ctx);
+    virtual antlrcpp::Any visitIdExp(VMParser::IdExpContext *ctx);
+    virtual antlrcpp::Any visitFunctionCallExp(VMParser::FunctionCallExpContext *ctx);
+    virtual antlrcpp::Any visitLogicExp(VMParser::LogicExpContext *ctx);
+    virtual antlrcpp::Any visitStringExp(VMParser::StringExpContext *ctx);
+    virtual antlrcpp::Any visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx);
+    virtual antlrcpp::Any visitNullExp(VMParser::NullExpContext *ctx);
+    virtual antlrcpp::Any visitNumberExp(VMParser::NumberExpContext *ctx);
+    virtual antlrcpp::Any visitMathExp(VMParser::MathExpContext *ctx);
+    virtual antlrcpp::Any visitArrayExp(VMParser::ArrayExpContext *ctx);
+    virtual antlrcpp::Any visitVariable(VMParser::VariableContext *ctx);
+    virtual antlrcpp::Any visitWhile(VMParser::WhileContext *ctx);
+    virtual antlrcpp::Any visitIf(VMParser::IfContext *ctx);
+    virtual antlrcpp::Any visitStruct(VMParser::StructContext *ctx);
+    virtual antlrcpp::Any visitArray(VMParser::ArrayContext *ctx);
+    virtual antlrcpp::Any visitArrayblock(VMParser::ArrayblockContext *ctx);
+    virtual antlrcpp::Any visitBlock(VMParser::BlockContext *ctx);
+    virtual antlrcpp::Any visitFunctionparameters(VMParser::FunctionparametersContext *ctx);
+    virtual antlrcpp::Any visitFunctionblock(VMParser::FunctionblockContext *ctx);
+    virtual antlrcpp::Any visitFunctiondefinition(VMParser::FunctiondefinitionContext *ctx);
+    virtual antlrcpp::Any visitReturnexpression(VMParser::ReturnexpressionContext *ctx);
+    virtual antlrcpp::Any visitFunctionarguments(VMParser::FunctionargumentsContext *ctx);
+    virtual antlrcpp::Any visitAccessObject(VMParser::AccessObjectContext *ctx);
+    virtual antlrcpp::Any visitFunctioncall(VMParser::FunctioncallContext *ctx);
+    virtual antlrcpp::Any visitElse(VMParser::ElseContext *ctx);
 
     llvm::Value *BoolValue(bool Value);
     llvm::Value *IntValue(int Value);

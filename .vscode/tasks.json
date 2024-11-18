@@ -7,7 +7,7 @@
             "label": "Build VM Run",
             "type": "shell",
             "command": [
-                "bash -c '${workspaceFolder}/VMRun.sh && ${workspaceFolder}/VMGCompile.sh'",
+                "bash -c '${workspaceFolder}/VMRun.sh'",
             ],
             "group": {
                 "kind": "build",

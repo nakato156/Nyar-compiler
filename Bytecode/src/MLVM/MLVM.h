@@ -382,6 +382,11 @@ namespace MLVM
             appendCode("}");
         }
 
+        void createStartSino()
+        {
+            appendCode("@_end\n@sino;");
+        }
+
         std::string createCallFunc(const std::string &name, const std::vector<std::string> &args)
         {
             std::string str_args = "@call;" + name + "(";
@@ -401,8 +406,7 @@ namespace MLVM
             std::ofstream file(filename);
             for (const auto &instruction : code)
             {
-                std::visit([&file](auto &&arg)
-                           {
+                std::visit([&file](auto &&arg) {
                     using T = std::decay_t<decltype(arg)>;
                     if constexpr (std::is_same_v<T, std::shared_ptr<Variable>>) {
                         // if (arg->getReferences() > 0) {
