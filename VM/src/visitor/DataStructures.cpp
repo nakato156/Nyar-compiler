@@ -73,6 +73,9 @@ std::any VMVisitor::visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx)
 }
 
 std::any VMVisitor::visitArray(VMParser::ArrayContext *ctx) { return visitChildren(ctx); }
+
 std::any VMVisitor::visitArrayblock(VMParser::ArrayblockContext *ctx) { return visitChildren(ctx); }
+
 std::any VMVisitor::visitStruct(VMParser::StructContext *ctx) { return visitChildren(ctx); }
+
 std::any VMVisitor::visitAccessObject(VMParser::AccessObjectContext *ctx) { return visitChildren(ctx); }

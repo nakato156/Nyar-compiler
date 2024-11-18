@@ -5,7 +5,7 @@ program : stat* EOF;
 
 stat 
     : variable
-    | while
+    | for
     | functiondefinition
     | expr
     | if
@@ -18,6 +18,7 @@ expr
     | STRING                                            #StringExp
     | ID                                                #IdExp
     | NULL                                              #NullExp
+    | LPAREN expr RPAREN                                #ParenExp
     | accessObject                                      #AccessObjectExp
 	| array                                             #ArrayExp
 	| functioncall                                      #FunctionCallExp 
@@ -32,7 +33,7 @@ variable
 
 //Flow Controls
 
-while:
+for:
 	RW_FOR SEMICOLON CONTROL = ID SEMICOLON FROM = (ID | NUMBER) SEMICOLON TO = ( ID
     | NUMBER ) block 
     ;
@@ -74,4 +75,3 @@ accessObject:
 functioncall:
 	RW_CALLFUNCTION SEMICOLON ID LPAREN functionarguments? RPAREN;
 
-//Agregar elseif

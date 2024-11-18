@@ -19,63 +19,67 @@ std::any VMVisitor::visitLogicExp(VMParser::LogicExpContext *ctx)
 
     visitChildren(ctx);
 
+    llvm::Value *result = nullptr;
+
     if (logicOperations.find(ctx->op->getText()) != logicOperations.end())
     {
-
-        llvm::Value *leftValue = searchOrCast(ctx->expr(0)->getText());
-        llvm::Value *rightValue = searchOrCast(ctx->expr(1)->getText());
+        llvm::Value *leftValue = std::any_cast<llvm::Value *>(visit(ctx->expr(0)));
+        llvm::Value *rightValue = std::any_cast<llvm::Value *>(visit(ctx->expr(1)));
 
         std::tie(leftValue, rightValue) = castOrNotCast(leftValue, rightValue);
 
-
-        llvm::Value * result = nullptr;
-
-        switch (logicOperations[ctx->op->getText()])
-        {
-        case 0:
-            result = Builder->CreateFCmpULT(leftValue, rightValue, "cmplttmp");
-            break;
-
-        case 1:
-            result = Builder->CreateFCmpULE(leftValue,rightValue,"cmpletmp");
-            break;
-
-        case 2:
-            result = Builder->CreateFCmpUGT(leftValue,rightValue,"cmpgttmp");
-            break;
-
-        case 3:
-            result = Builder->CreateFCmpUGE(leftValue,rightValue,"cmpgetmp");
-            break;
-
-        case 4:
-            result = Builder->CreateFCmpUEQ(leftValue,rightValue,"cmpeqtmp");
-            break;
-
-        case 5:
-            result = Builder->CreateFCmpUNE(leftValue,rightValue,"cmpneqtmp");
-            break;
-
-        case 6:
-            break;
-            result = Builder->CreateFCmpUEQ(leftValue, rightValue, "cmpneqtmp");
-
-        case 7:
-            result = Builder->CreateOr(leftValue, rightValue, "cmportmp");
-            break;
-
-        default:
-            break;
-        }
-
-        Builder->CreateUIToFP(result, llvm::Type::getDoubleTy(*Context), "booltmp");
+        result = RetLogOp(leftValue, rightValue, ctx->op->getText());
     }
-    else
+
+    return result;
+}
+
+llvm::Value *VMVisitor::RetLogOp(llvm::Value *leftValue, llvm::Value *rightValue, std::string caseLog)
+{
+    llvm::Value *dataResult = nullptr;
+    llvm::Type * dataType = nullptr;
+
+    switch (logicOperations[caseLog])
     {
+    case 0:
+        dataResult = Builder->CreateFCmpULT(leftValue, rightValue, "cmplttmp");
+        break;
+
+    case 1:
+        dataResult = Builder->CreateFCmpULE(leftValue, rightValue, "cmpletmp");
+        break;
+
+    case 2:
+        dataResult = Builder->CreateFCmpUGT(leftValue, rightValue, "cmpgttmp");
+        break;
+
+    case 3:
+        dataResult = Builder->CreateFCmpUGE(leftValue, rightValue, "cmpgetmp");
+        break;
+    case 4:
+        dataResult = Builder->CreateFCmpUEQ(leftValue, rightValue, "cmpeqtmp");
+        break;
+
+    case 5:
+        dataResult = Builder->CreateFCmpUNE(leftValue, rightValue, "cmpneqtmp");
+        break;
+
+    case 6:
+        dataResult = Builder->CreateFCmpUEQ(leftValue, rightValue, "cmpneqtmp");
+        break;
+
+    case 7:
+        dataResult = Builder->CreateOr(leftValue, rightValue, "cmportmp");
+        break;
+
+    //TODO - Add constant true or false
+    default:
         LogsErrorsV("Logical operation not found");
+        break;
     }
 
-    return nullptr;
+    Builder->CreateUIToFP(dataResult, llvm::Type::getDoubleTy(*Context), "booltmp");
+    return dataResult;
 }
 
 antlrcpp::Any VMVisitor::visitMathExp(VMParser::MathExpContext *ctx)

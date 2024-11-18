@@ -1,5 +1,5 @@
 
-// Generated from ./VMParser.g4 by ANTLR 4.13.0
+// Generated from ./VMParser.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -33,6 +33,8 @@ public:
 
     virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *context) = 0;
 
+    virtual std::any visitParenExp(VMParser::ParenExpContext *context) = 0;
+
     virtual std::any visitNullExp(VMParser::NullExpContext *context) = 0;
 
     virtual std::any visitNumberExp(VMParser::NumberExpContext *context) = 0;
@@ -43,7 +45,7 @@ public:
 
     virtual std::any visitVariable(VMParser::VariableContext *context) = 0;
 
-    virtual std::any visitWhile(VMParser::WhileContext *context) = 0;
+    virtual std::any visitFor(VMParser::ForContext *context) = 0;
 
     virtual std::any visitIf(VMParser::IfContext *context) = 0;
 
