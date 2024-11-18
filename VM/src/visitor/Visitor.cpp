@@ -68,7 +68,6 @@ antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
     {
         // Procesar la expresión asignada
         auto x = visit(ctx->expr(0));
-        std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
         dataValue = std::any_cast<llvm::Value*>(x);
         if (!dataValue) {
             LogsErrorsV("Error al procesar la expresión de la variable");
@@ -117,11 +116,23 @@ antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
 
     // Manejar la referencia si existe
     if (ctx->ref) {
-        llvm::Value *refValue = std::any_cast<llvm::Value*>(visit(ctx->ref));
-        if (refValue) {
-            SymbolTable[ctx->ID(0)->getText()] = refValue;
+        antlrcpp::Any refAny = visit(ctx->ref);
+        std::cout << "Tipo de refAny: " << refAny.type().name() << std::endl;
+        
+        // Depuración
+        if (refAny.type() == typeid(llvm::Value*)) {
+            // Kami-sama tasukete
+            // std::cout << "bien" << std::endl;
+            llvm::Value *refValue = std::any_cast<llvm::Value*>(refAny);
+            // std::cout << "mal: " << std::endl;
+            if (refValue) {
+                SymbolTable[ctx->ID(0)->getText()] = refValue;
+            } else {
+                LogsErrorsV("Error al procesar la referencia de la variable: refValue es nullptr");
+            }
         } else {
-            LogsErrorsV("Error al procesar la referencia de la variable");
+            LogsErrorsV("Error: El tipo retornado por visit(ctx->ref) no es llvm::Value*");
+            // Opcional: Asignar un valor por defecto o manejar el error según tu lógica
         }
     }
     

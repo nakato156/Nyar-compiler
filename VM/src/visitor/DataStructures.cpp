@@ -24,7 +24,8 @@ std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx) {
     }
 
     llvm::Constant *arrayConstant = llvm::ConstantArray::get(arrayType, values);
-    return Builder->CreateGlobalStringPtr(arrayConstant->getName());
+    Builder->CreateGlobalStringPtr(arrayConstant->getName());
+    return arrayConstant;
 }
 
 // Christian TASKETE
@@ -35,9 +36,12 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx) {
 
     auto dataType = llvm::Type::getInt8Ty(*Context);
     std::string cleanValue = value.substr(1, value.size() - 2);
+    
+    std::cout << "Cadena: " << cleanValue << std::endl;
 
     llvm::Constant *strConstant = llvm::ConstantDataArray::getString(*Context, cleanValue);
-            
+    std::cout << "Cadena: " << strConstant->getName().str() << std::endl;
+
     // Asignar la cadena a memoria (en global o local)
     llvm::GlobalVariable *strVar = new llvm::GlobalVariable(
         *Module,
@@ -45,9 +49,19 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx) {
         true,
         llvm::GlobalValue::PrivateLinkage,
         strConstant,
-        "str_" + std::to_string(counterStrike++) + "_" + ctx->getText()
+        "str_" + std::to_string(counterStrike++) + "_" + cleanValue.replace(cleanValue.find(" "), 1, "_")
     );
-    return strVar;
+    std::cout << "Cadena Gblob: " << strVar->getName().str() << std::endl;
+
+    llvm::Constant *zero = llvm::ConstantInt::get(llvm::Type::getInt32Ty(*Context), 0);
+    std::vector<llvm::Constant*> indices = {zero, zero};
+    llvm::Constant *strPtr = llvm::ConstantExpr::getGetElementPtr(
+        strVar->getValueType(),
+        strVar,
+        indices
+    );
+
+    return strPtr;
 }
 std::any VMVisitor::visitNullExp(VMParser::NullExpContext *ctx) { return visitChildren(ctx); }
 std::any VMVisitor::visitNumberExp(VMParser::NumberExpContext *ctx) { 
