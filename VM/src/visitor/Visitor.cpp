@@ -66,14 +66,24 @@ antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
 
     if (ctx->hint == nullptr)
     {
-        // Procesar la expresión asignada
+        // Process the expression assigned
         auto x = visit(ctx->expr(0));
-        dataValue = std::any_cast<llvm::Value*>(x);
-        if (!dataValue) {
-            LogsErrorsV("Error al procesar la expresión de la variable");
-            return nullptr;
+        if (ctx->expr(0)->getText().front() == '"' && ctx->expr(0)->getText().back() == '"')
+        {
+            // Special handling for string types
+            dataValue = std::any_cast<llvm::Value *>(x);
+            dataType = llvm::PointerType::getUnqual(llvm::Type::getInt8Ty(*Context)); // i8* for string pointers
         }
-        dataType = dataValue->getType();
+        else
+        {
+            dataValue = std::any_cast<llvm::Value *>(x);
+            if (!dataValue)
+            {
+                LogsErrorsV("Error processing the expression for the variable");
+                return nullptr;
+            }
+            dataType = dataValue->getType();
+        }
     }
     else
     {
@@ -137,3 +147,44 @@ antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
     
     return SymbolTable[ctx->ID(0)->getText()];
 }
+
+void VMVisitor::createPrintFunction(llvm::Module &module, llvm::LLVMContext &context)
+{
+    // Crear el prototipo de printf
+    llvm::FunctionType *printfType = llvm::FunctionType::get(
+        llvm::IntegerType::getInt32Ty(context),
+        llvm::PointerType::getUnqual(llvm::Type::getInt8Ty(context)),
+        true);
+    llvm::Function *printfFunc = llvm::Function::Create(
+        printfType, llvm::Function::ExternalLinkage, "printf", module);
+
+    // Crear la función void print(int)
+    llvm::FunctionType *printType = llvm::FunctionType::get(
+        llvm::Type::getVoidTy(context),
+        {llvm::Type::getInt32Ty(context)},
+        false);
+    llvm::Function *printFunc = llvm::Function::Create(
+        printType, llvm::Function::ExternalLinkage, "print", module);
+
+    // Crear un bloque básico para la función
+    llvm::BasicBlock *block = llvm::BasicBlock::Create(context, "entry", printFunc);
+    llvm::IRBuilder<> builder(block);
+
+    // Obtener el argumento de la función
+    llvm::Function::arg_iterator args = printFunc->arg_begin();
+    llvm::Value *arg = &*args;
+    arg->setName("value");
+
+    // Crear el formato para printf
+    llvm::Value *formatStr = builder.CreateGlobalStringPtr("%d\n");
+
+    // Llamar a printf
+    builder.CreateCall(printfFunc, {formatStr, arg});
+
+    // Retornar void
+    builder.CreateRetVoid();
+
+    // Verificar la función
+    llvm::verifyFunction(*printFunc);
+    }
+

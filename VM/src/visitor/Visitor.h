@@ -144,4 +144,6 @@ public:
     void LogError(const char *Str);
 
     llvm::Value *RetLogOp(llvm::Value *leftValue, llvm::Value *rightValue, std::string caseLog);
+
+    void createPrintFunction(llvm::Module &module, llvm::LLVMContext &context);
 };

@@ -98,3 +98,4 @@ void VMVisitor::LogError(const char *Str)
 {
     fprintf(stderr, "LogError: %s\n", Str);
 }
+
