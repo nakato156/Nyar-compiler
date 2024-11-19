@@ -6,6 +6,10 @@
 #include "src/visitor/Visitor.h"
 #include "src/JIT.h"
 
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Verifier.h>
+#include <llvm/Support/TargetSelect.h>
+
 using namespace std;
 using namespace antlr4;
 
@@ -55,40 +59,11 @@ std::unique_ptr<llvm::Module> abrirArchivo(int argc, char *argv[])
 
         cout << tree -> toStringTree(&parser) << endl;               
 
-        // visitor.saveModule("Nyar.ll");
+        visitor.saveModule("Nyar.ll");
+        auto nyarModule = visitor.getModule();        
 
-        // Crear un LLVM context y un módulo
-        llvm::LLVMContext llvmContext;
-        auto module = std::make_unique<llvm::Module>("NyarModule", llvmContext);
-
-        // Aquí es donde debes agregar la conversión del árbol AST
-        // a un módulo de LLVM. El código de conversión depende
-        // de cómo estés representando las instrucciones en tu AST
-        // y cómo quieras transformarlas a IR de LLVM.
-
-        // Por ejemplo, si tienes una función en el AST y quieres
-        // agregarla al módulo, puedes hacerlo de la siguiente manera:
-        
-        llvm::IRBuilder<> builder(llvmContext);
-
-        // Crear una función simple (esto es solo un ejemplo)
-        llvm::FunctionType *funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(llvmContext), false);
-        llvm::Function *func = llvm::Function::Create(funcType, llvm::Function::ExternalLinkage, "myFunction", *module);
-
-        // Agregar instrucciones a la función, esto es solo un ejemplo.
-        llvm::BasicBlock *entry = llvm::BasicBlock::Create(llvmContext, "entry", func);
-        builder.SetInsertPoint(entry);
-        builder.CreateRetVoid();
-
-        // Ahora tenemos un módulo con una función simple
-        // Puedes procesar más cosas del AST y construir el módulo de acuerdo a tus necesidades
-
-        // Guardar el módulo en un archivo .ll (opcional)
-        std::error_code EC;
-        llvm::raw_fd_ostream file_out("Nyar.ll", EC, llvm::sys::fs::OF_Text);
-        module->print(file_out, nullptr);
-
-        return module; // 
+        // convert to unique_ptr for return
+        return std::unique_ptr<llvm::Module>(nyarModule);
     }
     return nullptr;
 }
@@ -103,19 +78,52 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    // Crear el JIT
-    auto jit = llvm::orc::KaleidoscopeJIT::Create();
+    if(verifyModule(*module)) {
+        cout << "Error en el módulo" << endl;
+        return EXIT_FAILURE;
+    }
 
-    // llvm::InitializeNativeTarget();
-    // llvm::InitializeNativeTargetAsmPrinter();
-    // llvm::InitializeNativeTargetAsmParser();
+    llvm::InitializeNativeTarget();
+    llvm::InitializeNativeTargetAsmPrinter();
+    llvm::InitializeNativeTargetAsmParser();
+
+    // Crear el JIT
+    auto jitExpected = llvm::orc::KaleidoscopeJIT::Create();
+
+    if (!jitExpected) {
+        cout << "Error al crear el JIT" << endl;
+        cerr << llvm::toString(jitExpected.takeError()) << endl;
+        return EXIT_FAILURE;
+    }
+
+    auto jit = std::move(jitExpected.get());
     
-    // module->setDataLayout(jit->tar());
-    // if (!jit)
-    // {
-    //     llvm::errs() << "Error al crear el JIT: " << toString(jit.takeError()) << "\n";
-    //     return EXIT_FAILURE;
-    // }
+    llvm::orc::ThreadSafeContext tsc(std::make_unique<llvm::LLVMContext>());
+    llvm::orc::ThreadSafeModule TSM(std::move(module), tsc);
+
+    auto Err = jit->addModule(std::move(TSM));
+    
+    if (Err) {
+        cout << "Error al agregar el módulo al JIT" << endl;
+        return EXIT_FAILURE;
+    }
+
+    auto symbol = jit->lookup("main");
+    if (!symbol) {
+        cout << "Error al buscar el símbolo" << endl;
+        return EXIT_FAILURE;
+    }
+    
+    auto mainSymbol = symbol->getAddress();
+
+    using MainFunction = void(*)();
+    auto mainFn = mainSymbol.toPtr<MainFunction>();
+
+    if (!mainFn) {
+        cout << "Error al obtener la dirección de la función" << endl;
+        return EXIT_FAILURE;
+    }
+    mainFn();
 
     return 0;
 }

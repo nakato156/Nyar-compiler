@@ -101,6 +101,7 @@ public:
     ~VMVisitor() = default;
 
     void saveModule(const std::string &filePath);
+    llvm::Module * getModule(){ return Module;};
 
     virtual antlrcpp::Any visitProgram(VMParser::ProgramContext *ctx);
     virtual antlrcpp::Any visitStat(VMParser::StatContext *ctx);

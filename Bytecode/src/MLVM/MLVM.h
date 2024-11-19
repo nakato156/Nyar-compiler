@@ -409,11 +409,11 @@ namespace MLVM
                 std::visit([&file](auto &&arg) {
                     using T = std::decay_t<decltype(arg)>;
                     if constexpr (std::is_same_v<T, std::shared_ptr<Variable>>) {
-                        // if (arg->getReferences() > 0) {
+                        if (arg->getReferences() > 0) {
                             std::string varBytecode = arg->toBytecode();
                             std::cout << varBytecode << std::endl;
                             file << varBytecode << std::endl;
-                        // }
+                        }
                     }
                     else if constexpr (std::is_same_v<T, std::shared_ptr<Function>>) {
                         std::string funcBytecode = arg->toBytecode();

@@ -47,7 +47,7 @@ add_executable(VM ${SOURCE_FILES})
 # Añade los directorios de búsqueda de las bibliotecas para el proyecto Nyar
 target_link_directories(VM PUBLIC)
 
-llvm_map_components_to_libnames(llvm_libs support core irreader orcjit passes)
+llvm_map_components_to_libnames(llvm_libs support core irreader orcjit passes native)
 
 # Enlaza el runtime de ANTLR y LLVM con tu proyecto
 target_link_libraries(VM antlr4-runtime ${llvm_libs})
