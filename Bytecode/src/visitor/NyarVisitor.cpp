@@ -855,7 +855,11 @@ antlrcpp::Any NyarVisitor::visitFuncCall(NyarParser::FuncCallContext *ctx)
     auto funcSymbol = currentScope->getFunction(funcName);
 
     // Ccomprobamos si la funcion existe en este ambito
-    if (funcSymbol || NyarSTD::functions_std.end() != find(NyarSTD::functions_std.begin(), NyarSTD::functions_std.end(), funcName))
+    if (
+        funcSymbol || 
+        NyarSTD::functions_std.end() != find(NyarSTD::functions_std.begin(), NyarSTD::functions_std.end(), funcName) ||
+        funcName.substr(0, 3) == "SDL"
+    )
     {
         MLVM::Function *func = funcSymbol;
         vector<string> args;

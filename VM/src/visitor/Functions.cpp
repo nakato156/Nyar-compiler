@@ -32,7 +32,7 @@ std::any VMVisitor::visitFunctioncall(VMParser::FunctioncallContext *ctx) {
         llvm::Type *argType = argValue->getType();
 
         if (argType->isIntegerTy()) {
-            format += "%d ";
+            format += "%llu ";
         } else if (argType->isDoubleTy()) {
             format += "%f ";   
         } else {
@@ -53,8 +53,8 @@ std::any VMVisitor::visitFunctioncall(VMParser::FunctioncallContext *ctx) {
     llvm::Function *printfFunc = Module->getFunction("printf");
     if (!printfFunc) {
         llvm::FunctionType *printfType = llvm::FunctionType::get(
-            llvm::IntegerType::getInt32Ty(*Context), 
-            llvm::PointerType::getUnqual(llvm::Type::getInt8Ty(*Context)), 
+            llvm::IntegerType::getInt64Ty(*Context), 
+            llvm::PointerType::getUnqual(llvm::Type::getInt64Ty(*Context)), 
             true
         );
         printfFunc = llvm::Function::Create(printfType, llvm::Function::ExternalLinkage, "printf", *Module);
@@ -63,6 +63,7 @@ std::any VMVisitor::visitFunctioncall(VMParser::FunctioncallContext *ctx) {
     // Llamar a printf
     Builder->CreateCall(printfFunc, args);
 
-    return nullptr; }
+    return nullptr;
+}
 std::any VMVisitor::visitFunctionCallExp(VMParser::FunctionCallExpContext *ctx) { return visitChildren(ctx); }
 

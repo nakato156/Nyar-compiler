@@ -36,6 +36,7 @@ std::unique_ptr<llvm::Module> abrirArchivo(int argc, char *argv[])
 
     if (!path_files.empty())
     {
+        cout << "Archivo: " << path_files[0] << endl;
         ifstream file(path_files[0]);
         if (!file.good())
         {
@@ -123,7 +124,8 @@ int main(int argc, char *argv[])
         cout << "Error al obtener la dirección de la función" << endl;
         return EXIT_FAILURE;
     }
+    cout << "compilando JIT" << endl;
     mainFn();
-
+    cout << "JIT compilado" << endl;
     return 0;
 }
