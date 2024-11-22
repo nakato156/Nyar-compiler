@@ -27,8 +27,8 @@ expr
 	;
 
 variable
-    : ID COLON hint=ID SEMICOLON expr SEMICOLON ref=expr SEMICOLON
-	| ID SEMICOLON expr SEMICOLON ref=expr SEMICOLON 
+    : ID COLON hint=ID SEMICOLON val=expr SEMICOLON ref=expr SEMICOLON
+	| ID SEMICOLON val=expr SEMICOLON ref=expr SEMICOLON 
     ;
 
 //Flow Controls
