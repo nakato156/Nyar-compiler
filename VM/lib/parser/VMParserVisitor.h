@@ -30,7 +30,7 @@ public:
     virtual std::any visitLogicExp(VMParser::LogicExpContext *context) = 0;
 
     virtual std::any visitStringExp(VMParser::StringExpContext *context) = 0;
-
+  
     virtual std::any visitAccessObjectExp(VMParser::AccessObjectExpContext *context) = 0;
 
     virtual std::any visitParenExp(VMParser::ParenExpContext *context) = 0;

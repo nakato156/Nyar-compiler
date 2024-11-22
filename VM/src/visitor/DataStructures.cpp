@@ -31,21 +31,15 @@ std::any VMVisitor::visitArrayExp(VMParser::ArrayExpContext *ctx) {
 
 // Christian TASKETE
 // AIUDA
+
 std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx)
 {
-    std::cout << "Processing STRING expression" << std::endl;
-
-    // Extract the string value and clean it6 (remove quotes)
     std::string value = ctx->getText();
-    std::string cleanValue = value.substr(1, value.size() - 2);
+    std::string cleanValue = value.substr(1, value.size() - 2); // Remover comillas
 
-    std::cout << "Cleaned String: " << cleanValue << std::endl;
-
-    // Create a string constant in LLVM
-    llvm::Constant *strConstant = llvm::ConstantDataArray::getString(*Context, cleanValue);
-
-    // Define a global variable to hold the string
+    llvm::Constant *strConstant = llvm::ConstantDataArray::getString(*Context, cleanValue, true);
     std::string varName = "str_" + std::to_string(counterStrike++);
+
     llvm::GlobalVariable *strVar = new llvm::GlobalVariable(
         *Module,
         strConstant->getType(),
@@ -54,9 +48,6 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx)
         strConstant,
         varName);
 
-    std::cout << "Global String Variable: " << strVar->getName().str() << std::endl;
-
-    // Return a pointer to the string's beginning (as a Value*)
     llvm::Constant *zero = llvm::ConstantInt::get(llvm::Type::getInt32Ty(*Context), 0);
     std::vector<llvm::Constant *> indices = {zero, zero};
 
@@ -67,6 +58,7 @@ std::any VMVisitor::visitStringExp(VMParser::StringExpContext *ctx)
 
     return strPtr;
 }
+
 std::any VMVisitor::visitNullExp(VMParser::NullExpContext *ctx)
 {
     llvm::Value *returnValue = llvm::ConstantInt::getSigned((llvm::Type::getInt32Ty(*Context)), 0);
@@ -101,10 +93,53 @@ std::any VMVisitor::visitAccessObjectExp(VMParser::AccessObjectExpContext *ctx)
     return visitChildren(ctx);
 }
 
-std::any VMVisitor::visitArray(VMParser::ArrayContext *ctx) { return visitChildren(ctx); }
+std::any VMVisitor::visitArray(VMParser::ArrayContext *ctx)
+{
+    std::cout << "Visiting Array Declaration" << std::endl;
 
-std::any VMVisitor::visitArrayblock(VMParser::ArrayblockContext *ctx) { return visitChildren(ctx); }
+    auto arrayBlockResult = visit(ctx->arrayblock());
 
-std::any VMVisitor::visitStruct(VMParser::StructContext *ctx) { return visitChildren(ctx); }
+    if (arrayBlockResult.has_value())
+    {
+        auto arrayElements = std::any_cast<std::vector<llvm::Value *>>(arrayBlockResult);
 
-std::any VMVisitor::visitAccessObject(VMParser::AccessObjectContext *ctx) { return visitChildren(ctx); }
+        llvm::ArrayType *arrayType = llvm::ArrayType::get(
+            arrayElements[0]->getType(), // Tipo del primer elemento
+            arrayElements.size());       // Tamaño del array
+
+        std::cout << "Array of size " << arrayElements.size() << " created." << std::endl;
+        return arrayType;
+    }
+
+    std::cerr << "Error: Unable to process array block." << std::endl;
+    return nullptr;
+}
+
+std::any VMVisitor::visitArrayblock(VMParser::ArrayblockContext *ctx)
+{
+    std::cout << "Visiting Array Block" << std::endl;
+
+    std::vector<llvm::Value *> elements;
+
+    for (auto expr : ctx->expr())
+    {
+        auto value = visit(expr);
+        if (value.has_value())
+        {
+            elements.push_back(std::any_cast<llvm::Value *>(value));
+        }
+    }
+
+    std::cout << "Array Block with " << elements.size() << " elements processed." << std::endl;
+    return elements;
+}
+
+std::any VMVisitor::visitStruct(VMParser::StructContext *ctx)
+{
+    visitChildren(ctx);
+}
+
+std::any VMVisitor::visitAccessObject(VMParser::AccessObjectContext *ctx)
+{
+    visitChildren(ctx);
+}

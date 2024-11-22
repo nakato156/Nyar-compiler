@@ -150,7 +150,6 @@ antlrcpp::Any VMVisitor::visitVariable(VMParser::VariableContext *ctx)
 
 void VMVisitor::createPrintFunction(llvm::Module &module, llvm::LLVMContext &context)
 {
-    // Crear el prototipo de printf
     llvm::FunctionType *printfType = llvm::FunctionType::get(
         llvm::IntegerType::getInt32Ty(context),
         llvm::PointerType::getUnqual(llvm::Type::getInt8Ty(context)),
@@ -158,7 +157,6 @@ void VMVisitor::createPrintFunction(llvm::Module &module, llvm::LLVMContext &con
     llvm::Function *printfFunc = llvm::Function::Create(
         printfType, llvm::Function::ExternalLinkage, "printf", module);
 
-    // Crear la función void print(int)
     llvm::FunctionType *printType = llvm::FunctionType::get(
         llvm::Type::getVoidTy(context),
         {llvm::Type::getInt32Ty(context)},
@@ -166,22 +164,17 @@ void VMVisitor::createPrintFunction(llvm::Module &module, llvm::LLVMContext &con
     llvm::Function *printFunc = llvm::Function::Create(
         printType, llvm::Function::ExternalLinkage, "print", module);
 
-    // Crear un bloque básico para la función
     llvm::BasicBlock *block = llvm::BasicBlock::Create(context, "entry", printFunc);
     llvm::IRBuilder<> builder(block);
 
-    // Obtener el argumento de la función
     llvm::Function::arg_iterator args = printFunc->arg_begin();
     llvm::Value *arg = &*args;
     arg->setName("value");
 
-    // Crear el formato para printf
     llvm::Value *formatStr = builder.CreateGlobalStringPtr("%d\n");
 
-    // Llamar a printf
     builder.CreateCall(printfFunc, {formatStr, arg});
 
-    // Retornar void
     builder.CreateRetVoid();
 
     // Verificar la función

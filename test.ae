@@ -1,55 +1,11 @@
-uno:int = 1;
-variable = 10+2+uno+3;
-hola = "hello" + " " + "dani";
-op = uno >= 2;
+x: int = 20+10;
+imprimir(x);
 
-myBool = falso;
-
-iterar y desde 0 hasta 3 {
-    i = y * 2;
-    uno = i;
-}
-
-funcion main() {
-    a = "hola profis";
-    iterar y desde 0 hasta 3 {
-        i = y * 3;
-        uno = i;
-    }
-    retornar uno;
-}
-
-funcion hola(b) {
+iterar y desde 0 hasta 20 {
     a = 1;
-    c = a + b;
-    retornar c;
+    imprimir(a);
+    imprimir(y);
 }
 
-si uno == (10*3) {
-    a = 0+uno;
-}
-sino {
-    a = 2+1;
-}
-
-estructura Paracaidas {
-    desplegado = 0;
-};
-
-array = ["a", "1", "xd", uno];
-
-imprimir(uno, "a");
-
-nd = NADA;
-
-si (uno.x) == (nd.a.otro) {
-    murio= 0;
-} sino {
-    murio = 1;
-}
-
-
-porfis_and = uno && 2;
-porfis_or = nd || 2;
-
-resultado = main();
+imprimir(x);
+imprimir("Adios Mundo");

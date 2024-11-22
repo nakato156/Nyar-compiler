@@ -15,34 +15,46 @@
 std::any VMVisitor::visitFor(VMParser::ForContext *ctx)
 {
     std::cout << "\tBloque FOR" << std::endl;
-    std::cout << ctx->CONTROL->getText() << " " << ctx->FROM->getText() << " " << ctx->TO->getText() << 
-            ctx->block()->getText() << std::endl;
-    
-    std::string varName = ctx->CONTROL->getText();
 
-    if(ctx->CONTROL == nullptr) {
+    if (ctx->CONTROL == nullptr || ctx->block() == nullptr)
+    {
         return nullptr;
     }
 
-    llvm::Value * startValue;
+    std::string varName = ctx->CONTROL->getText();
 
-    llvm::Function *FunctionBlock = Builder->GetInsertBlock()->getParent();
-    llvm::BasicBlock *PreheaderBasicBlock  = Builder->GetInsertBlock();
-    llvm::BasicBlock *LoopBasicBlock = llvm::BasicBlock::Create(*Context, "loop", FunctionBlock);
+    llvm::Value *startValue = llvm::ConstantFP::get(*Context, llvm::APFloat(std::stod(ctx->FROM->getText())));
+    llvm::Value *endValue = llvm::ConstantFP::get(*Context, llvm::APFloat(std::stod(ctx->TO->getText())));
 
-    Builder->CreateBr(LoopBasicBlock);
-    Builder->SetInsertPoint(LoopBasicBlock);
-    llvm::PHINode * Variable = Builder->CreatePHI(llvm::Type::getDoubleTy(*Context), 2, varName);
+    llvm::Function *TheFunction = Builder->GetInsertBlock()->getParent();
 
-    Variable->addIncoming(startValue, PreheaderBasicBlock);
-    llvm::Value * oldValue = SymbolTable[varName];
+    llvm::BasicBlock *PreheaderBB = Builder->GetInsertBlock();
+    llvm::BasicBlock *LoopBB = llvm::BasicBlock::Create(*Context, "loop", TheFunction);
+    llvm::BasicBlock *AfterLoopBB = llvm::BasicBlock::Create(*Context, "afterloop", TheFunction);
+
+    Builder->CreateBr(LoopBB);
+    Builder->SetInsertPoint(LoopBB);
+
+    llvm::PHINode *Variable = Builder->CreatePHI(llvm::Type::getDoubleTy(*Context), 2, varName);
+    Variable->addIncoming(startValue, PreheaderBB);
+
+    llvm::Value *oldValue = SymbolTable[varName];
     SymbolTable[varName] = Variable;
 
-    if(ctx->block() == nullptr) {
-        return nullptr;
-    }   
+    visitChildren(ctx->block());
 
-    llvm::Value *StepValue = nullptr;
+    llvm::Value *StepValue = llvm::ConstantFP::get(*Context, llvm::APFloat(1.0));
+    llvm::Value *NextVar = Builder->CreateFAdd(Variable, StepValue, "nextvar");
+
+    llvm::Value *EndCond = Builder->CreateFCmpOLE(NextVar, endValue, "loopcond");
+
+    llvm::BasicBlock *LoopEndBB = Builder->GetInsertBlock();
+    Builder->CreateCondBr(EndCond, LoopBB, AfterLoopBB);
+
+    Variable->addIncoming(NextVar, LoopEndBB);
+
+    SymbolTable[varName] = oldValue;
+    Builder->SetInsertPoint(AfterLoopBB);
 
     return nullptr;
 }
@@ -52,69 +64,69 @@ std::any VMVisitor::visitIf(VMParser::IfContext *ctx)
     std::cout << "\tBloque IF" << std::endl;
     std::cout << ctx->cond->getText() << " " << ctx->block()->getText() << std::endl;
 
-    // A condition doesn't exist
     if (ctx->cond == nullptr)
     {
         return nullptr;
     }
-    llvm::Value *conditionalValue = std::any_cast<llvm::Value *> (visit(ctx->cond));
 
-    conditionalValue = Builder->CreateFCmpONE(conditionalValue, llvm::ConstantFP::get(*Context, llvm::APFloat(0.0)), "ifcond");
+    // Evaluar la condición
+    llvm::Value *conditionalValue = std::any_cast<llvm::Value *>(visit(ctx->cond));
+    if (!conditionalValue)
+    {
+        std::cerr << "Error: La condición del bloque IF no devuelve un valor válido." << std::endl;
+        return nullptr;
+    }
 
+    conditionalValue = Builder->CreateFCmpONE(
+        conditionalValue, llvm::ConstantFP::get(*Context, llvm::APFloat(0.0)), "ifcond");
+
+    // Configurar los bloques THEN, ELSE y MERGE
     llvm::Function *FunctionBlock = Builder->GetInsertBlock()->getParent();
-
     llvm::BasicBlock *ThenBasicBlock = llvm::BasicBlock::Create(*Context, "then", FunctionBlock);
-    llvm::BasicBlock *ElseBasicBlock = llvm::BasicBlock::Create(*Context, "else");
-    llvm::BasicBlock *MergeBasicBlock = llvm::BasicBlock::Create(*Context, "ifcont");
+    llvm::BasicBlock *ElseBasicBlock = llvm::BasicBlock::Create(*Context, "else", FunctionBlock);
+    llvm::BasicBlock *MergeBasicBlock = llvm::BasicBlock::Create(*Context, "ifcont", FunctionBlock);
 
     Builder->CreateCondBr(conditionalValue, ThenBasicBlock, ElseBasicBlock);
 
+    // Generar el bloque THEN
     Builder->SetInsertPoint(ThenBasicBlock);
-
-    // Then block
     llvm::Value *thenValue = nullptr;
     if (ctx->block() != nullptr)
     {
-        thenValue = std::any_cast<llvm::Value *> (visit(ctx->block()));
-        if(!thenValue) {
-            thenValue = llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
-        }
+        thenValue = std::any_cast<llvm::Value *>(visit(ctx->block()));
     }
-    //llvm::Value *thenValue = std::any_cast<llvm::Value *>(visit(ctx->block()));
-  
-
+    if (!thenValue)
+    {
+        thenValue = llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
+    }
     Builder->CreateBr(MergeBasicBlock);
     ThenBasicBlock = Builder->GetInsertBlock();
 
-    FunctionBlock->insert(FunctionBlock->end(), ElseBasicBlock);
+    // Generar el bloque ELSE
     Builder->SetInsertPoint(ElseBasicBlock);
-
-    // Else block
     llvm::Value *elseValue = nullptr;
     if (ctx->else_() != nullptr)
     {
         elseValue = std::any_cast<llvm::Value *>(visit(ctx->else_()));
-        if (!elseValue)
-        {
-            elseValue = llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
-        }
     }
-
+    if (!elseValue)
+    {
+        elseValue = llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
+    }
     Builder->CreateBr(MergeBasicBlock);
     ElseBasicBlock = Builder->GetInsertBlock();
 
-    FunctionBlock->insert(FunctionBlock->end(), MergeBasicBlock);
+    // Generar el bloque MERGE
     Builder->SetInsertPoint(MergeBasicBlock);
-
     llvm::PHINode *PhiNo = Builder->CreatePHI(llvm::Type::getDoubleTy(*Context), 2, "iftmp");
 
-    if (thenValue->getType() != PhiNo->getType())
+    if (thenValue->getType() != llvm::Type::getDoubleTy(*Context))
     {
-        thenValue = Builder->CreateFPCast(thenValue, PhiNo->getType(), "thencast");
+        thenValue = Builder->CreateFPCast(thenValue, llvm::Type::getDoubleTy(*Context), "thencast");
     }
-    if (elseValue->getType() != PhiNo->getType())
+    if (elseValue->getType() != llvm::Type::getDoubleTy(*Context))
     {
-        elseValue = Builder->CreateFPCast(elseValue, PhiNo->getType(), "elsecast");
+        elseValue = Builder->CreateFPCast(elseValue, llvm::Type::getDoubleTy(*Context), "elsecast");
     }
 
     PhiNo->addIncoming(thenValue, ThenBasicBlock);
