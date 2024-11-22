@@ -22,26 +22,31 @@ std::any VMVisitor::visitFor(VMParser::ForContext *ctx)
     }
 
     std::string varName = ctx->CONTROL->getText();
+    std::cout << "Variable de control: " << varName << std::endl;
 
     llvm::Value *startValue = llvm::ConstantFP::get(*Context, llvm::APFloat(std::stod(ctx->FROM->getText())));
     llvm::Value *endValue = llvm::ConstantFP::get(*Context, llvm::APFloat(std::stod(ctx->TO->getText())));
 
     llvm::Function *TheFunction = Builder->GetInsertBlock()->getParent();
-
     llvm::BasicBlock *PreheaderBB = Builder->GetInsertBlock();
     llvm::BasicBlock *LoopBB = llvm::BasicBlock::Create(*Context, "loop", TheFunction);
-    llvm::BasicBlock *AfterLoopBB = llvm::BasicBlock::Create(*Context, "afterloop", TheFunction);
 
     Builder->CreateBr(LoopBB);
     Builder->SetInsertPoint(LoopBB);
 
     llvm::PHINode *Variable = Builder->CreatePHI(llvm::Type::getDoubleTy(*Context), 2, varName);
     Variable->addIncoming(startValue, PreheaderBB);
-
-    llvm::Value *oldValue = SymbolTable[varName];
+    
+    // check if the variable exists in the symbol table and store old value
+    llvm::Value* oldValue = nullptr; 
+    if(SymbolTable.find(varName) != SymbolTable.end()) {
+        oldValue = SymbolTable[varName];
+    }
     SymbolTable[varName] = Variable;
 
-    visitChildren(ctx->block());
+    llvm::BasicBlock *PrevInsertBB = Builder->GetInsertBlock(); // Guarda el bloque actual
+
+    visit(ctx->block());
 
     llvm::Value *StepValue = llvm::ConstantFP::get(*Context, llvm::APFloat(1.0));
     llvm::Value *NextVar = Builder->CreateFAdd(Variable, StepValue, "nextvar");
@@ -49,14 +54,18 @@ std::any VMVisitor::visitFor(VMParser::ForContext *ctx)
     llvm::Value *EndCond = Builder->CreateFCmpOLE(NextVar, endValue, "loopcond");
 
     llvm::BasicBlock *LoopEndBB = Builder->GetInsertBlock();
-    Builder->CreateCondBr(EndCond, LoopBB, AfterLoopBB);
-
+    
     Variable->addIncoming(NextVar, LoopEndBB);
 
-    SymbolTable[varName] = oldValue;
+    if(oldValue != nullptr) {
+        SymbolTable[varName] = oldValue;
+    }
+    
+    llvm::BasicBlock *AfterLoopBB = llvm::BasicBlock::Create(*Context, "afterloop", TheFunction);
+    Builder->CreateCondBr(EndCond, LoopBB, AfterLoopBB);
     Builder->SetInsertPoint(AfterLoopBB);
 
-    return nullptr;
+    return llvm::Constant::getNullValue(llvm::Type::getDoubleTy(*Context));
 }
 
 std::any VMVisitor::visitIf(VMParser::IfContext *ctx)
@@ -149,13 +158,5 @@ std::any VMVisitor::visitElse(VMParser::ElseContext *ctx)
 
 std::any VMVisitor::visitBlock(VMParser::BlockContext *ctx) { 
     std::cout << "\tBloque" << std::endl;
-    llvm::Value * lastValue = nullptr;
-
-    for (auto it: ctx->stat())
-    {
-       std::cout << it->getText() << std::endl;
-       lastValue = std::any_cast<llvm::Value *> (visit(it));
-    }
-
-    return lastValue ? lastValue : llvm::ConstantFP::get(*Context, llvm::APFloat(0.0));
+    return visitChildren(ctx);
 }

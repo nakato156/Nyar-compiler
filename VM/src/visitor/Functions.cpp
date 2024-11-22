@@ -117,16 +117,17 @@ std::any VMVisitor::visitFunctioncall(VMParser::FunctioncallContext *ctx)
         }
         else if (argType->isPointerTy())
         {
-            llvm::Type *containedType = argType->getPointerElementType();
-            if (containedType && containedType->isIntegerTy(8))
-            {
-                format += "%s ";
-            }
-            else
-            {
-                LogsErrorsV("Puntero no compatible con cadenas.");
-                return nullptr;
-            }
+            std::cout << "Pointer???" << std::endl;
+            // llvm::Type *containedType = argType->getPointerElementType();
+            // if (containedType && containedType->isIntegerTy(8))
+            // {
+            //     format += "%s ";
+            // }
+            // else
+            // {
+            //     LogsErrorsV("Puntero no compatible con cadenas.");
+            //     return nullptr;
+            // }
         }
         else
         {
